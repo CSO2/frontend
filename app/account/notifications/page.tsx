@@ -91,20 +91,6 @@ export default function AccountNotifications() {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="text-center py-12">
-        <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Please Log In
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          You need to be logged in to view notifications
-        </p>
-      </div>
-    );
-  }
-
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
