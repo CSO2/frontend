@@ -27,25 +27,25 @@ export default function FeaturedProductsSection() {
   };
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-between mb-12"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-10 md:mb-12 gap-4"
         >
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
               Featured Products
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
               Our most popular and highly-rated components
             </p>
           </div>
 
-          <div className="hidden md:flex gap-2">
+          <div className="hidden lg:flex gap-2">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -69,7 +69,7 @@ export default function FeaturedProductsSection() {
 
         <div className="relative overflow-hidden">
           <motion.div
-            className="flex gap-6"
+            className="flex gap-4 sm:gap-5 md:gap-6"
             animate={{
               x: `-${currentIndex * (100 / itemsPerView)}%`,
             }}
@@ -82,7 +82,7 @@ export default function FeaturedProductsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="flex-none w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
+                className="flex-none w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
               >
                 <ProductCard product={product} />
               </motion.div>
@@ -91,7 +91,7 @@ export default function FeaturedProductsSection() {
         </div>
 
         {/* Mobile navigation dots */}
-        <div className="flex md:hidden justify-center gap-2 mt-6">
+        <div className="flex lg:hidden justify-center gap-2 mt-6">
           {Array.from({ length: maxIndex + 1 }).map((_, index) => (
             <button
               key={index}

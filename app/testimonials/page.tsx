@@ -62,25 +62,25 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto w-full">
         
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
             Customer Stories
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
             Don't just take our word for it. Hear what our customers have to say about their CS02 experience.
           </p>
         </motion.div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12 lg:mb-16">
           {[
             { label: 'Happy Customers', value: '50,000+' },
             { label: 'Average Rating', value: '4.9/5' },
@@ -92,58 +92,58 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 p-6 text-center"
+              className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 p-4 sm:p-6 text-center"
             >
-              <p className="text-4xl font-bold text-orange-600 dark:text-orange-500 mb-2">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-600 dark:text-orange-500 mb-1 sm:mb-2">
                 {stat.value}
               </p>
-              <p className="text-gray-600 dark:text-gray-400">{stat.label}</p>
+              <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">{stat.label}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 p-8 hover:border-orange-500 transition"
+              className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 p-5 sm:p-6 md:p-8 hover:border-orange-500 transition flex flex-col"
             >
               {/* Quote Icon */}
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 mb-6">
-                <Quote className="w-6 h-6 text-orange-600 dark:text-orange-500" />
+              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 mb-4 sm:mb-6 shrink-0">
+                <Quote className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-500" />
               </div>
 
               {/* Rating */}
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-1 mb-3 sm:mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400 shrink-0" />
                 ))}
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed line-clamp-6 grow break-words overflow-hidden">
                 "{testimonial.text}"
               </p>
 
               {/* Author Info */}
-              <div className="flex items-center gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold">
+              <div className="flex items-center gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0">
                   {testimonial.avatar}
                 </div>
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-sm sm:text-base text-gray-900 dark:text-white truncate">
                     {testimonial.name}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                     {testimonial.role}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                    <Building2 className="w-3 h-3" />
-                    {testimonial.company}
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 flex items-center gap-1">
+                    <Building2 className="w-3 h-3 shrink-0" />
+                    <span className="truncate">{testimonial.company}</span>
                   </p>
                 </div>
               </div>
@@ -155,24 +155,24 @@ export default function Testimonials() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-16 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-12 text-center"
+          className="mt-8 sm:mt-12 lg:mt-16 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl sm:rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-6 sm:p-8 md:p-10 lg:p-12 text-center"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 px-4">
             Ready to Build Your Dream PC?
           </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Join thousands of satisfied customers who've built their perfect system with CS02. Start your journey today!
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
             <a
               href="/pc-builder"
-              className="px-8 py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg sm:rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl transition"
             >
               Start Building
             </a>
             <a
               href="/builder-quiz"
-              className="px-8 py-4 border-2 border-orange-600 text-orange-600 dark:text-orange-500 rounded-xl font-bold text-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition"
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-orange-600 text-orange-600 dark:text-orange-500 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition"
             >
               Take the Quiz
             </a>

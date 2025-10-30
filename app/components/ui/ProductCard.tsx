@@ -76,7 +76,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
               {product.brand}
             </span>
           </div>
-          <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">
+          <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white mb-2 line-clamp-2 h-10 sm:h-12">
             {product.name}
           </h3>
           
