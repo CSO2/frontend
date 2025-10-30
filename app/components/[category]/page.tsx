@@ -82,7 +82,7 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:w-64 flex-shrink-0"
+            className="lg:w-64 shrink-0"
           >
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700 sticky top-20">
               <div className="flex items-center gap-2 mb-6">

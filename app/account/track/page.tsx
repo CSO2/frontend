@@ -76,7 +76,7 @@ function TrackOrderContent() {
 
         {/* Actions */}
         <div className="mt-6 flex gap-4">
-          <button className="flex-1 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+          <button className="flex-1 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
             View Order Details
           </button>
           <button className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition">

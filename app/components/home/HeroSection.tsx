@@ -16,7 +16,7 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black dark:from-black dark:via-gray-900 dark:to-gray-800">
+      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-800 to-black dark:from-black dark:via-gray-900 dark:to-gray-800">
         {/* Animated geometric shapes */}
         <motion.div
           animate={{
@@ -58,7 +58,7 @@ export default function HeroSection() {
         />
         
         {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,115,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,0,0.05)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,115,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,0,0.05)_1px,transparent_1px)] bg-size-[50px_50px] mask-[radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]" />
       </div>
 
       {/* Content */}

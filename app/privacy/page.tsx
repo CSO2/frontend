@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       {/* Header */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
           >
             <Shield className="w-8 h-8 text-orange-600 dark:text-orange-500" />
           </motion.div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Privacy Policy
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -131,7 +131,7 @@ export default function PrivacyPolicyPage() {
               <ul className="space-y-3">
                 {section.content.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-gray-600 dark:text-gray-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -144,7 +144,7 @@ export default function PrivacyPolicyPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800"
+            className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800"
           >
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Children's Privacy</h2>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -188,7 +188,7 @@ export default function PrivacyPolicyPage() {
                 'File complaints with authorities'
               ].map((right, idx) => (
                 <li key={idx} className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <Shield className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                  <Shield className="w-4 h-4 text-orange-500 shrink-0" />
                   <span>{right}</span>
                 </li>
               ))}

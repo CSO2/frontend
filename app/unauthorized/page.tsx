@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function UnauthorizedPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24 px-4">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,7 +25,7 @@ export default function UnauthorizedPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-8xl font-bold mb-4 bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent"
+          className="text-8xl font-bold mb-4 bg-linear-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent"
         >
           403
         </motion.h1>
@@ -56,7 +56,7 @@ export default function UnauthorizedPage() {
         >
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="flex items-center justify-center gap-2 px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             <Home className="w-5 h-5" />
             Go Home

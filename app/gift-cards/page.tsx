@@ -14,10 +14,10 @@ import {
 } from 'lucide-react';
 
 const giftCardDesigns = [
-  { id: '1', name: 'Orange Gradient', preview: 'bg-gradient-to-br from-orange-600 to-orange-400' },
-  { id: '2', name: 'Tech Blue', preview: 'bg-gradient-to-br from-blue-600 to-purple-600' },
-  { id: '3', name: 'Gaming Red', preview: 'bg-gradient-to-br from-red-600 to-pink-600' },
-  { id: '4', name: 'Classic Black', preview: 'bg-gradient-to-br from-gray-800 to-gray-900' },
+  { id: '1', name: 'Orange Gradient', preview: 'bg-linear-to-br from-orange-600 to-orange-400' },
+  { id: '2', name: 'Tech Blue', preview: 'bg-linear-to-br from-blue-600 to-purple-600' },
+  { id: '3', name: 'Gaming Red', preview: 'bg-linear-to-br from-red-600 to-pink-600' },
+  { id: '4', name: 'Classic Black', preview: 'bg-linear-to-br from-gray-800 to-gray-900' },
 ];
 
 const presetAmounts = [2500, 5000, 10000, 25000, 50000];
@@ -54,7 +54,7 @@ export default function GiftCardsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-600 to-orange-500 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-orange-600 to-orange-500 rounded-full mb-6">
             <Gift className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -314,7 +314,7 @@ export default function GiftCardsPage() {
 
                 <button
                   disabled={finalAmount < 1000 || !recipientEmail}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-bold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-bold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <CreditCard className="w-5 h-5" />
                   Proceed to Checkout
@@ -385,7 +385,7 @@ export default function GiftCardsPage() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-8 p-6 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl border-2 border-orange-200 dark:border-orange-800"
+                    className="mt-8 p-6 bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl border-2 border-orange-200 dark:border-orange-800"
                   >
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       Available Balance

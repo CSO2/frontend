@@ -175,7 +175,7 @@ export default function BuildGallery() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
@@ -184,7 +184,7 @@ export default function BuildGallery() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
             Build Gallery
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
@@ -245,7 +245,7 @@ export default function BuildGallery() {
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-orange-500 transition-all hover:shadow-2xl group">
                   
                   {/* Image */}
-                  <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+                  <div className="relative h-64 bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
                     <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-600">
                       <Eye className="w-24 h-24" />
                     </div>
@@ -325,7 +325,7 @@ export default function BuildGallery() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-16 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-12 text-center"
+          className="mt-16 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-12 text-center"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Share Your Build
@@ -335,7 +335,7 @@ export default function BuildGallery() {
           </p>
           <Link
             href="/pc-builder"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
           >
             <Share2 className="w-6 h-6" />
             Submit Your Build

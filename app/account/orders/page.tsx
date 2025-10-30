@@ -96,7 +96,7 @@ export default function OrdersPage() {
             <p className="text-gray-600 dark:text-gray-400 mb-6">Start shopping to see your orders here</p>
             <Link
               href="/components"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+              className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
               Browse Products
             </Link>

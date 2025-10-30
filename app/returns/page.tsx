@@ -5,7 +5,7 @@ import { Package, RotateCcw, CheckCircle, Clock, AlertTriangle, TrendingUp } fro
 
 export default function ReturnsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       {/* Header */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -20,7 +20,7 @@ export default function ReturnsPage() {
           >
             <RotateCcw className="w-8 h-8 text-orange-600 dark:text-orange-500" />
           </motion.div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Returns & Refunds Policy
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -91,7 +91,7 @@ export default function ReturnsPage() {
 
               <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border-l-4 border-red-500">
                 <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-500 flex-shrink-0 mt-1" />
+                  <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-500 shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Non-Returnable Items:</h3>
                     <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
@@ -153,7 +153,7 @@ export default function ReturnsPage() {
                 }
               ].map((step, idx) => (
                 <div key={idx} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold text-lg">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-linear-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold text-lg">
                     {step.step}
                   </div>
                   <div className="flex-1">
@@ -180,7 +180,7 @@ export default function ReturnsPage() {
                 { title: 'Store Credit', desc: '+5% bonus credit', time: 'Instant' },
                 { title: 'Exchange', desc: 'Swap for different item', time: 'Ships immediately' }
               ].map((option, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-700 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+                <div key={idx} className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-700 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
                   <h3 className="font-bold text-gray-900 dark:text-white mb-2">{option.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{option.desc}</p>
                   <div className="flex items-center gap-2 text-xs text-orange-600 dark:text-orange-500 font-medium">
@@ -233,7 +233,7 @@ export default function ReturnsPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800"
+            className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800"
           >
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Warranty vs. Returns</h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -264,7 +264,7 @@ export default function ReturnsPage() {
               Our support team is here to assist you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+              <button className="px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
                 Start Return Request
               </button>
               <button className="px-6 py-3 border-2 border-orange-500 text-orange-600 dark:text-orange-500 rounded-lg font-semibold hover:bg-orange-50 dark:hover:bg-orange-900/20 transition">

@@ -191,7 +191,7 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          <button className="w-full mt-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+          <button className="w-full mt-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
             Reorder Stock
           </button>
         </motion.div>

@@ -27,7 +27,7 @@ export default function AccountPage() {
         {user ? (
           <div className="space-y-6">
             <div className="flex items-center gap-6">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-600 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+              <div className="w-24 h-24 bg-linear-to-br from-orange-600 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -71,7 +71,7 @@ export default function AccountPage() {
             <UserIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Not Logged In</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">Please log in to view your profile</p>
-            <button className="px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+            <button className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
               Sign In
             </button>
           </div>

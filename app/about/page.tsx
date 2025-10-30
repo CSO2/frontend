@@ -28,7 +28,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="bg-gradient-to-br from-wso2-orange to-wso2-orange-dark text-white rounded-2xl p-6 md:p-8"
+            className="bg-linear-to-br from-wso2-orange to-wso2-orange-dark text-white rounded-2xl p-6 md:p-8"
           >
             <Target className="h-10 w-10 md:h-12 md:w-12 mb-3 md:mb-4" />
             <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Our Mission</h2>

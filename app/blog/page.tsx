@@ -77,7 +77,7 @@ const categories = ['All', 'Reviews', 'Guides', 'News', 'Buying Guides', 'Tutori
 
 export default function Blog() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
@@ -86,7 +86,7 @@ export default function Blog() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
             Tech Blog
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -119,7 +119,7 @@ export default function Blog() {
               >
                 <Link href={`/blog/${post.id}`}>
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-orange-500 transition-all hover:shadow-2xl group">
-                    <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                    <div className="relative h-64 bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
                       <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                         <Tag className="w-24 h-24" />
                       </div>
@@ -171,7 +171,7 @@ export default function Blog() {
               >
                 <Link href={`/blog/${post.id}`}>
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-orange-500 transition-all group h-full">
-                    <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                    <div className="relative h-48 bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
                       <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                         <Tag className="w-16 h-16" />
                       </div>
@@ -202,7 +202,7 @@ export default function Blog() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-16 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-12 text-center"
+          className="mt-16 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-12 text-center"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Stay Updated
@@ -216,7 +216,7 @@ export default function Blog() {
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500"
             />
-            <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2">
+            <button className="px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2">
               Subscribe
               <ArrowRight className="w-5 h-5" />
             </button>

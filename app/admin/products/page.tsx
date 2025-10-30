@@ -27,7 +27,7 @@ export default function AdminProducts() {
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Products</h1>
           <p className="text-gray-600 dark:text-gray-400">Manage your product catalog</p>
         </div>
-        <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2">
+        <button className="px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2">
           <Plus className="w-5 h-5" />
           Add Product
         </button>

@@ -108,7 +108,7 @@ export default function ReviewsPage() {
             <p className="text-gray-600 dark:text-gray-400 mb-6">Share your experience with products you've purchased</p>
             <Link
               href="/account/orders"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+              className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
               View Your Orders
             </Link>

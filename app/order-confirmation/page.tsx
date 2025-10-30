@@ -28,7 +28,7 @@ function OrderConfirmationContent() {
 
   if (!orderId) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
+      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             No order found
@@ -54,7 +54,7 @@ function OrderConfirmationContent() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4 max-w-4xl">
         
         {/* Success Animation */}
@@ -71,7 +71,7 @@ function OrderConfirmationContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-4 bg-linear-to-r from-green-600 to-green-500 bg-clip-text text-transparent"
           >
             Order Confirmed!
           </motion.h1>
@@ -133,7 +133,7 @@ function OrderConfirmationContent() {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-4">
-            <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+            <button className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
               <Download className="w-5 h-5" />
               Download Invoice
             </button>
@@ -202,7 +202,7 @@ function OrderConfirmationContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800 mb-8"
+          className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800 mb-8"
         >
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Need Help?</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-6">
@@ -247,7 +247,7 @@ function OrderConfirmationContent() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/components"
-              className="px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+              className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
               Continue Shopping
             </Link>
@@ -267,7 +267,7 @@ function OrderConfirmationContent() {
 export default function OrderConfirmationPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
+      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading...</p>

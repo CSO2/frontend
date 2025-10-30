@@ -211,7 +211,7 @@ export default function AdminSettings() {
       {/* Save Button */}
       <button
         onClick={handleSave}
-        className="w-full py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-lg transition flex items-center justify-center gap-3"
+        className="w-full py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-lg transition flex items-center justify-center gap-3"
       >
         <Save className="w-6 h-6" />
         Save All Settings

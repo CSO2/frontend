@@ -37,7 +37,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4">
         
         {/* Header */}
@@ -46,7 +46,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
             My Account
           </h1>
           <p className="text-gray-600 dark:text-gray-400">Manage your profile, orders, and preferences</p>

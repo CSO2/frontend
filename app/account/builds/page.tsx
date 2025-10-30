@@ -50,7 +50,7 @@ export default function SavedBuildsPage() {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Saved Builds</h2>
           <Link
             href="/pc-builder"
-            className="px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="px-4 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Create New Build
           </Link>
@@ -95,7 +95,7 @@ export default function SavedBuildsPage() {
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     Last updated: {new Date(build.updatedAt).toLocaleDateString()}
                   </span>
-                  <button className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+                  <button className="flex items-center gap-2 px-6 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
                     <ShoppingCart className="w-5 h-5" />
                     Add All to Cart
                   </button>
@@ -110,7 +110,7 @@ export default function SavedBuildsPage() {
             <p className="text-gray-600 dark:text-gray-400 mb-6">Create custom PC builds and save them for later</p>
             <Link
               href="/pc-builder"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+              className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
               Start Building
             </Link>

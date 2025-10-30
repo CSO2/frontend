@@ -54,7 +54,7 @@ export default function AccountRewards() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl shadow-2xl p-8 text-white"
+        className="bg-linear-to-br from-orange-500 to-orange-600 rounded-3xl shadow-2xl p-8 text-white"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -97,7 +97,7 @@ export default function AccountRewards() {
               initial={{ width: 0 }}
               animate={{ width: `${(points / nextTier.min) * 100}%` }}
               transition={{ duration: 1, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
+              className="h-full bg-linear-to-r from-orange-500 to-orange-600 rounded-full"
             />
           </div>
 
@@ -179,7 +179,7 @@ export default function AccountRewards() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl border border-orange-200 dark:border-orange-800 p-8"
+        className="bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl border border-orange-200 dark:border-orange-800 p-8"
       >
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
           <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-500" />

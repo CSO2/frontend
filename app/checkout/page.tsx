@@ -48,13 +48,13 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
+      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Your cart is empty</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-8">Add some products to proceed with checkout</p>
           <button
             onClick={() => router.push('/components')}
-            className="px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Shop Now
           </button>
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4 max-w-6xl">
         
         {/* Header */}
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Checkout
           </h1>
           <p className="text-gray-600 dark:text-gray-400">Complete your order in a few simple steps</p>
@@ -439,7 +439,7 @@ export default function CheckoutPage() {
                     (currentStep === 2 && !canProceedStep2) ||
                     (currentStep === 3 && !canProceedStep3)
                   }
-                  className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   Next
                   <ArrowRight className="w-5 h-5" />
@@ -447,7 +447,7 @@ export default function CheckoutPage() {
               ) : (
                 <button
                   onClick={handlePlaceOrder}
-                  className="px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2"
+                  className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition flex items-center gap-2"
                 >
                   <CheckCircle className="w-5 h-5" />
                   Place Order
