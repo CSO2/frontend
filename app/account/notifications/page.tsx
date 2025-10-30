@@ -45,7 +45,7 @@ export default function AccountNotifications() {
       id: '4',
       type: 'alert',
       title: 'Price Drop Alert',
-      message: 'Intel Core i9-13900K is now $50 cheaper! Add it to your cart now.',
+      message: 'Intel Core i9-13900K is now LKR 15,000 cheaper! Add it to your cart now.',
       timestamp: '2024-01-12T14:20:00',
       read: true
     }
@@ -90,20 +90,6 @@ export default function AccountNotifications() {
       default: return 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400';
     }
   };
-
-  if (!user) {
-    return (
-      <div className="text-center py-12">
-        <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Please Log In
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          You need to be logged in to view notifications
-        </p>
-      </div>
-    );
-  }
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -200,7 +186,7 @@ export default function AccountNotifications() {
                     </p>
 
                     <p className="text-sm text-gray-500 dark:text-gray-500">
-                      {new Date(notification.timestamp).toLocaleString('en-US', {
+                      {new Date(notification.timestamp).toLocaleString('en-LK', {
                         month: 'short',
                         day: 'numeric',
                         hour: 'numeric',

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Monitor,
@@ -483,12 +484,18 @@ export default function SystemRequirementsPage() {
           className="text-center"
         >
           <div className="inline-flex gap-4">
-            <button className="px-8 py-4 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-colors">
+            <Link
+              href="/pc-builder"
+              className="px-8 py-4 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-colors"
+            >
               Build My PC
-            </button>
-            <button className="px-8 py-4 border-2 border-purple-600 text-purple-600 dark:text-purple-400 rounded-lg font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+            </Link>
+            <Link
+              href="/builder-quiz"
+              className="px-8 py-4 border-2 border-purple-600 text-purple-600 dark:text-purple-400 rounded-lg font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+            >
               Take the Quiz
-            </button>
+            </Link>
           </div>
         </motion.div>
       </div>

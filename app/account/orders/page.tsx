@@ -32,7 +32,7 @@ export default function OrdersPage() {
                       Order #{order.id}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Placed on {new Date(order.createdAt).toLocaleDateString()}
+                      Placed on {new Date(order.createdAt).toLocaleDateString('en-LK')}
                     </p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -55,7 +55,7 @@ export default function OrdersPage() {
                         {item.productName} × {item.quantity}
                       </span>
                       <span className="font-semibold text-gray-900 dark:text-white">
-                        ${(item.price * item.quantity).toLocaleString()}
+                        {`LKR ${(item.price * item.quantity).toLocaleString('en-LK')}`}
                       </span>
                     </div>
                   ))}
@@ -65,7 +65,7 @@ export default function OrdersPage() {
                   <div className="text-sm">
                     <span className="text-gray-600 dark:text-gray-400">Total: </span>
                     <span className="text-xl font-bold text-orange-600 dark:text-orange-500">
-                      ${order.total.toLocaleString()}
+                      {`LKR ${order.total.toLocaleString('en-LK')}`}
                     </span>
                   </div>
                   <div className="flex gap-2">

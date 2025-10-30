@@ -235,6 +235,51 @@ export default function LoginPage() {
                     </>
                   )}
                 </motion.button>
+
+                {/* Demo Logins */}
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 text-center font-medium">Or try demo accounts:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData({ email: 'customer@demo.lk', password: 'demo', remember: true });
+                        setTimeout(() => {
+                          login({
+                            id: 'demo-customer-001',
+                            name: 'Demo Customer',
+                            email: 'customer@demo.lk',
+                            loyaltyPoints: 2500,
+                            tier: 'gold',
+                          });
+                          router.push('/account');
+                        }, 800);
+                      }}
+                      className="px-3 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition border border-blue-200 dark:border-blue-800"
+                    >
+                      👤 Customer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData({ email: 'admin@demo.lk', password: 'demo', remember: true });
+                        setTimeout(() => {
+                          login({
+                            id: 'demo-admin-001',
+                            name: 'Demo Admin',
+                            email: 'admin@demo.lk',
+                            loyaltyPoints: 0,
+                            tier: 'platinum',
+                          });
+                          router.push('/admin');
+                        }, 800);
+                      }}
+                      className="px-3 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg text-sm font-semibold hover:bg-purple-100 dark:hover:bg-purple-900/40 transition border border-purple-200 dark:border-purple-800"
+                    >
+                      ⚙️ Admin
+                    </button>
+                  </div>
+                </div>
               </form>
 
               <div className="mt-8 grid gap-4">
