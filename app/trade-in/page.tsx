@@ -97,7 +97,7 @@ export default function TradeInPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-600 to-green-500 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-green-600 to-green-500 rounded-full mb-6">
             <Recycle className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -390,7 +390,7 @@ export default function TradeInPage() {
               </h2>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-8 border-2 border-green-200 dark:border-green-800 mb-8">
+            <div className="bg-linear-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-8 border-2 border-green-200 dark:border-green-800 mb-8">
               <p className="text-center text-gray-600 dark:text-gray-400 mb-2">
                 Estimated Value
               </p>
@@ -422,7 +422,7 @@ export default function TradeInPage() {
 
             <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
               <div className="flex gap-3">
-                <AlertCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                <AlertCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
                   <p className="font-bold text-blue-900 dark:text-blue-300 mb-1">
                     This is an estimated quote
@@ -475,7 +475,7 @@ export default function TradeInPage() {
                   key={item.num}
                   className="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border-2 border-gray-200 dark:border-gray-700"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-500 text-white rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
+                  <div className="w-12 h-12 bg-linear-to-br from-green-600 to-green-500 text-white rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
                     {item.num}
                   </div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>

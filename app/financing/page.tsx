@@ -17,7 +17,7 @@ export default function Financing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
       <div className="max-w-6xl mx-auto">
         
         <motion.div
@@ -25,7 +25,7 @@ export default function Financing() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
             Flexible Financing Options
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -85,7 +85,7 @@ export default function Financing() {
             </div>
           </div>
 
-          <div className="mt-8 p-6 rounded-2xl bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-2 border-orange-200 dark:border-orange-800">
+          <div className="mt-8 p-6 rounded-2xl bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-2 border-orange-200 dark:border-orange-800">
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-2">Your Estimated Monthly Payment</p>
             <p className="text-5xl font-bold text-orange-600 dark:text-orange-500">
               ${months <= 18 ? (amount / months).toFixed(2) : calculateMonthly()}/mo
@@ -155,7 +155,7 @@ export default function Financing() {
               { step: '4', title: 'Enjoy', desc: 'Receive your order and pay over time' }
             ].map((item, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 text-white text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-linear-to-br from-orange-600 to-orange-500 text-white text-2xl font-bold flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
                 <h3 className="font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
@@ -173,7 +173,7 @@ export default function Financing() {
         >
           <a
             href="/pc-builder"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
+            className="inline-block px-8 py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
           >
             Start Building Your PC
           </a>

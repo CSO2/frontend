@@ -64,7 +64,7 @@ export default function DealsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4">
         
         {/* Header */}
@@ -73,7 +73,7 @@ export default function DealsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Deals & Promotions
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -147,7 +147,7 @@ export default function DealsPage() {
 
                 <Link
                   href={`/product/${deal.id}`}
-                  className="block w-full py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition text-center"
+                  className="block w-full py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition text-center"
                 >
                   View Deal
                 </Link>
@@ -174,7 +174,7 @@ export default function DealsPage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 whileHover={{ scale: 1.02 }}
-                className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl shadow-lg border-2 border-orange-200 dark:border-orange-800 p-8"
+                className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl shadow-lg border-2 border-orange-200 dark:border-orange-800 p-8"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -211,7 +211,7 @@ export default function DealsPage() {
                   </p>
                 </div>
 
-                <button className="w-full py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+                <button className="w-full py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
                   Add Bundle to Cart
                 </button>
               </motion.div>

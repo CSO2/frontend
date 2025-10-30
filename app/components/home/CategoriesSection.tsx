@@ -47,12 +47,12 @@ export default function CategoriesSection() {
                 <motion.div
                   whileHover={{ y: -5, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-gradient-to-br p-4 sm:p-5 md:p-6 h-full min-h-[120px] sm:min-h-[140px] md:min-h-[160px] flex flex-col items-center justify-center text-white shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                  className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-linear-to-br p-4 sm:p-5 md:p-6 h-full min-h-[120px] sm:min-h-[140px] md:min-h-40 flex flex-col items-center justify-center text-white shadow-lg hover:shadow-2xl transition-all cursor-pointer"
                   style={{
                     background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
                   }}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90 group-hover:opacity-100 transition-opacity`} />
+                  <div className={`absolute inset-0 bg-linear-to-br ${category.color} opacity-90 group-hover:opacity-100 transition-opacity`} />
                   <div className="relative z-10 flex flex-col items-center">
                     <category.icon className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 mb-2 sm:mb-3" />
                     <h3 className="text-sm sm:text-base md:text-lg font-bold text-center">{category.name}</h3>

@@ -21,7 +21,7 @@ export default function ComparePage() {
 
   if (compareList.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
+      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -38,7 +38,7 @@ export default function ComparePage() {
           </p>
           <Link
             href="/components"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Browse Components
           </Link>
@@ -55,7 +55,7 @@ export default function ComparePage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4">
         
         {/* Header */}
@@ -64,7 +64,7 @@ export default function ComparePage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Compare Products
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
@@ -120,7 +120,7 @@ export default function ComparePage() {
                         </p>
                         <button
                           onClick={() => addItem(product, 1)}
-                          className="w-full py-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+                          className="w-full py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                         >
                           <ShoppingCart className="w-4 h-4" />
                           Add to Cart

@@ -76,7 +76,7 @@ export default function AccountRecentlyViewed() {
           </p>
           <a
             href="/components"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="inline-block px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Browse Products
           </a>
@@ -86,7 +86,7 @@ export default function AccountRecentlyViewed() {
       {recentProducts.length > 0 && (
         <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-6">
           <div className="flex items-start gap-3">
-            <Eye className="w-6 h-6 text-orange-600 dark:text-orange-500 flex-shrink-0 mt-1" />
+            <Eye className="w-6 h-6 text-orange-600 dark:text-orange-500 shrink-0 mt-1" />
             <div>
               <h3 className="font-bold text-gray-900 dark:text-white mb-2">
                 Your Browsing History

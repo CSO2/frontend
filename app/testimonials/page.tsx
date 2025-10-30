@@ -62,7 +62,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto w-full">
         
         {/* Header */}
@@ -71,7 +71,7 @@ export default function Testimonials() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
             Customer Stories
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
@@ -125,13 +125,13 @@ export default function Testimonials() {
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed line-clamp-6 grow break-words overflow-hidden">
+              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed line-clamp-6 grow wrap-break-word overflow-hidden">
                 "{testimonial.text}"
               </p>
 
               {/* Author Info */}
               <div className="flex items-center gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700 mt-auto">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-orange-600 to-orange-500 flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0">
                   {testimonial.avatar}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -155,7 +155,7 @@ export default function Testimonials() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 sm:mt-12 lg:mt-16 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl sm:rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-6 sm:p-8 md:p-10 lg:p-12 text-center"
+          className="mt-8 sm:mt-12 lg:mt-16 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl sm:rounded-3xl border-2 border-orange-200 dark:border-orange-800 p-6 sm:p-8 md:p-10 lg:p-12 text-center"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 px-4">
             Ready to Build Your Dream PC?
@@ -166,7 +166,7 @@ export default function Testimonials() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
             <a
               href="/pc-builder"
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg sm:rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl transition"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg sm:rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl transition"
             >
               Start Building
             </a>

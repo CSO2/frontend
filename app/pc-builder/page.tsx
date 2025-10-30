@@ -162,7 +162,7 @@ export default function PCBuilderPage() {
   const allRequiredComplete = steps.every((s, idx) => !s.required || build[idx].product);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
       <div className="container mx-auto px-4">
         
         {/* Header */}
@@ -171,7 +171,7 @@ export default function PCBuilderPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Custom PC Builder
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -232,7 +232,7 @@ export default function PCBuilderPage() {
                             setCurrentStep(index);
                             setShowModal(true);
                           }}
-                          className="px-6 py-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+                          className="px-6 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
                         >
                           Choose
                         </button>
@@ -330,7 +330,7 @@ export default function PCBuilderPage() {
               {compatibilityIssues.length > 0 && (
                 <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 mb-4 border-l-4 border-red-500">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                     <div>
                       <h3 className="font-semibold text-red-700 dark:text-red-400 mb-2">
                         Compatibility Issues
@@ -361,7 +361,7 @@ export default function PCBuilderPage() {
                 <button
                   onClick={addBuildToCart}
                   disabled={!allRequiredComplete || compatibilityIssues.length > 0}
-                  className="w-full py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   Add Build to Cart

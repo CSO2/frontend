@@ -156,7 +156,7 @@ export default function WarrantyRegistrationPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-500 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-blue-600 to-blue-500 rounded-full mb-6">
             <Shield className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -440,7 +440,7 @@ export default function WarrantyRegistrationPage() {
                   'Service history tracking',
                 ].map((benefit) => (
                   <li key={benefit} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
                     <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                   </li>
                 ))}
@@ -455,7 +455,7 @@ export default function WarrantyRegistrationPage() {
               className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6"
             >
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                <AlertCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
                   <h4 className="font-bold text-blue-900 dark:text-blue-300 mb-2">
                     Need Help?

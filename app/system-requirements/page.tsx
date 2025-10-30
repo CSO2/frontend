@@ -173,7 +173,7 @@ export default function SystemRequirementsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-500 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-purple-600 to-purple-500 rounded-full mb-6">
             <Settings className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">

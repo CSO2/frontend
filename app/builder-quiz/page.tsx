@@ -83,7 +83,7 @@ export default function BuilderQuiz() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
       <div className="max-w-4xl mx-auto">
         
         {/* Header */}
@@ -96,7 +96,7 @@ export default function BuilderQuiz() {
             <Sparkles className="w-5 h-5" />
             System Builder Quiz
           </div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-4">
             Find Your Perfect PC
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -124,7 +124,7 @@ export default function BuilderQuiz() {
             <motion.div
               initial={{ width: '0%' }}
               animate={{ width: `${(step / 4) * 100}%` }}
-              className="h-full bg-gradient-to-r from-orange-600 to-orange-500"
+              className="h-full bg-linear-to-r from-orange-600 to-orange-500"
             />
           </div>
         </div>
@@ -311,7 +311,7 @@ export default function BuilderQuiz() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.2 }}
-                      className="border-2 border-orange-200 dark:border-orange-800 rounded-2xl p-6 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20"
+                      className="border-2 border-orange-200 dark:border-orange-800 rounded-2xl p-6 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20"
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div>
@@ -340,7 +340,7 @@ export default function BuilderQuiz() {
                       <div className="flex gap-3">
                         <Link
                           href="/pc-builder"
-                          className="flex-1 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition text-center"
+                          className="flex-1 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition text-center"
                         >
                           Customize This Build
                         </Link>
@@ -385,7 +385,7 @@ export default function BuilderQuiz() {
             <button
               onClick={handleNext}
               disabled={(step === 2 && !useCase)}
-              className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:shadow-lg"
+              className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed bg-linear-to-r from-orange-600 to-orange-500 text-white hover:shadow-lg"
             >
               {step === 3 ? 'See Results' : 'Next'}
               <ChevronRight className="w-5 h-5" />

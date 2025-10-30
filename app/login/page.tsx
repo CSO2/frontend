@@ -95,7 +95,7 @@ export default function LoginPage() {
               Welcome back to <span className="text-wso2-orange">CS02</span>
             </h1>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-              Sign in to manage your custom PC builds, review past orders, and earn LKR rewards on every purchase. Your dashboard keeps everything organised for an effortless experience in Sri Lanka.
+              Sign in to manage your custom PC builds, review past orders, and earn LKR rewards on every purchase. Your dashboard keeps everything organized for an effortless experience in Sri Lanka.
             </p>
 
             <motion.div

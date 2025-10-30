@@ -16,7 +16,7 @@ export default function AddressesPage() {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Saved Addresses</h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+          <button className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
             <Plus className="w-5 h-5" />
             Add New Address
           </button>
@@ -72,7 +72,7 @@ export default function AddressesPage() {
             <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Saved Addresses</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">Add an address for faster checkout</p>
-            <button className="px-8 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+            <button className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
               Add Your First Address
             </button>
           </div>

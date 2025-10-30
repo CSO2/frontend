@@ -29,7 +29,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       {/* Header */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function ContactPage() {
           >
             <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-500" />
           </motion.div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Get in Touch
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">
@@ -188,7 +188,7 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                  className="w-full bg-linear-to-r from-orange-600 to-orange-500 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <Send className="w-5 h-5" />
                   Send Message
@@ -205,7 +205,7 @@ export default function ContactPage() {
           >
             {/* Mock Map */}
             <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 h-80">
-              <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/20 dark:to-gray-800 rounded-xl flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-orange-100 to-orange-50 dark:from-orange-900/20 dark:to-gray-800 rounded-xl flex items-center justify-center">
                 <div className="text-center">
                   <MapPin className="w-16 h-16 text-orange-600 dark:text-orange-500 mx-auto mb-4" />
                   <p className="text-gray-600 dark:text-gray-400 font-medium">Interactive Map</p>

@@ -192,7 +192,7 @@ export default function BuilderBotPage() {
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div className={`flex gap-3 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                  <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                     message.type === 'user' ? 'bg-wso2-orange' : 'bg-gray-200 dark:bg-gray-700'
                   }`}>
                     {message.type === 'user' ? (

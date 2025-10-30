@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       <div className="flex">
         
         {/* Sidebar */}
@@ -57,7 +57,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           className="w-64 min-h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed left-0 top-0 overflow-y-auto"
         >
           <div className="p-6">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
               CS02 Admin
             </h1>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Management Portal</p>
