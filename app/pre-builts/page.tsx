@@ -1,12 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import ProductCard from '@/app/components/ui/ProductCard';
 import { useProductStore } from '@/lib/store/productStore';
 
 export default function PreBuiltsPage() {
-  const products = useProductStore((state) => 
-    state.getProductsByCategory('Pre-Built')
+  const allProducts = useProductStore((state) => state.products);
+  const products = useMemo(
+    () => allProducts.filter(p => p.category === 'Pre-Built'),
+    [allProducts]
   );
 
   return (
