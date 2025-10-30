@@ -45,7 +45,7 @@ export default function AccountNotifications() {
       id: '4',
       type: 'alert',
       title: 'Price Drop Alert',
-      message: 'Intel Core i9-13900K is now $50 cheaper! Add it to your cart now.',
+      message: 'Intel Core i9-13900K is now LKR 15,000 cheaper! Add it to your cart now.',
       timestamp: '2024-01-12T14:20:00',
       read: true
     }
@@ -186,7 +186,7 @@ export default function AccountNotifications() {
                     </p>
 
                     <p className="text-sm text-gray-500 dark:text-gray-500">
-                      {new Date(notification.timestamp).toLocaleString('en-US', {
+                      {new Date(notification.timestamp).toLocaleString('en-LK', {
                         month: 'short',
                         day: 'numeric',
                         hour: 'numeric',

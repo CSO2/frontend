@@ -82,7 +82,7 @@ export default function AccountPage() {
       <div className="grid md:grid-cols-3 gap-6">
         {[
           { label: 'Total Orders', value: '12', color: 'blue' },
-          { label: 'Total Spent', value: '$8,947', color: 'green' },
+          { label: 'Total Spent', value: 'LKR 8,947', color: 'green' },
           { label: 'Reviews Written', value: '5', color: 'orange' }
         ].map((stat, index) => (
           <motion.div
