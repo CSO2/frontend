@@ -1,31 +1,34 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import ProductCard from '@/app/components/ui/ProductCard';
 import { useProductStore } from '@/lib/store/productStore';
 
 export default function PreBuiltsPage() {
-  const products = useProductStore((state) => 
-    state.getProductsByCategory('Pre-Built')
+  const allProducts = useProductStore((state) => state.products);
+  const products = useMemo(
+    () => allProducts.filter(p => p.category === 'Pre-Built'),
+    [allProducts]
   );
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-8 sm:py-10 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
             Pre-Built Gaming PCs
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
             Ready to ship, expertly built systems for gaming and productivity
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {products.map((product, index) => (
             <motion.div
               key={product.id}
@@ -39,8 +42,8 @@ export default function PreBuiltsPage() {
         </div>
 
         {products.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">
+          <div className="text-center py-16 sm:py-20">
+            <p className="text-gray-500 dark:text-gray-400 text-base sm:text-lg">
               No pre-built systems available at the moment
             </p>
           </div>

@@ -10,14 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        wso2: {
-          orange: "#FF7300",
-          "orange-dark": "#E66800",
-          "orange-light": "#FF8C33",
-        },
-      },
-      fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
       },
     },
   },

@@ -1,58 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #1f2937;
+    --panel: #f3f4f6;
+  }
+
+  .dark {
+    --background: #111827;
+    --foreground: #d1d5db;
+    --panel: #1f2937;
+  }
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Light mode */
-:root {
-  --background: #ffffff;
-  --foreground: #1f2937;
-  --panel: #f3f4f6;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-/* Dark mode */
-.dark {
-  --background: #111827;
-  --foreground: #d1d5db;
-  --panel: #1f2937;
-}
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+  ::-webkit-scrollbar-track {
+    background: var(--panel);
+  }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+  ::-webkit-scrollbar-thumb {
+    background: #FF7300; /* wso2-orange */
+    border-radius: 5px;
+  }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--panel);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #FF7300;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #E66800;
+  ::-webkit-scrollbar-thumb:hover {
+    background: #E66800; /* wso2-orange-dark */
+  }
 }

@@ -34,28 +34,28 @@ export default function ContactPage() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 pt-24 pb-12"
+        className="container mx-auto px-4 pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12"
       >
         <div className="text-center max-w-3xl mx-auto">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="inline-block p-3 bg-orange-100 dark:bg-orange-900/30 rounded-2xl mb-6"
+            className="inline-block p-3 bg-orange-100 dark:bg-orange-900/30 rounded-2xl mb-4 sm:mb-6"
           >
-            <MessageSquare className="w-8 h-8 text-orange-600 dark:text-orange-500" />
+            <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-500" />
           </motion.div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Get in Touch
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">
             Have questions? We're here to help. Reach out to our team and we'll get back to you shortly.
           </p>
         </div>
       </motion.section>
 
       {/* Contact Information Cards */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <section className="container mx-auto px-4 pb-8 sm:pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-6xl mx-auto">
           {[
             { icon: Phone, title: 'Phone', info: '+1 (555) 123-4567', subtext: 'Mon-Fri 9am-6pm' },
             { icon: Mail, title: 'Email', info: 'support@cs02.com', subtext: 'Response within 24h' },
@@ -67,13 +67,13 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center"
+              className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center"
             >
-              <div className="inline-block p-3 bg-orange-100 dark:bg-orange-900/30 rounded-xl mb-4">
-                <item.icon className="w-6 h-6 text-orange-600 dark:text-orange-500" />
+              <div className="inline-block p-2 sm:p-3 bg-orange-100 dark:bg-orange-900/30 rounded-xl mb-3 sm:mb-4">
+                <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-500" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-              <p className="text-sm font-medium text-orange-600 dark:text-orange-500">{item.info}</p>
+              <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white mb-1">{item.title}</h3>
+              <p className="text-xs sm:text-sm font-medium text-orange-600 dark:text-orange-500">{item.info}</p>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.subtext}</p>
             </motion.div>
           ))}

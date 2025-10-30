@@ -14,7 +14,7 @@ export default function HeroSection() {
   if (!mounted) return null;
 
   return (
-    <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black dark:from-black dark:via-gray-900 dark:to-gray-800">
         {/* Animated geometric shapes */}
@@ -69,7 +69,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
         >
           <motion.h1
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-white px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -80,7 +80,7 @@ export default function HeroSection() {
           </motion.h1>
           
           <motion.p
-            className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -89,15 +89,15 @@ export default function HeroSection() {
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            <AnimatedButton href="/builderbot" variant="primary" className="text-lg px-8 py-4">
+            <AnimatedButton href="/builderbot" variant="primary" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
               Try the BuilderBot
             </AnimatedButton>
-            <AnimatedButton href="/pre-builts" variant="outline" className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-gray-900">
+            <AnimatedButton href="/pre-builts" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-white text-white hover:bg-white hover:text-gray-900 w-full sm:w-auto">
               Shop Pre-Built Rigs
             </AnimatedButton>
           </motion.div>
@@ -108,7 +108,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
+          className="mt-12 sm:mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 px-4"
         >
           {[
             { value: '10K+', label: 'Builds Delivered' },
@@ -123,10 +123,10 @@ export default function HeroSection() {
               transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
               className="text-center"
             >
-              <div className="text-3xl md:text-4xl font-bold text-wso2-orange mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-wso2-orange mb-1 sm:mb-2">
                 {stat.value}
               </div>
-              <div className="text-sm md:text-base text-gray-400">
+              <div className="text-xs sm:text-sm md:text-base text-gray-400">
                 {stat.label}
               </div>
             </motion.div>

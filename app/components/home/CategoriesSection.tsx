@@ -17,24 +17,24 @@ export default function CategoriesSection() {
   ];
 
   return (
-    <section className="py-20 bg-white dark:bg-gray-900">
+    <section className="py-12 sm:py-16 md:py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
             Shop by Category
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
             Find the perfect components for your build
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {categories.map((category, index) => (
             <motion.div
               key={category.name}
@@ -47,15 +47,15 @@ export default function CategoriesSection() {
                 <motion.div
                   whileHover={{ y: -5, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative group overflow-hidden rounded-xl bg-gradient-to-br p-6 h-full flex flex-col items-center justify-center text-white shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                  className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-gradient-to-br p-4 sm:p-5 md:p-6 h-full min-h-[120px] sm:min-h-[140px] md:min-h-[160px] flex flex-col items-center justify-center text-white shadow-lg hover:shadow-2xl transition-all cursor-pointer"
                   style={{
                     background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
                   }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90 group-hover:opacity-100 transition-opacity`} />
                   <div className="relative z-10 flex flex-col items-center">
-                    <category.icon className="h-12 w-12 mb-3" />
-                    <h3 className="text-lg font-bold text-center">{category.name}</h3>
+                    <category.icon className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 mb-2 sm:mb-3" />
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-center">{category.name}</h3>
                   </div>
                 </motion.div>
               </Link>

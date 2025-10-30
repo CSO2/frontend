@@ -85,20 +85,20 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       {/* Newsletter Section */}
-      <div className="bg-wso2-orange py-12">
+      <div className="bg-wso2-orange py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="md:flex md:items-center md:justify-between">
-            <div className="mb-6 md:mb-0">
-              <h3 className="text-2xl font-bold text-white mb-2">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="text-center md:text-left">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
                 Stay Updated
               </h3>
-              <p className="text-white/90">
+              <p className="text-sm sm:text-base text-white/90">
                 Subscribe to get special offers, tech news, and more.
               </p>
             </div>
             <form
               onSubmit={handleNewsletterSubmit}
-              className="flex flex-col sm:flex-row gap-3 max-w-md"
+              className="flex flex-col sm:flex-row gap-3 max-w-md w-full md:w-auto"
             >
               <div className="relative flex-1">
                 <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -125,19 +125,19 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h4 className="font-bold text-gray-900 dark:text-white mb-4">
+              <h4 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-3 sm:mb-4">
                 {section.title}
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5 sm:space-y-2">
                 {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors"
+                      className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors block"
                     >
                       {link.label}
                     </Link>
@@ -149,7 +149,7 @@ export default function Footer() {
         </div>
 
         {/* Social Links */}
-        <div className="flex justify-center space-x-6 mb-8">
+        <div className="flex justify-center space-x-4 sm:space-x-6 mb-6 sm:mb-8">
           {socialLinks.map((social) => (
             <motion.a
               key={social.label}
@@ -158,31 +158,31 @@ export default function Footer() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="p-3 bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-wso2-orange dark:hover:bg-wso2-orange hover:text-white transition-colors"
+              className="p-2.5 sm:p-3 bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-wso2-orange dark:hover:bg-wso2-orange hover:text-white transition-colors"
               aria-label={social.label}
             >
-              <social.icon className="h-5 w-5" />
+              <social.icon className="h-4 w-4 sm:h-5 sm:w-5" />
             </motion.a>
           ))}
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+        <div className="pt-6 sm:pt-8 border-t border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 gap-4">
+            <div className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm text-center md:text-left">
               <p>© 2025 CS02. All rights reserved.</p>
             </div>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-xs sm:text-sm">
               {legalLinks.map((link, index) => (
                 <span key={link.href} className="flex items-center">
                   <Link
                     href={link.href}
-                    className="text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors"
+                    className="text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors whitespace-nowrap"
                   >
                     {link.label}
                   </Link>
                   {index < legalLinks.length - 1 && (
-                    <span className="ml-4 text-gray-400">|</span>
+                    <span className="ml-3 sm:ml-4 text-gray-400">|</span>
                   )}
                 </span>
               ))}

@@ -70,19 +70,19 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
           )}
         </div>
 
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <div className="mb-2">
             <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
               {product.brand}
             </span>
           </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[3rem]">
+          <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white mb-2 line-clamp-2 h-10 sm:h-12">
             {product.name}
           </h3>
           
           {product.rating && (
             <div className="flex items-center mb-2">
-              <div className="flex text-yellow-400">
+              <div className="flex text-yellow-400 text-sm sm:text-base">
                 {'★'.repeat(Math.floor(product.rating))}
                 {'☆'.repeat(5 - Math.floor(product.rating))}
               </div>
@@ -92,31 +92,33 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
             </div>
           )}
 
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-2xl font-bold text-wso2-orange">
-              ${product.price.toFixed(2)}
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <span className="text-xl sm:text-2xl font-bold text-wso2-orange">
+              LKR {product.price.toLocaleString()}
             </span>
           </div>
         </div>
       </Link>
 
-      <div className="px-4 pb-4 flex gap-2">
+      <div className="px-3 sm:px-4 pb-3 sm:pb-4 flex gap-2">
         {product.stockLevel > 0 ? (
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleAddToCart}
-            className="flex-1 bg-wso2-orange text-white py-2 rounded-lg font-semibold hover:bg-wso2-orange-dark transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-wso2-orange text-white py-2 rounded-lg font-semibold hover:bg-wso2-orange-dark transition-colors flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base"
           >
             <ShoppingCart className="h-4 w-4" />
-            Add to Cart
+            <span className="hidden sm:inline">Add to Cart</span>
+            <span className="sm:hidden">Add</span>
           </motion.button>
         ) : (
           <button
             disabled
-            className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 py-2 rounded-lg font-semibold cursor-not-allowed"
+            className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 py-2 rounded-lg font-semibold cursor-not-allowed text-sm sm:text-base"
           >
-            Out of Stock
+            <span className="hidden sm:inline">Out of Stock</span>
+            <span className="sm:hidden">Sold Out</span>
           </button>
         )}
         
