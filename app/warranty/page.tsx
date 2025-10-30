@@ -27,6 +27,10 @@ const productCategories = [
   'Other Component',
 ];
 
+// Warranty configuration - can be modified per product
+const EXTENDED_WARRANTY_PRICE = 5000;  // LKR
+const EXTENDED_WARRANTY_YEARS = 2;
+
 export default function WarrantyRegistrationPage() {
   const [formData, setFormData] = useState({
     orderNumber: '',
@@ -392,15 +396,15 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="extendedWarranty"
                       className="font-bold text-gray-900 dark:text-white cursor-pointer"
                     >
-                      Add Extended Warranty (+2 Years)
+                      Add Extended Warranty (+{EXTENDED_WARRANTY_YEARS} Years)
                     </label>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Extend your warranty to 4 years total for only LKR 5,000. Covers accidental
+                      Extend your warranty to {2 + EXTENDED_WARRANTY_YEARS} years total for only LKR {EXTENDED_WARRANTY_PRICE.toLocaleString()}. Covers accidental
                       damage and priority support.
                     </p>
                   </div>
                   <span className="text-xl font-bold text-orange-600 dark:text-orange-500">
-                    LKR 5,000
+                    LKR {EXTENDED_WARRANTY_PRICE.toLocaleString()}
                   </span>
                 </div>
               </div>

@@ -49,7 +49,7 @@ export default function AccountInvoices() {
                       Invoice #{order.id}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {new Date(order.createdAt).toLocaleDateString('en-US', { 
+                      {new Date(order.createdAt).toLocaleDateString('en-LK', { 
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
@@ -81,7 +81,7 @@ export default function AccountInvoices() {
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Total Amount</p>
                     <p className="font-bold text-orange-600 dark:text-orange-500 text-lg mt-1">
-                      ${order.total.toFixed(2)}
+                      {`LKR ${order.total.toLocaleString('en-LK')}`}
                     </p>
                   </div>
                 </div>

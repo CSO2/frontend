@@ -21,8 +21,37 @@ interface UserStore {
 export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: null,
-      addresses: [],
+      user: {
+        id: 'demo-customer-001',
+        name: 'Demo User',
+        email: 'demo@cs02.lk',
+        loyaltyPoints: 2500,
+        tier: 'gold',
+      },
+      addresses: [
+        {
+          id: 'addr-001',
+          name: 'Home',
+          street: '123 Main Street',
+          city: 'Colombo',
+          state: 'Western Province',
+          zipCode: '00700',
+          country: 'Sri Lanka',
+          phone: '+94 11 234 5678',
+          isDefault: true,
+        },
+        {
+          id: 'addr-002',
+          name: 'Work',
+          street: '456 Tech Park, Building A',
+          city: 'Kandy',
+          state: 'Central Province',
+          zipCode: '20000',
+          country: 'Sri Lanka',
+          phone: '+94 81 222 3456',
+          isDefault: false,
+        },
+      ],
       paymentMethods: [],
       recentlyViewed: [],
       login: (user) => set({ user }),

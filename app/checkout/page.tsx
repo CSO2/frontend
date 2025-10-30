@@ -24,8 +24,9 @@ export default function CheckoutPage() {
   const [guestInfo, setGuestInfo] = useState({ name: '', email: '', phone: '' });
 
   const subtotal = getTotalPrice();
-  const tax = subtotal * 0.09;
-  const shipping = orderType === 'delivery' ? 15 : 0;
+  // Sri Lanka VAT and local shipping approximation
+  const tax = subtotal * 0.15;
+  const shipping = orderType === 'delivery' ? 500 : 0;
   const total = subtotal + tax + shipping;
 
   const stepsConfig = [
@@ -215,7 +216,7 @@ export default function CheckoutPage() {
                           value={guestInfo.phone}
                           onChange={(e) => setGuestInfo({ ...guestInfo, phone: e.target.value })}
                           className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none"
-                          placeholder="+1 (555) 000-0000"
+                          placeholder="+94 77 000 0000"
                         />
                       </div>
                     </motion.div>
@@ -311,10 +312,10 @@ export default function CheckoutPage() {
                     >
                       <h3 className="font-semibold text-green-800 dark:text-green-400 mb-2">Pickup Location</h3>
                       <p className="text-sm text-green-700 dark:text-green-300 mb-2">
-                        <strong>CS02 Downtown Silicon Valley</strong>
+                        <strong>CS02 Colombo City Center</strong>
                       </p>
                       <p className="text-sm text-green-700 dark:text-green-300">
-                        123 Tech Street, Silicon Valley, CA 94025
+                        No. 123 Galle Road, Colombo 03, Sri Lanka
                       </p>
                       <p className="text-xs text-green-600 dark:text-green-400 mt-2">
                         Mon-Sat: 9am-9pm • Sun: 10am-6pm
@@ -400,7 +401,7 @@ export default function CheckoutPage() {
                           </div>
                           <div className="text-right">
                             <p className="font-semibold text-gray-900 dark:text-white">
-                              ${(item.product.price * item.quantity).toLocaleString()}
+                              {`LKR ${(item.product.price * item.quantity).toLocaleString('en-LK')}`}
                             </p>
                           </div>
                         </div>
@@ -468,22 +469,22 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Subtotal ({items.length} items)</span>
-                  <span>${subtotal.toLocaleString()}</span>
+                  <span>{`LKR ${subtotal.toLocaleString('en-LK')}`}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>Tax (9%)</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>VAT (15%)</span>
+                  <span>{`LKR ${tax.toLocaleString('en-LK')}`}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
+                  <span>{`LKR ${shipping.toLocaleString('en-LK')}`}</span>
                 </div>
               </div>
               
               <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mb-6">
                 <div className="flex justify-between text-xl font-bold">
                   <span className="text-gray-900 dark:text-white">Total</span>
-                  <span className="text-orange-600 dark:text-orange-500">${total.toFixed(2)}</span>
+                  <span className="text-orange-600 dark:text-orange-500">{`LKR ${total.toLocaleString('en-LK')}`}</span>
                 </div>
               </div>
               

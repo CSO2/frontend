@@ -10,7 +10,7 @@ export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
 
   const subtotal = getTotalPrice();
-  const tax = subtotal * 0.09; // 9% tax
+  const tax = subtotal * 0.15; // 15% VAT in Sri Lanka
   const total = subtotal + tax;
 
   if (items.length === 0) {
@@ -87,7 +87,7 @@ export default function CartPage() {
                         {item.product.brand}
                       </p>
                       <p className="text-2xl font-bold text-wso2-orange">
-                        ${item.product.price.toFixed(2)}
+                        {`LKR ${item.product.price.toLocaleString('en-LK')}`}
                       </p>
                     </div>
 
@@ -138,16 +138,16 @@ export default function CartPage() {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{`LKR ${subtotal.toLocaleString('en-LK')}`}</span>
                   </div>
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                    <span>Tax (9%)</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>VAT (15%)</span>
+                    <span>{`LKR ${tax.toLocaleString('en-LK')}`}</span>
                   </div>
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                     <div className="flex justify-between text-xl font-bold text-gray-900 dark:text-white">
                       <span>Total</span>
-                      <span className="text-wso2-orange">${total.toFixed(2)}</span>
+                      <span className="text-wso2-orange">{`LKR ${total.toLocaleString('en-LK')}`}</span>
                     </div>
                   </div>
                 </div>

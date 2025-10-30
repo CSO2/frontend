@@ -13,7 +13,7 @@ interface WishlistStore {
 export const useWishlistStore = create<WishlistStore>()(
   persist(
     (set, get) => ({
-      items: [],
+      items: ['1', '2', '5'],  // Add demo products to wishlist
       addItem: (productId) =>
         set((state) => {
           if (state.items.includes(productId)) {

@@ -2,6 +2,32 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CartItem, Product } from './types';
 
+// Sample products for demo cart
+const demoProducts: Product[] = [
+  {
+    id: 'demo-cpu-1',
+    name: 'Intel Core i9-13900K',
+    brand: 'Intel',
+    price: 589,
+    category: 'CPUs',
+    stockLevel: 5,
+    description: 'Premium gaming and productivity CPU',
+    imageUrl: 'https://via.placeholder.com/200?text=Intel+i9',
+    specs: { cores: '24 cores', socket: 'LGA1700', tdp: '125W' },
+  },
+  {
+    id: 'demo-gpu-1',
+    name: 'NVIDIA GeForce RTX 4090',
+    brand: 'NVIDIA',
+    price: 1599,
+    category: 'GPUs',
+    stockLevel: 2,
+    description: 'Flagship gaming graphics card',
+    imageUrl: 'https://via.placeholder.com/200?text=RTX+4090',
+    specs: { vram: '24GB GDDR6X', cuda: '16384 cores', power: '450W' },
+  },
+];
+
 interface CartStore {
   items: CartItem[];
   addItem: (product: Product, quantity?: number) => void;
@@ -16,7 +42,10 @@ interface CartStore {
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
-      items: [],
+      items: [
+        { product: demoProducts[0], quantity: 1 },
+        { product: demoProducts[1], quantity: 1 },
+      ],
       addItem: (product, quantity = 1) =>
         set((state) => {
           // Check stock availability

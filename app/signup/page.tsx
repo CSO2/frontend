@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { UserPlus, Mail, Lock, Phone, Sparkles, Building2, Loader2, CheckCircle2 } from 'lucide-react';
+import { UserPlus, Mail, Lock, Phone, Sparkles, Building2, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useUserStore } from '@/lib/store/userStore';
 
 interface SignupForm {
@@ -16,6 +16,21 @@ interface SignupForm {
   newsletter: boolean;
   preferredStore: 'colombo' | 'kandy' | 'galle';
 }
+
+// Calculate password strength
+const getPasswordStrength = (password: string): { strength: number; label: string; color: string } => {
+  let strength = 0;
+  if (password.length >= 8) strength++;
+  if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+  if (password.match(/[0-9]/)) strength++;
+  if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+  if (strength === 0) return { strength: 0, label: '', color: '' };
+  if (strength === 1) return { strength: 1, label: 'Weak', color: 'text-red-600 dark:text-red-400' };
+  if (strength === 2) return { strength: 2, label: 'Fair', color: 'text-yellow-600 dark:text-yellow-400' };
+  if (strength === 3) return { strength: 3, label: 'Good', color: 'text-blue-600 dark:text-blue-400' };
+  return { strength: 4, label: 'Strong', color: 'text-green-600 dark:text-green-400' };
+};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -242,6 +257,44 @@ export default function SignupPage() {
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       Minimum 8 characters with a number and symbol recommended.
                     </p>
+                    {formData.password && (
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                            Password Strength:
+                          </span>
+                          <span className={`text-xs font-bold ${getPasswordStrength(formData.password).color}`}>
+                            {getPasswordStrength(formData.password).label}
+                          </span>
+                        </div>
+                        <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(getPasswordStrength(formData.password).strength / 4) * 100}%` }}
+                            className={`h-full transition-all ${
+                              getPasswordStrength(formData.password).strength === 1 ? 'bg-red-500' :
+                              getPasswordStrength(formData.password).strength === 2 ? 'bg-yellow-500' :
+                              getPasswordStrength(formData.password).strength === 3 ? 'bg-blue-500' :
+                              'bg-green-500'
+                            }`}
+                          />
+                        </div>
+                        <ul className="text-xs space-y-1 mt-2">
+                          <li className={`flex items-center gap-1 ${formData.password.length >= 8 ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                            {formData.password.length >= 8 ? '✓' : '○'} At least 8 characters
+                          </li>
+                          <li className={`flex items-center gap-1 ${formData.password.match(/[a-z]/) && formData.password.match(/[A-Z]/) ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                            {formData.password.match(/[a-z]/) && formData.password.match(/[A-Z]/) ? '✓' : '○'} Upper and lowercase letters
+                          </li>
+                          <li className={`flex items-center gap-1 ${formData.password.match(/[0-9]/) ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                            {formData.password.match(/[0-9]/) ? '✓' : '○'} At least one number
+                          </li>
+                          <li className={`flex items-center gap-1 ${formData.password.match(/[^a-zA-Z0-9]/) ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                            {formData.password.match(/[^a-zA-Z0-9]/) ? '✓' : '○'} Special character (!@#$%^&*)
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
 
                   <div>
