@@ -169,14 +169,25 @@ export default function Financing() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-12 text-center"
+          className="mt-12 text-center space-y-4"
         >
-          <a
-            href="/pc-builder"
-            className="inline-block px-8 py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
-          >
-            Start Building Your PC
-          </a>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <a
+              href="/pc-builder"
+              className="inline-block px-8 py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition"
+            >
+              Start Building Your PC
+            </a>
+            <a
+              href="/cart"
+              className="inline-block px-8 py-4 border-2 border-orange-500 text-orange-600 dark:text-orange-500 rounded-xl font-bold text-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition"
+            >
+              View Your Cart
+            </a>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Already have items in your cart? Apply for financing at checkout
+          </p>
         </motion.div>
       </div>
     </div>
