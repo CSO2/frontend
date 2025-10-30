@@ -21,7 +21,13 @@ interface UserStore {
 export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: null,
+      user: {
+        id: 'demo-customer-001',
+        name: 'Demo User',
+        email: 'demo@cs02.lk',
+        loyaltyPoints: 2500,
+        tier: 'gold',
+      },
       addresses: [],
       paymentMethods: [],
       recentlyViewed: [],
