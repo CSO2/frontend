@@ -6,18 +6,33 @@ import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { useUserStore } from '@/lib/store/userStore';
 import { ShoppingCart, Heart, Star, Check, AlertCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import AnimatedButton from '@/app/components/ui/AnimatedButton';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-export default function ProductDetailsPage({ params }: { params: { id: string } }) {
-  const product = useProductStore((state) => state.getProductById(params.id));
-  const reviews = useProductStore((state) => state.getReviewsByProductId(params.id));
-  const relatedProducts = useProductStore((state) => state.getRelatedProducts(params.id));
+export default function ProductDetailsPage() {
+  const params = useParams<{ id: string }>();
+  const paramValue = params?.id;
+  const productId = Array.isArray(paramValue) ? paramValue[0] : paramValue;
+
+  const getProductById = useProductStore((state) => state.getProductById);
+  const getReviewsByProductId = useProductStore((state) => state.getReviewsByProductId);
+  const getRelatedProducts = useProductStore((state) => state.getRelatedProducts);
+
+  const product = productId ? getProductById(productId) : undefined;
+  const reviews = useMemo(
+    () => (productId ? getReviewsByProductId(productId) : []),
+    [getReviewsByProductId, productId]
+  );
+  const relatedProducts = useMemo(
+    () => (productId ? getRelatedProducts(productId) : []),
+    [getRelatedProducts, productId]
+  );
   const addToCart = useCartStore((state) => state.addItem);
   const canAddToCart = useCartStore((state) => state.canAddToCart);
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
-  const isInWishlist = useWishlistStore((state) => state.isInWishlist(params.id));
+  const wishlistChecker = useWishlistStore((state) => state.isInWishlist);
+  const isInWishlist = productId ? wishlistChecker(productId) : false;
   const addToRecentlyViewed = useUserStore((state) => state.addToRecentlyViewed);
 
   const [quantity, setQuantity] = useState(1);
@@ -30,7 +45,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
     }
   }, [product, addToRecentlyViewed]);
 
-  if (!product) {
+  if (!productId || !product) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,7 +135,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
             {/* Price */}
             <div className="mb-6">
               <span className="text-5xl font-bold text-wso2-orange">
-                ${product.price.toFixed(2)}
+                LKR {product.price.toLocaleString()}
               </span>
             </div>
 
@@ -338,7 +353,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
                         {relatedProduct.name}
                       </h3>
                       <p className="text-xl font-bold text-wso2-orange">
-                        ${relatedProduct.price.toFixed(2)}
+                        LKR {relatedProduct.price.toLocaleString()}
                       </p>
                     </div>
                   </motion.div>
