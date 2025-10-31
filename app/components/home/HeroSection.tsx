@@ -17,7 +17,7 @@ export default function HeroSection() {
     <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-linear-to-br from-gray-100 via-white to-gray-200 dark:from-black dark:via-gray-900 dark:to-gray-800 transition-colors">
-        {/* Animated geometric shapes */}
+        {/* Animated gradient blobs */}
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
@@ -69,21 +69,29 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
         >
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white px-4 transition-colors"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white px-4 transition-colors drop-shadow-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
+            style={{
+              textShadow: '0 4px 20px rgba(0,0,0,0.3), 0 0 40px rgba(255,115,0,0.2)',
+            }}
           >
             Build Your Dream.
             <br />
-            <span className="text-wso2-orange">Forge Your Power.</span>
+            <span className="text-wso2-orange" style={{ textShadow: '0 0 40px rgba(255,115,0,0.5)' }}>
+              Forge Your Power.
+            </span>
           </motion.h1>
           
           <motion.p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto px-4 transition-colors"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto px-4 transition-colors drop-shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
+            style={{
+              textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+            }}
           >
             Premium computer components and custom PC builds. Experience unmatched performance with CS02.
           </motion.p>
@@ -121,12 +129,13 @@ export default function HeroSection() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
-              className="text-center"
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="text-center backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl"
             >
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-wso2-orange mb-1 sm:mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-wso2-orange mb-1 sm:mb-2" style={{ textShadow: '0 0 20px rgba(255,115,0,0.4)' }}>
                 {stat.value}
               </div>
-              <div className="text-xs sm:text-sm md:text-base text-gray-400">
+              <div className="text-xs sm:text-sm md:text-base text-gray-700 dark:text-gray-300 font-medium">
                 {stat.label}
               </div>
             </motion.div>
