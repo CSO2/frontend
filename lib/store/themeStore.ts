@@ -7,38 +7,35 @@ interface ThemeStore {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
+  initializeTheme: () => void;
 }
 
 export const useThemeStore = create<ThemeStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       theme: 'light',
-      toggleTheme: () =>
-        set((state) => {
-          const newTheme = state.theme === 'light' ? 'dark' : 'light';
-          if (typeof document !== 'undefined') {
-            if (newTheme === 'dark') {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          }
-          return { theme: newTheme };
-        }),
-      setTheme: (theme) =>
-        set(() => {
-          if (typeof document !== 'undefined') {
-            if (theme === 'dark') {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          }
-          return { theme };
-        }),
+      toggleTheme: () => {
+        set((state) => ({
+          theme: state.theme === 'light' ? 'dark' : 'light'
+        }));
+      },
+      setTheme: (theme) => {
+        set(() => ({ theme }));
+      },
+      initializeTheme: () => {
+        // Let persist middleware handle rehydration
+      },
     }),
     {
       name: 'theme-storage',
+      onRehydrateStorage: () => (state) => {
+        // If no stored theme, check system preference
+        if (!state || !state.theme) {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = prefersDark ? 'dark' : 'light';
+          useThemeStore.setState({ theme });
+        }
+      },
     }
   )
 );

@@ -1,10 +1,23 @@
 @import "tailwindcss";
 
+@theme {
+  --color-wso2-orange: #FF7300;
+  --color-wso2-orange-dark: #E66800;
+}
+
 @layer base {
   :root {
     --background: #ffffff;
     --foreground: #1f2937;
     --panel: #f3f4f6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #111827;
+      --foreground: #d1d5db;
+      --panel: #1f2937;
+    }
   }
 
   .dark {
@@ -46,3 +59,5 @@
     background: #E66800; /* wso2-orange-dark */
   }
 }
+
+@variant dark (&:where(.dark, .dark *));
