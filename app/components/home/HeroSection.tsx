@@ -16,7 +16,7 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-800 to-black dark:from-black dark:via-gray-900 dark:to-gray-800">
+      <div className="absolute inset-0 bg-linear-to-br from-gray-100 via-white to-gray-200 dark:from-black dark:via-gray-900 dark:to-gray-800 transition-colors">
         {/* Animated geometric shapes */}
         <motion.div
           animate={{
@@ -29,7 +29,7 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-wso2-orange/20 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-wso2-orange/15 dark:bg-wso2-orange/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -42,7 +42,7 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-wso2-orange/10 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-wso2-orange/10 dark:bg-wso2-orange/15 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -54,11 +54,11 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="absolute top-1/2 left-1/2 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-1/2 left-1/2 w-72 h-72 bg-orange-400/15 dark:bg-orange-500/20 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"
         />
         
         {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,115,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,0,0.05)_1px,transparent_1px)] bg-size-[50px_50px] mask-[radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,115,0,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,0,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,115,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,0,0.05)_1px,transparent_1px)] bg-size-[50px_50px] mask-[radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)] transition-colors" />
       </div>
 
       {/* Content */}
@@ -69,7 +69,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
         >
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-white px-4"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white px-4 transition-colors"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -80,7 +80,7 @@ export default function HeroSection() {
           </motion.h1>
           
           <motion.p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto px-4"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto px-4 transition-colors"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -97,7 +97,7 @@ export default function HeroSection() {
             <AnimatedButton href="/builderbot" variant="primary" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
               Try the BuilderBot
             </AnimatedButton>
-            <AnimatedButton href="/pre-builts" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-white text-white hover:bg-white hover:text-gray-900 w-full sm:w-auto">
+            <AnimatedButton href="/pre-builts" variant="outlineContrast" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
               Shop Pre-Built Rigs
             </AnimatedButton>
           </motion.div>

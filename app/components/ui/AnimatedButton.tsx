@@ -7,7 +7,7 @@ interface AnimatedButtonProps {
   children: ReactNode;
   onClick?: () => void;
   href?: string;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'outlineContrast';
   className?: string;
   type?: 'button' | 'submit';
 }
@@ -26,6 +26,8 @@ export default function AnimatedButton({
     primary: 'bg-wso2-orange text-white hover:bg-wso2-orange-dark shadow-lg hover:shadow-xl',
     secondary: 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700',
     outline: 'border-2 border-wso2-orange text-wso2-orange hover:bg-wso2-orange hover:text-white',
+    outlineContrast:
+      'border-2 border-wso2-orange text-wso2-orange hover:bg-wso2-orange hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900',
   };
 
   const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${className}`;

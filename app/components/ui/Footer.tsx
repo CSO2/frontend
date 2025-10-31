@@ -101,14 +101,14 @@ export default function Footer() {
               className="flex flex-col sm:flex-row gap-3 max-w-md w-full md:w-auto"
             >
               <div className="relative flex-1">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-300" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wso2-orange focus:border-wso2-orange transition"
                 />
               </div>
               <motion.button

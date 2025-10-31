@@ -12,6 +12,8 @@ const config: Config = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "wso2-orange": "#FF7300",
+        "wso2-orange-dark": "#E66800",
       },
     },
   },
