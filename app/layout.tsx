@@ -4,6 +4,9 @@ import Navigation from "./components/ui/Navigation";
 import Footer from "./components/ui/Footer";
 import LiveChatWidget from "./components/ui/LiveChatWidget";
 import ThemeProvider from "./components/providers/ThemeProvider";
+import { AuthProvider } from "@/lib/contexts/AuthContext";
+import { ReactQueryProvider } from "@/lib/contexts/ReactQueryProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "CS02 - Build Your Dream PC",
@@ -45,14 +48,19 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ThemeProvider>
-          <Navigation />
-          <main className="min-h-screen w-full">
-            {children}
-          </main>
-          <Footer />
-          <LiveChatWidget />
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <Navigation />
+              <main className="min-h-screen w-full">
+                {children}
+              </main>
+              <Footer />
+              <LiveChatWidget />
+              <Toaster position="top-right" />
+            </ThemeProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
