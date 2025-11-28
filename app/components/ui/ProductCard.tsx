@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Product } from '@/lib/store/types';
 import { ShoppingCart, Heart } from 'lucide-react';
-import { useCartStore } from '@/lib/store/cartStore';
-import { useWishlistStore } from '@/lib/store/wishlistStore';
+import { useAddToCart } from '@/lib/hooks/useCart';
+import { useAddToWishlist, useRemoveFromWishlist, useWishlist } from '@/lib/hooks/useWishlist';
 import { useCompareStore } from '@/lib/store/compareStore';
 
 interface ProductCardProps {
@@ -14,23 +14,33 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, showCompare = false }: ProductCardProps) {
-  const addToCart = useCartStore((state) => state.addItem);
-  const canAddToCart = useCartStore((state) => state.canAddToCart);
-  const toggleWishlist = useWishlistStore((state) => state.toggleItem);
-  const isInWishlist = useWishlistStore((state) => state.isInWishlist(product.id));
+  const addToCart = useAddToCart();
+  const addToWishlist = useAddToWishlist();
+  const removeFromWishlist = useRemoveFromWishlist();
+  const { data: wishlistItems = [] } = useWishlist();
   const toggleCompare = useCompareStore((state) => state.isInCompare(product.id) ? state.removeItem : state.addItem);
   const isInCompare = useCompareStore((state) => state.isInCompare(product.id));
+  
+  const isInWishlist = wishlistItems.some((item) => item.productId === parseInt(product.id));
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (canAddToCart(product, 1)) {
-      addToCart(product, 1);
+    const productId = parseInt(product.id);
+    if (!isNaN(productId) && product.stockLevel > 0) {
+      addToCart.mutate({ productId, quantity: 1 });
     }
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
-    toggleWishlist(product.id);
+    const productId = parseInt(product.id);
+    if (!isNaN(productId)) {
+      if (isInWishlist) {
+        removeFromWishlist.mutate(productId);
+      } else {
+        addToWishlist.mutate(productId);
+      }
+    }
   };
 
   const handleToggleCompare = (e: React.MouseEvent) => {

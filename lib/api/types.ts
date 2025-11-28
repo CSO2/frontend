@@ -89,28 +89,34 @@ export interface Product {
 }
 
 export interface CartItem {
-  productId: string;
+  id: number;
+  productId: number;
+  productName: string;
+  productImage: string;
   quantity: number;
   price: number;
-  product?: Product;
+  subtotal: number;
+  stock: number;
 }
 
 export interface Cart {
-  id: string;
-  userId?: string;
+  id: number;
+  userId?: number;
   sessionId?: string;
   items: CartItem[];
   subtotal: number;
   tax: number;
-  shipping: number;
   total: number;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface WishlistItem {
-  productId: string;
-  product?: Product;
+  id: number;
+  productId: number;
+  productName: string;
+  productImage: string;
+  price: number;
   addedAt: string;
 }
 

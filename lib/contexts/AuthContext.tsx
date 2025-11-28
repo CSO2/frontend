@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { authApi } from '../api/auth';
+import { cartApi } from '../api/cart';
 import { User, LoginRequest, SignupRequest } from '../api/types';
 import { handleApiError } from '../utils/errors';
 import { tokenManager } from '../utils/token';
@@ -66,6 +67,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const authResponse = await authApi.login(credentials);
       setUser(authResponse.user);
+      
+      try {
+        await cartApi.syncCart();
+      } catch (syncError) {
+        console.error('Cart sync failed:', syncError);
+      }
     } catch (error) {
       throw handleApiError(error);
     } finally {

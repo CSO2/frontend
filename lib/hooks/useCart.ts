@@ -14,7 +14,7 @@ export const useAddToCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { productId: string; quantity: number }) =>
+    mutationFn: (data: { productId: number; quantity: number }) =>
       cartApi.addToCart(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.cart.all });
@@ -30,7 +30,7 @@ export const useUpdateCartItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ itemId, quantity }: { itemId: string; quantity: number }) =>
+    mutationFn: ({ itemId, quantity }: { itemId: number; quantity: number }) =>
       cartApi.updateCartItem(itemId, { quantity }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.cart.all });
@@ -45,7 +45,7 @@ export const useRemoveFromCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (itemId: string) => cartApi.removeFromCart(itemId),
+    mutationFn: (itemId: number) => cartApi.removeFromCart(itemId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.cart.all });
       toast.success('Removed from cart');

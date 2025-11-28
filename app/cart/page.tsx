@@ -2,16 +2,43 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useCartStore } from '@/lib/store/cartStore';
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { useCart, useUpdateCartItem, useRemoveFromCart, useClearCart } from '@/lib/hooks/useCart';
+import { Trash2, Plus, Minus, ShoppingBag, Loader2 } from 'lucide-react';
 import AnimatedButton from '../components/ui/AnimatedButton';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
+  const { data: cart, isLoading, error } = useCart();
+  const updateCartItem = useUpdateCartItem();
+  const removeFromCart = useRemoveFromCart();
+  const clearCart = useClearCart();
 
-  const subtotal = getTotalPrice();
-  const tax = subtotal * 0.15; // 15% VAT in Sri Lanka
-  const total = subtotal + tax;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-12 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-wso2-orange" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-20">
+            <p className="text-red-500 mb-4">Error loading cart: {error.message}</p>
+            <AnimatedButton href="/" variant="primary">
+              Continue Shopping
+            </AnimatedButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const items = cart?.items || [];
+  const subtotal = cart?.subtotal || 0;
+  const tax = cart?.tax || 0;
+  const total = cart?.total || 0;
 
   if (items.length === 0) {
     return (
@@ -47,8 +74,9 @@ export default function CartPage() {
               Shopping Cart
             </h1>
             <button
-              onClick={clearCart}
-              className="text-red-500 hover:text-red-600 transition-colors text-sm font-medium"
+              onClick={() => clearCart.mutate()}
+              disabled={clearCart.isPending}
+              className="text-red-500 hover:text-red-600 transition-colors text-sm font-medium disabled:opacity-50"
             >
               Clear Cart
             </button>
@@ -59,17 +87,17 @@ export default function CartPage() {
             <div className="lg:col-span-2 space-y-4">
               {items.map((item, index) => (
                 <motion.div
-                  key={item.product.id}
+                  key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700"
                 >
                   <div className="flex gap-6">
-                    <Link href={`/product/${item.product.id}`}>
+                    <Link href={`/product/${item.productId}`}>
                       <img
-                        src={item.product.imageUrl}
-                        alt={item.product.name}
+                        src={item.productImage || '/placeholder-product.png'}
+                        alt={item.productName}
                         className="w-24 h-24 object-cover rounded-lg"
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder-product.png';
@@ -78,31 +106,33 @@ export default function CartPage() {
                     </Link>
 
                     <div className="flex-1">
-                      <Link href={`/product/${item.product.id}`}>
+                      <Link href={`/product/${item.productId}`}>
                         <h3 className="font-semibold text-gray-900 dark:text-white mb-2 hover:text-wso2-orange transition-colors">
-                          {item.product.name}
+                          {item.productName}
                         </h3>
                       </Link>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        {item.product.brand}
+                        Stock: {item.stock}
                       </p>
                       <p className="text-2xl font-bold text-wso2-orange">
-                        {`LKR ${item.product.price.toLocaleString('en-LK')}`}
+                        {`LKR ${item.price.toLocaleString('en-LK')}`}
                       </p>
                     </div>
 
                     <div className="flex flex-col items-end justify-between">
                       <button
-                        onClick={() => removeItem(item.product.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                        onClick={() => removeFromCart.mutate(item.id)}
+                        disabled={removeFromCart.isPending}
+                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
                       >
                         <Trash2 className="h-5 w-5" />
                       </button>
 
                       <div className="flex items-center gap-3 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded transition-colors"
+                          onClick={() => updateCartItem.mutate({ itemId: item.id, quantity: item.quantity - 1 })}
+                          disabled={updateCartItem.isPending}
+                          className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50"
                         >
                           <Minus className="h-4 w-4" />
                         </button>
@@ -110,8 +140,8 @@ export default function CartPage() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          disabled={item.quantity >= item.product.stockLevel}
+                          onClick={() => updateCartItem.mutate({ itemId: item.id, quantity: item.quantity + 1 })}
+                          disabled={item.quantity >= item.stock || updateCartItem.isPending}
                           className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Plus className="h-4 w-4" />

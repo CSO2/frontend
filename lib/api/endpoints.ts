@@ -19,19 +19,20 @@ export const API_ENDPOINTS = {
   },
 
   cart: {
-    get: '/cart',
-    add: '/cart/items',
-    update: (itemId: string) => `/cart/items/${itemId}`,
-    remove: (itemId: string) => `/cart/items/${itemId}`,
-    clear: '/cart/clear',
-    sync: '/cart/sync',
+    get: '/api/cart',
+    add: '/api/cart/items',
+    update: (itemId: string) => `/api/cart/items/${itemId}`,
+    remove: (itemId: string) => `/api/cart/items/${itemId}`,
+    clear: '/api/cart/clear',
+    sync: '/api/cart/sync',
   },
 
   wishlist: {
-    get: '/wishlist',
-    add: '/wishlist/items',
-    remove: (productId: string) => `/wishlist/items/${productId}`,
-    clear: '/wishlist/clear',
+    get: '/api/wishlist',
+    add: '/api/wishlist/items',
+    remove: (productId: string) => `/api/wishlist/items/${productId}`,
+    clear: '/api/wishlist/clear',
+    moveToCart: (productId: string) => `/api/wishlist/move-to-cart/${productId}`,
   },
 
   orders: {

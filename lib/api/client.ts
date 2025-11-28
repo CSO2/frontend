@@ -30,6 +30,11 @@ apiClient.interceptors.request.use(
     
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+      
+      const userId = tokenManager.getUserIdFromToken();
+      if (userId) {
+        config.headers['X-User-Id'] = userId;
+      }
     }
     
     return config;

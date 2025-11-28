@@ -14,7 +14,7 @@ export const useAddToWishlist = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (productId: string) => wishlistApi.addToWishlist({ productId }),
+    mutationFn: (productId: number) => wishlistApi.addToWishlist({ productId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.wishlist.all });
       toast.success('Added to wishlist');
@@ -29,7 +29,7 @@ export const useRemoveFromWishlist = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (productId: string) => wishlistApi.removeFromWishlist(productId),
+    mutationFn: (productId: number) => wishlistApi.removeFromWishlist(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.wishlist.all });
       toast.success('Removed from wishlist');
