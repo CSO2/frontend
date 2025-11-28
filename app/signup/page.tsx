@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { UserPlus, Mail, Lock, Phone, Sparkles, Building2, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { useUserStore } from '@/lib/store/userStore';
+import { UserPlus, Mail, Lock, Phone, Sparkles, Building2, Loader2, CheckCircle2, User } from 'lucide-react';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 interface SignupForm {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
@@ -34,9 +36,10 @@ const getPasswordStrength = (password: string): { strength: number; label: strin
 
 export default function SignupPage() {
   const router = useRouter();
-  const login = useUserStore((state) => state.login);
+  const { signup } = useAuth();
   const [formData, setFormData] = useState<SignupForm>({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '+94 ',
     password: '',
@@ -68,11 +71,11 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
 
-    if (!formData.fullName || !formData.email || !formData.password) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
       setError('Please complete all required fields.');
       return;
     }
@@ -89,19 +92,23 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
-      setSuccess(true);
-      login({
-        id: 'customer-' + Date.now(),
-        name: formData.fullName,
+    try {
+      await signup({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
-        loyaltyPoints: 500,
-        tier: 'bronze',
+        password: formData.password,
       });
 
-      setLoading(false);
+      setSuccess(true);
+      toast.success('Account created successfully! Redirecting...');
       setTimeout(() => router.push('/account'), 1200);
-    }, 1500);
+    } catch (err: any) {
+      setError(err.message || 'Failed to create account. Please try again.');
+      toast.error(err.message || 'Signup failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -184,17 +191,55 @@ export default function SignupPage() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Full name
+                      First name
+                    </label>
+                    <div className="relative">
+                      <User className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        name="firstName"
+                        type="text"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        placeholder="Dinuka"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange transition"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      Last name
                     </label>
                     <div className="relative">
                       <Sparkles className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
-                        name="fullName"
+                        name="lastName"
                         type="text"
                         required
-                        value={formData.fullName}
+                        value={formData.lastName}
                         onChange={handleChange}
-                        placeholder="Dinuka Perera"
+                        placeholder="Perera"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange transition"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      Email address
+                    </label>
+                    <div className="relative">
+                      <Mail className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        name="email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="you@example.com"
                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange transition"
                       />
                     </div>
@@ -216,24 +261,6 @@ export default function SignupPage() {
                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange transition"
                       />
                     </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Email address
-                  </label>
-                  <div className="relative">
-                    <Mail className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="you@example.com"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange transition"
-                    />
                   </div>
                 </div>
 

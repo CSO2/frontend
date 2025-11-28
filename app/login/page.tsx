@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, ShieldCheck, Smartphone } from 'lucide-react';
-import { useUserStore } from '@/lib/store/userStore';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 interface LoginForm {
   email: string;
@@ -21,7 +22,7 @@ const tips = [
 
 export default function LoginPage() {
   const router = useRouter();
-  const login = useUserStore((state) => state.login);
+  const { login } = useAuth();
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: '',
@@ -58,18 +59,20 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
-      login({
-        id: 'customer-' + Date.now(),
-        name: 'CS02 Customer',
+    try {
+      await login({
         email: formData.email,
-        loyaltyPoints: 1520,
-        tier: 'gold',
+        password: formData.password,
       });
 
-      setLoading(false);
+      toast.success('Successfully logged in!');
       router.push('/account');
-    }, 1400);
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password. Please try again.');
+      toast.error(err.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleNextTip = () => {
@@ -242,18 +245,22 @@ export default function LoginPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={async () => {
                         setFormData({ email: 'customer@demo.lk', password: 'demo', remember: true });
-                        setTimeout(() => {
-                          login({
-                            id: 'demo-customer-001',
-                            name: 'Demo Customer',
+                        setLoading(true);
+                        try {
+                          await login({
                             email: 'customer@demo.lk',
-                            loyaltyPoints: 2500,
-                            tier: 'gold',
+                            password: 'demo',
                           });
+                          toast.success('Demo customer login successful!');
                           router.push('/account');
-                        }, 800);
+                        } catch (err: any) {
+                          setError(err.message || 'Demo login failed');
+                          toast.error('Demo login failed');
+                        } finally {
+                          setLoading(false);
+                        }
                       }}
                       className="px-3 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition border border-blue-200 dark:border-blue-800"
                     >
@@ -261,18 +268,22 @@ export default function LoginPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={async () => {
                         setFormData({ email: 'admin@demo.lk', password: 'demo', remember: true });
-                        setTimeout(() => {
-                          login({
-                            id: 'demo-admin-001',
-                            name: 'Demo Admin',
+                        setLoading(true);
+                        try {
+                          await login({
                             email: 'admin@demo.lk',
-                            loyaltyPoints: 0,
-                            tier: 'platinum',
+                            password: 'demo',
                           });
+                          toast.success('Demo admin login successful!');
                           router.push('/admin');
-                        }, 800);
+                        } catch (err: any) {
+                          setError(err.message || 'Demo login failed');
+                          toast.error('Demo login failed');
+                        } finally {
+                          setLoading(false);
+                        }
                       }}
                       className="px-3 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg text-sm font-semibold hover:bg-purple-100 dark:hover:bg-purple-900/40 transition border border-purple-200 dark:border-purple-800"
                     >

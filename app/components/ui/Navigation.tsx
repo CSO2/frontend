@@ -11,21 +11,26 @@ import {
   Sun,
   Menu,
   X,
+  LogOut,
 } from 'lucide-react';
 import { useThemeStore } from '@/lib/store/themeStore';
-import { useCartStore } from '@/lib/store/cartStore';
-import { useWishlistStore } from '@/lib/store/wishlistStore';
-import { useUserStore } from '@/lib/store/userStore';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import { useCart } from '@/lib/hooks/useCart';
+import { useWishlist } from '@/lib/hooks/useWishlist';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function Navigation() {
   const { theme, toggleTheme } = useThemeStore();
-  const cartItems = useCartStore((state) => state.getTotalItems());
-  const wishlistItems = useWishlistStore((state) => state.items.length);
-  const user = useUserStore((state) => state.user);
+  const { user, logout } = useAuth();
+  const { data: cart } = useCart();
+  const { data: wishlist } = useWishlist();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const cartItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+  const wishlistItems = wishlist?.length || 0;
 
   useEffect(() => {
     setMounted(true);
@@ -150,10 +155,31 @@ export default function Navigation() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                title={user ? `${user.firstName} ${user.lastName}` : 'Login'}
               >
                 <User className="h-5 w-5 text-gray-700 dark:text-gray-300" />
               </motion.div>
             </Link>
+
+            {/* Logout Button (only show when logged in) */}
+            {user && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={async () => {
+                  try {
+                    await logout();
+                    toast.success('Logged out successfully');
+                  } catch (err) {
+                    toast.error('Logout failed');
+                  }
+                }}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                title="Logout"
+              >
+                <LogOut className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              </motion.button>
+            )}
 
             {/* Mobile Menu Toggle */}
             <button

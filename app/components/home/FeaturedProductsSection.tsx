@@ -2,18 +2,34 @@
 
 import { motion } from 'framer-motion';
 import ProductCard from '../ui/ProductCard';
-import { useProductStore } from '@/lib/store/productStore';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useFeaturedProducts } from '@/lib/hooks/useProducts';
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import type { Product as ApiProduct } from '@/lib/api/types';
+import type { Product as LocalProduct } from '@/lib/store/types';
+
+function mapApiProductToLocal(product: ApiProduct): LocalProduct {
+  return {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    category: product.category,
+    subcategory: product.subcategory,
+    specs: product.specifications || {},
+    imageUrl: product.images?.[0] || '/placeholder-product.png',
+    stockLevel: product.stockQuantity,
+    description: product.description,
+    brand: product.brand,
+    rating: product.rating,
+    reviewCount: product.reviewCount,
+  };
+}
 
 export default function FeaturedProductsSection() {
-  const products = useProductStore((state) => state.products);
+  const { data: apiProducts = [], isLoading, error } = useFeaturedProducts();
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // Get featured products (best sellers and high ratings)
-  const featuredProducts = products
-    .filter((p) => p.rating && p.rating >= 4.7)
-    .slice(0, 12);
+  const featuredProducts = apiProducts.slice(0, 12).map(mapApiProductToLocal);
 
   const itemsPerView = 4;
   const maxIndex = Math.max(0, featuredProducts.length - itemsPerView);
@@ -25,6 +41,30 @@ export default function FeaturedProductsSection() {
   const handleNext = () => {
     setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
   };
+
+  if (error) {
+    return (
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <p className="text-red-600 dark:text-red-400">Failed to load featured products</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-wso2-orange" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
