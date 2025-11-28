@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, ShieldCheck, Smartphone } from 'lucide-react';
@@ -22,6 +22,7 @@ const tips = [
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
@@ -31,6 +32,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [tipIndex, setTipIndex] = useState(0);
+
+  const redirect = searchParams.get('redirect') || '/account';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -66,7 +69,7 @@ export default function LoginPage() {
       });
 
       toast.success('Successfully logged in!');
-      router.push('/account');
+      router.push(redirect);
     } catch (err: any) {
       setError(err.message || 'Invalid email or password. Please try again.');
       toast.error(err.message || 'Login failed');
@@ -254,7 +257,7 @@ export default function LoginPage() {
                             password: 'demo',
                           });
                           toast.success('Demo customer login successful!');
-                          router.push('/account');
+                          router.push(redirect);
                         } catch (err: any) {
                           setError(err.message || 'Demo login failed');
                           toast.error('Demo login failed');

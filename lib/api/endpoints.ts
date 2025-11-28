@@ -1,13 +1,13 @@
 export const API_ENDPOINTS = {
   auth: {
-    login: '/auth/login',
-    signup: '/auth/signup',
-    logout: '/auth/logout',
-    refresh: '/auth/refresh',
-    me: '/auth/me',
-    verifyEmail: '/auth/verify-email',
-    forgotPassword: '/auth/forgot-password',
-    resetPassword: '/auth/reset-password',
+    login: '/api/auth/login',
+    signup: '/api/auth/signup',
+    logout: '/api/auth/logout',
+    refresh: '/api/auth/refresh-token',
+    me: '/api/users/profile',
+    verifyEmail: '/api/auth/verify-email',
+    forgotPassword: '/api/auth/forgot-password',
+    resetPassword: '/api/auth/reset-password',
   },
   
   products: {

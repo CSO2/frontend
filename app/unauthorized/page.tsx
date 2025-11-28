@@ -82,7 +82,7 @@ export default function UnauthorizedPage() {
           </p>
           <div className="flex gap-4 justify-center">
             <Link
-              href="/account"
+              href="/login"
               className="text-orange-600 dark:text-orange-500 font-semibold hover:underline"
             >
               Sign In →

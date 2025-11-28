@@ -1,11 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useUserStore } from '@/lib/store/userStore';
-import { Edit2, Mail, User as UserIcon, Award } from 'lucide-react';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import { Edit2, Mail, User as UserIcon, Award, Phone } from 'lucide-react';
 
 export default function AccountPage() {
-  const { user } = useUserStore();
+  const { user, isLoading } = useAuth();
 
   return (
     <div className="space-y-6">
@@ -28,41 +28,55 @@ export default function AccountPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-6">
               <div className="w-24 h-24 bg-linear-to-br from-orange-600 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-                {user.name.charAt(0).toUpperCase()}
+                {user.firstName.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{user.name}</h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{user.firstName} {user.lastName}</h3>
                 <p className="text-gray-600 dark:text-gray-400 flex items-center gap-2 mt-1">
                   <Mail className="w-4 h-4" />
                   {user.email}
                 </p>
-                {user.tier && (
-                  <div className="flex items-center gap-2 mt-2">
-                    <Award className="w-5 h-5 text-orange-500" />
-                    <span className="text-sm font-semibold text-orange-600 dark:text-orange-500 uppercase">
-                      {user.tier} Member
-                    </span>
-                  </div>
+                {user.phoneNumber && (
+                  <p className="text-gray-600 dark:text-gray-400 flex items-center gap-2 mt-1">
+                    <Phone className="w-4 h-4" />
+                    {user.phoneNumber}
+                  </p>
                 )}
+                <div className="flex items-center gap-2 mt-2">
+                  <Award className="w-5 h-5 text-orange-500" />
+                  <span className="text-sm font-semibold text-orange-600 dark:text-orange-500 uppercase">
+                    {user.role} Member
+                  </span>
+                </div>
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Full Name</label>
-                <p className="font-semibold text-gray-900 dark:text-white">{user.name}</p>
+                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">First Name</label>
+                <p className="font-semibold text-gray-900 dark:text-white">{user.firstName}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Last Name</label>
+                <p className="font-semibold text-gray-900 dark:text-white">{user.lastName}</p>
               </div>
               <div>
                 <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Email Address</label>
                 <p className="font-semibold text-gray-900 dark:text-white">{user.email}</p>
               </div>
+              {user.phoneNumber && (
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Phone Number</label>
+                  <p className="font-semibold text-gray-900 dark:text-white">{user.phoneNumber}</p>
+                </div>
+              )}
               <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Member Since</label>
-                <p className="font-semibold text-gray-900 dark:text-white">January 2024</p>
+                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Email Verified</label>
+                <p className="font-semibold text-gray-900 dark:text-white">{user.emailVerified ? 'Yes' : 'No'}</p>
               </div>
               <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Loyalty Points</label>
-                <p className="font-semibold text-orange-600 dark:text-orange-500">{user.loyaltyPoints || 0} pts</p>
+                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Member Since</label>
+                <p className="font-semibold text-gray-900 dark:text-white">{new Date(user.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
           </div>

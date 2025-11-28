@@ -98,6 +98,7 @@ export default function SignupPage() {
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
+        phone: formData.phone,
       });
 
       setSuccess(true);

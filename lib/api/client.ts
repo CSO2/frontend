@@ -2,7 +2,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 
 import { tokenManager } from '../utils/token';
 import { API_ENDPOINTS } from './endpoints';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL,
@@ -60,13 +60,24 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        const refreshToken = tokenManager.getRefreshToken();
+        
+        if (!refreshToken) {
+          throw new Error('No refresh token available');
+        }
+
         const response = await axios.post(
           `${baseURL}${API_ENDPOINTS.auth.refresh}`,
-          {},
-          { withCredentials: true }
+          { refreshToken },
+          { 
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
         );
 
-        const { accessToken } = response.data.data;
+        const { accessToken } = response.data;
         tokenManager.setAccessToken(accessToken);
         
         onTokenRefreshed(accessToken);
@@ -77,6 +88,7 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         isRefreshing = false;
         tokenManager.clearAccessToken();
+        tokenManager.clearRefreshToken();
         
         if (typeof window !== 'undefined') {
           window.location.href = '/login';

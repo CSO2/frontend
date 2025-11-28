@@ -39,17 +39,22 @@ export interface SignupRequest {
 export interface AuthResponse {
   user: User;
   accessToken: string;
-  refreshToken?: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
 }
 
 export interface User {
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
-  phone?: string;
-  role: 'customer' | 'admin' | 'staff';
-  isEmailVerified: boolean;
+  phoneNumber?: string;
+  profilePicture?: string;
+  emailVerified: boolean;
+  role: 'USER' | 'ADMIN';
+  addresses?: Address[];
+  paymentMethods?: PaymentMethod[];
   createdAt: string;
   updatedAt: string;
 }
@@ -136,17 +141,25 @@ export interface OrderItem {
 }
 
 export interface Address {
-  id?: string;
-  firstName: string;
-  lastName: string;
-  address1: string;
-  address2?: string;
+  id: number;
+  streetAddress: string;
+  apartmentSuite?: string;
   city: string;
-  state: string;
-  zipCode: string;
+  stateProvince: string;
+  postalCode: string;
   country: string;
-  phone: string;
-  isDefault?: boolean;
+  type: 'SHIPPING' | 'BILLING' | 'BOTH';
+  isDefault: boolean;
+}
+
+export interface PaymentMethod {
+  id: number;
+  type: 'CREDIT_CARD' | 'DEBIT_CARD' | 'PAYPAL';
+  cardLast4?: string;
+  cardBrand?: string;
+  expiryMonth?: string;
+  expiryYear?: string;
+  isDefault: boolean;
 }
 
 export interface Review {

@@ -1,9 +1,10 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { 
   User, 
   Package, 
@@ -15,7 +16,8 @@ import {
   Bell, 
   Gift,
   Eye,
-  Settings
+  Settings,
+  Loader2
 } from 'lucide-react';
 
 const sidebarLinks = [
@@ -35,6 +37,29 @@ const sidebarLinks = [
 
 export default function AccountLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login?redirect=' + encodeURIComponent(pathname));
+    }
+  }, [user, isLoading, router, pathname]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-orange-600 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
