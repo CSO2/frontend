@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User as UserIcon, Loader } from 'lucide-react';
 import { useProductStore } from '@/lib/store/productStore';
 import { useCartStore } from '@/lib/store/cartStore';
+import client from '@/lib/api/client';
 import Link from 'next/link';
 
 interface Message {
@@ -57,19 +58,11 @@ export default function BuilderBotPage() {
     setIsTyping(true);
 
     try {
-      const response = await fetch('/api/ai/builder-bot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: userMessage.text }),
+      const response = await client.post('/api/ai/builder-bot', {
+        query: userMessage.text,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       const botMessage: Message = {
         id: messages.length + 2,
