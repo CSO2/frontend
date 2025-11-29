@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send } from 'lucide-react';
+import client from '@/lib/api/client';
 
 export default function LiveChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,19 +33,9 @@ export default function LiveChatWidget() {
 
     // Call AI Service
     try {
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: inputMessage }),
-      });
+      const response = await client.post('/api/ai/chat', { message: inputMessage });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       setMessages((prev) => [
         ...prev,
