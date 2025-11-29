@@ -18,6 +18,18 @@ export interface Product {
     interface?: string;
     powerRequirement?: number;
   };
+  salePrice?: number;
+  discountPercentage?: number;
+  saleEndDate?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  iconName?: string;
+  parentId?: string;
 }
 
 export interface CartItem {
@@ -109,6 +121,12 @@ export interface SavedBuild {
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
+  isPublic?: boolean;
+  likes?: number;
+  views?: number;
+  category?: string;
+  description?: string;
+  builderName?: string;
 }
 
 export interface StoreLocation {

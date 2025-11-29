@@ -2,19 +2,50 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Cpu, HardDrive, Cpu as Gpu, MemoryStick, Box, Zap, Fan, Monitor } from 'lucide-react';
+import { useProductStore } from '@/lib/store/productStore';
+import { useEffect } from 'react';
+import {
+  Cpu,
+  Monitor,
+  HardDrive,
+  Zap,
+  Box,
+  Fan,
+  MemoryStick,
+  CircuitBoard, // Fallback icon
+  type LucideIcon
+} from 'lucide-react';
+
+// Map icon names to Lucide components
+const iconMap: Record<string, LucideIcon> = {
+  'cpu': Cpu,
+  'gpu': Monitor, // Using Monitor for GPU as fallback/proxy
+  'motherboard': CircuitBoard,
+  'ram': MemoryStick,
+  'storage': HardDrive,
+  'psu': Zap,
+  'cooling': Fan,
+  'case': Box,
+};
 
 export default function ComponentsPage() {
-  const categories = [
-    { name: 'CPUs', icon: Cpu, href: '/components/cpu', description: 'Processors from Intel and AMD' },
-    { name: 'GPUs', icon: Gpu, href: '/components/gpu', description: 'Graphics cards for gaming and work' },
-    { name: 'Motherboards', icon: Monitor, href: '/components/motherboard', description: 'The foundation of your build' },
-    { name: 'RAM', icon: MemoryStick, href: '/components/ram', description: 'DDR4 and DDR5 memory kits' },
-    { name: 'Storage', icon: HardDrive, href: '/components/storage', description: 'SSDs and HDDs' },
-    { name: 'Power Supply', icon: Zap, href: '/components/psu', description: 'Reliable power for your system' },
-    { name: 'Cooling', icon: Fan, href: '/components/cooler', description: 'Air and liquid cooling solutions' },
-    { name: 'Cases', icon: Box, href: '/components/case', description: 'ATX, Micro-ATX, and Mini-ITX cases' },
-  ];
+  const { categories, fetchCategories } = useProductStore();
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  // If no categories loaded yet, show skeletons or fallback (omitted for brevity)
+  // Or merge with hardcoded if backend is empty initially?
+  // For now, let's assume backend might be empty and we want to show something or just empty.
+  // Actually, let's use the fetched categories.
+
+  const displayCategories = categories.map(cat => ({
+    name: cat.name,
+    icon: iconMap[cat.iconName?.toLowerCase() || ''] || CircuitBoard,
+    href: `/components/${cat.slug}`,
+    description: cat.description || 'Browse products'
+  }));
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 py-8 sm:py-10 md:py-12">
@@ -34,7 +65,7 @@ export default function ComponentsPage() {
         </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-          {categories.map((category, index) => (
+          {displayCategories.map((category, index) => (
             <motion.div
               key={category.name}
               initial={{ opacity: 0, y: 20 }}

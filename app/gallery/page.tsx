@@ -6,170 +6,29 @@ import { Eye, Heart, Share2, Filter, Search, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-interface Build {
-  id: string;
-  name: string;
-  builder: string;
-  category: 'Gaming' | 'Workstation' | 'Budget' | 'Extreme' | 'Compact';
-  budget: number;
-  likes: number;
-  views: number;
-  imageUrl: string;
-  description: string;
-  components: {
-    cpu: { name: string; price: number };
-    gpu: { name: string; price: number };
-    motherboard: { name: string; price: number };
-    ram: { name: string; price: number };
-    storage: { name: string; price: number };
-    psu: { name: string; price: number };
-    cooler: { name: string; price: number };
-    case: { name: string; price: number };
-  };
-}
 
-const featuredBuilds: Build[] = [
-  {
-    id: '1',
-    name: 'Ultimate 4K Gaming Beast',
-    builder: 'TechMaster',
-    category: 'Gaming',
-    budget: 4500,
-    likes: 342,
-    views: 8921,
-    imageUrl: '/builds/gaming-beast.jpg',
-    description: 'Top-tier gaming setup for 4K ultra settings at 144Hz+',
-    components: {
-      cpu: { name: 'Intel Core i9-13900K', price: 549 },
-      gpu: { name: 'NVIDIA RTX 4090', price: 1999 },
-      motherboard: { name: 'ASUS ROG Maximus Z790', price: 699 },
-      ram: { name: 'Corsair Dominator DDR5 32GB', price: 240 },
-      storage: { name: 'Samsung 990 Pro 2TB', price: 251 },
-      psu: { name: 'Corsair RM1000x', price: 200 },
-      cooler: { name: 'NZXT Kraken Z73', price: 270 },
-      case: { name: 'Lian Li O11 Dynamic', price: 160 }
-    }
-  },
-  {
-    id: '2',
-    name: 'Silent Workstation Pro',
-    builder: 'ProductivityGuru',
-    category: 'Workstation',
-    budget: 3200,
-    likes: 198,
-    views: 5432,
-    imageUrl: '/builds/workstation.jpg',
-    description: 'Quiet and powerful for 3D rendering and video editing',
-    components: {
-      cpu: { name: 'AMD Ryzen 9 7950X', price: 610 },
-      gpu: { name: 'NVIDIA RTX 4080', price: 1199 },
-      motherboard: { name: 'ASUS ProArt X670E', price: 499 },
-      ram: { name: 'G.Skill Trident Z5 64GB', price: 320 },
-      storage: { name: 'Samsung 980 Pro 4TB', price: 500 },
-      psu: { name: 'Seasonic Prime TX-850', price: 240 },
-      cooler: { name: 'Noctua NH-D15', price: 110 },
-      case: { name: 'Fractal Define 7', price: 180 }
-    }
-  },
-  {
-    id: '3',
-    name: 'Budget 1080p Warrior',
-    builder: 'ValueBuilder',
-    category: 'Budget',
-    budget: 1200,
-    likes: 521,
-    views: 12834,
-    imageUrl: '/builds/budget.jpg',
-    description: 'Best bang-for-buck 1080p gaming under $1200',
-    components: {
-      cpu: { name: 'AMD Ryzen 5 7600X', price: 249 },
-      gpu: { name: 'AMD RX 7700 XT', price: 449 },
-      motherboard: { name: 'MSI B650 Gaming Plus', price: 180 },
-      ram: { name: 'Corsair Vengeance DDR5 16GB', price: 120 },
-      storage: { name: 'WD Black SN770 1TB', price: 100 },
-      psu: { name: 'EVGA 650 G5', price: 90 },
-      cooler: { name: 'DeepCool AK400', price: 35 },
-      case: { name: 'NZXT H510', price: 90 }
-    }
-  },
-  {
-    id: '4',
-    name: 'RGB Dream Machine',
-    builder: 'RGBLover',
-    category: 'Extreme',
-    budget: 5200,
-    likes: 689,
-    views: 15621,
-    imageUrl: '/builds/rgb.jpg',
-    description: 'Maximum RGB with flagship components',
-    components: {
-      cpu: { name: 'Intel Core i9-13900KS', price: 699 },
-      gpu: { name: 'NVIDIA RTX 4090', price: 1999 },
-      motherboard: { name: 'ASUS ROG Maximus Z790 Extreme', price: 899 },
-      ram: { name: 'Corsair Dominator Platinum RGB 64GB', price: 480 },
-      storage: { name: 'Samsung 990 Pro 4TB', price: 502 },
-      psu: { name: 'Corsair HX1200i', price: 350 },
-      cooler: { name: 'Corsair H150i Elite LCD', price: 310 },
-      case: { name: 'Lian Li O11 Dynamic EVO', price: 180 }
-    }
-  },
-  {
-    id: '5',
-    name: 'Mini ITX Powerhouse',
-    builder: 'CompactKing',
-    category: 'Compact',
-    budget: 2800,
-    likes: 412,
-    views: 9234,
-    imageUrl: '/builds/mini.jpg',
-    description: 'High-end performance in a tiny footprint',
-    components: {
-      cpu: { name: 'AMD Ryzen 7 7800X3D', price: 449 },
-      gpu: { name: 'NVIDIA RTX 4070 Ti', price: 799 },
-      motherboard: { name: 'ASUS ROG Strix X670E-I', price: 549 },
-      ram: { name: 'Corsair Vengeance DDR5 32GB', price: 240 },
-      storage: { name: 'Samsung 980 Pro 2TB', price: 251 },
-      psu: { name: 'Corsair SF750', price: 185 },
-      cooler: { name: 'Noctua NH-L12S', price: 55 },
-      case: { name: 'NZXT H1', price: 350 }
-    }
-  },
-  {
-    id: '6',
-    name: 'Streaming Setup Supreme',
-    builder: 'StreamerPro',
-    category: 'Gaming',
-    budget: 3800,
-    likes: 267,
-    views: 7123,
-    imageUrl: '/builds/streaming.jpg',
-    description: 'Perfect for dual PC streaming or single PC encode',
-    components: {
-      cpu: { name: 'AMD Ryzen 9 7950X', price: 610 },
-      gpu: { name: 'NVIDIA RTX 4080', price: 1199 },
-      motherboard: { name: 'ASUS ROG Crosshair X670E', price: 699 },
-      ram: { name: 'G.Skill Trident Z5 32GB', price: 240 },
-      storage: { name: 'Samsung 990 Pro 2TB', price: 251 },
-      psu: { name: 'Seasonic Prime TX-1000', price: 280 },
-      cooler: { name: 'Arctic Liquid Freezer II 360', price: 140 },
-      case: { name: 'Corsair 5000D Airflow', price: 165 }
-    }
-  }
-];
+
+import { useProductStore } from '@/lib/store/productStore';
+import { useEffect } from 'react';
 
 export default function BuildGallery() {
+  const { publicBuilds, fetchPublicBuilds } = useProductStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [budgetFilter, setBudgetFilter] = useState<string>('all');
 
-  const filteredBuilds = featuredBuilds.filter(build => {
+  useEffect(() => {
+    fetchPublicBuilds();
+  }, [fetchPublicBuilds]);
+
+  const filteredBuilds = publicBuilds.filter(build => {
     const matchesSearch = build.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         build.builder.toLowerCase().includes(searchTerm.toLowerCase());
+                         (build.builderName || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || build.category === categoryFilter;
     const matchesBudget = budgetFilter === 'all' ||
-      (budgetFilter === 'under2k' && build.budget < 2000) ||
-      (budgetFilter === '2k-4k' && build.budget >= 2000 && build.budget < 4000) ||
-      (budgetFilter === 'over4k' && build.budget >= 4000);
+      (budgetFilter === 'under2k' && build.totalPrice < 2000) ||
+      (budgetFilter === '2k-4k' && build.totalPrice >= 2000 && build.totalPrice < 4000) ||
+      (budgetFilter === 'over4k' && build.totalPrice >= 4000);
     
     return matchesSearch && matchesCategory && matchesBudget;
   });
@@ -259,11 +118,11 @@ export default function BuildGallery() {
                     <div className="absolute bottom-4 left-4 right-4 flex justify-between text-white">
                       <div className="flex items-center gap-2 bg-black/50 backdrop-blur px-3 py-1 rounded-full">
                         <Heart className="w-4 h-4" />
-                        <span className="text-sm font-semibold">{build.likes}</span>
+                        <span className="text-sm font-semibold">{build.likes || 0}</span>
                       </div>
                       <div className="flex items-center gap-2 bg-black/50 backdrop-blur px-3 py-1 rounded-full">
                         <Eye className="w-4 h-4" />
-                        <span className="text-sm font-semibold">{build.views.toLocaleString()}</span>
+                        <span className="text-sm font-semibold">{(build.views || 0).toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -274,7 +133,7 @@ export default function BuildGallery() {
                       {build.name}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                      by {build.builder}
+                      by {build.builderName || 'Unknown Builder'}
                     </p>
                     <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">
                       {build.description}
@@ -285,7 +144,7 @@ export default function BuildGallery() {
                       <div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">Total Build</p>
                         <p className="text-2xl font-bold text-orange-600 dark:text-orange-500">
-                          ${build.budget.toLocaleString()}
+                          ${build.totalPrice.toLocaleString()}
                         </p>
                       </div>
                       <button className="px-4 py-2 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition">

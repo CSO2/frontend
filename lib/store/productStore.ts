@@ -1,16 +1,19 @@
 import { create } from 'zustand';
-import { Product, Order, Review, SavedBuild, StoreLocation } from './types';
+import { Product, Order, Review, SavedBuild, StoreLocation, Category } from './types';
 import client from '@/lib/api/client';
 
 interface ProductStore {
   products: Product[];
+  categories: Category[];
   selectedProduct: Product | null;
   orders: Order[];
   reviews: Review[];
   savedBuilds: SavedBuild[];
+  publicBuilds: SavedBuild[];
   
   
   featuredProducts: Product[];
+  deals: Product[];
   relatedProducts: Product[];
   currentProductReviews: Review[];
   
@@ -18,7 +21,8 @@ interface ProductStore {
   isLoading: boolean;
   error: string | null;
   
-  fetchProducts: () => Promise<void>;
+  fetchProducts: (params?: any) => Promise<void>;
+  fetchCategories: () => Promise<void>;
   fetchProductById: (id: string) => Promise<Product | undefined>;
   getProductById: (id: string) => Product | undefined;
   fetchProductsByCategory: (category: string, subcategory?: string) => Promise<void>;
@@ -28,8 +32,10 @@ interface ProductStore {
   
   // Keep these as is for now or update later
   fetchFeaturedProducts: () => Promise<void>;
+  fetchDeals: () => Promise<void>;
   fetchStoreLocations: () => Promise<void>;
   fetchSavedBuilds: (userId: string) => Promise<void>;
+  fetchPublicBuilds: () => Promise<void>;
   
   // Keep these as is for now or update later
   getRelatedProducts: (productId: string, limit?: number) => Product[];
@@ -46,15 +52,18 @@ interface ProductStore {
 
 export const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
+  categories: [],
   selectedProduct: null,
   orders: [],
   reviews: [],
   savedBuilds: [],
+  publicBuilds: [],
   storeLocations: [],
   isLoading: false,
   error: null,
   
   featuredProducts: [],
+  deals: [],
   relatedProducts: [],
   currentProductReviews: [],
 
@@ -65,6 +74,15 @@ export const useProductStore = create<ProductStore>((set, get) => ({
       set({ products: response.data, isLoading: false });
     } catch (error: any) {
       set({ isLoading: false, error: error.message });
+    }
+  },
+
+  fetchCategories: async () => {
+    try {
+      const response = await client.get('/api/products/categories');
+      set({ categories: response.data });
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
     }
   },
 
@@ -182,12 +200,30 @@ export const useProductStore = create<ProductStore>((set, get) => ({
     }
   },
 
+  fetchDeals: async () => {
+    try {
+      const response = await client.get('/api/products/deals');
+      set({ deals: response.data });
+    } catch (error) {
+      console.error('Failed to fetch deals:', error);
+    }
+  },
+
   fetchSavedBuilds: async (userId: string) => {
       try {
           const response = await client.get(`/api/wishlist/builds/user/${userId}`);
           set({ savedBuilds: response.data });
       } catch (error) {
           console.error('Failed to fetch saved builds:', error);
+      }
+  },
+
+  fetchPublicBuilds: async () => {
+      try {
+          const response = await client.get('/api/wishlist/builds/public');
+          set({ publicBuilds: response.data });
+      } catch (error) {
+          console.error('Failed to fetch public builds:', error);
       }
   },
 

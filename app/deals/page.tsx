@@ -5,43 +5,17 @@ import { Tag, Clock, Percent, Package } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function DealsPage() {
-  const deals = [
-    {
-      id: '1',
-      name: 'Intel Core i9-13900K',
-      originalPrice: 649,
-      salePrice: 589,
-      discount: 9,
-      category: 'CPU',
-      imageUrl: '/placeholder-product.png',
-      stock: 15,
-      endsIn: '2 days'
-    },
-    {
-      id: '2',
-      name: 'NVIDIA RTX 4080 16GB',
-      originalPrice: 1299,
-      salePrice: 1199,
-      discount: 8,
-      category: 'GPU',
-      imageUrl: '/placeholder-product.png',
-      stock: 8,
-      endsIn: '5 days'
-    },
-    {
-      id: '3',
-      name: 'Corsair Vengeance RGB 32GB DDR5',
-      originalPrice: 189,
-      salePrice: 159,
-      discount: 16,
-      category: 'RAM',
-      imageUrl: '/placeholder-product.png',
-      stock: 42,
-      endsIn: '1 day'
-    }
-  ];
+import { useProductStore } from '@/lib/store/productStore';
+import { useEffect } from 'react';
 
+export default function DealsPage() {
+  const { deals, fetchDeals } = useProductStore();
+
+  useEffect(() => {
+    fetchDeals();
+  }, [fetchDeals]);
+
+  // Mock bundles for now as they are complex to model dynamically without a Bundle entity
   const bundles = [
     {
       id: 'bundle-1',
@@ -108,7 +82,7 @@ export default function DealsPage() {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 relative overflow-hidden"
               >
                 <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                  -{deal.discount}%
+                  -{deal.discountPercentage}%
                 </div>
 
                 <Image
@@ -132,16 +106,16 @@ export default function DealsPage() {
                     ${deal.salePrice}
                   </span>
                   <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                    ${deal.originalPrice}
+                    ${deal.price}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-sm mb-4">
                   <span className="text-gray-600 dark:text-gray-400">
-                    Ends in {deal.endsIn}
+                    Ends in {deal.saleEndDate ? new Date(deal.saleEndDate).toLocaleDateString() : 'Soon'}
                   </span>
                   <span className="text-green-600 dark:text-green-500 font-semibold">
-                    {deal.stock} in stock
+                    {deal.stockLevel} in stock
                   </span>
                 </div>
 
