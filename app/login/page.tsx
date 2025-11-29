@@ -58,18 +58,24 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
-      login({
-        id: 'customer-' + Date.now(),
-        name: 'CS02 Customer',
+    try {
+      await login({
         email: formData.email,
-        loyaltyPoints: 1520,
-        tier: 'gold',
+        password: formData.password,
       });
-
+      
+      // Check role for redirection
+      const user = useUserStore.getState().user;
+      if (user?.role === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/account');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    } finally {
       setLoading(false);
-      router.push('/account');
-    }, 1400);
+    }
   };
 
   const handleNextTip = () => {
@@ -244,16 +250,8 @@ export default function LoginPage() {
                       type="button"
                       onClick={() => {
                         setFormData({ email: 'customer@demo.lk', password: 'demo', remember: true });
-                        setTimeout(() => {
-                          login({
-                            id: 'demo-customer-001',
-                            name: 'Demo Customer',
-                            email: 'customer@demo.lk',
-                            loyaltyPoints: 2500,
-                            tier: 'gold',
-                          });
-                          router.push('/account');
-                        }, 800);
+                        // Pre-fill only, let user click submit to test real flow or auto-submit if desired.
+                        // For now, just pre-fill.
                       }}
                       className="px-3 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition border border-blue-200 dark:border-blue-800"
                     >
@@ -263,16 +261,6 @@ export default function LoginPage() {
                       type="button"
                       onClick={() => {
                         setFormData({ email: 'admin@demo.lk', password: 'demo', remember: true });
-                        setTimeout(() => {
-                          login({
-                            id: 'demo-admin-001',
-                            name: 'Demo Admin',
-                            email: 'admin@demo.lk',
-                            loyaltyPoints: 0,
-                            tier: 'platinum',
-                          });
-                          router.push('/admin');
-                        }, 800);
                       }}
                       className="px-3 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg text-sm font-semibold hover:bg-purple-100 dark:hover:bg-purple-900/40 transition border border-purple-200 dark:border-purple-800"
                     >

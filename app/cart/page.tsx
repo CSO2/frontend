@@ -3,15 +3,28 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Loader2 } from 'lucide-react';
 import AnimatedButton from '../components/ui/AnimatedButton';
+import { useEffect } from 'react';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart, fetchCart, isLoading } = useCartStore();
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
   const subtotal = getTotalPrice();
   const tax = subtotal * 0.15; // 15% VAT in Sri Lanka
   const total = subtotal + tax;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-12 flex justify-center items-center">
+        <Loader2 className="h-12 w-12 animate-spin text-wso2-orange" />
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -170,3 +183,4 @@ export default function CartPage() {
     </div>
   );
 }
+

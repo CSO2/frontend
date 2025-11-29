@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useUserStore } from '@/lib/store/userStore';
+import { useOrderStore } from '@/lib/store/orderStore';
 import { User, Truck, CreditCard, CheckCircle, ArrowLeft, ArrowRight, MapPin, Building2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, getTotalPrice, clearCart } = useCartStore();
   const { user, addresses, paymentMethods } = useUserStore();
+  const { createOrder, isLoading: isOrderLoading } = useOrderStore();
   
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(1);
   const [isGuest, setIsGuest] = useState(!user);
@@ -40,11 +42,31 @@ export default function CheckoutPage() {
   const canProceedStep2 = orderType === 'delivery' ? selectedAddress : true;
   const canProceedStep3 = selectedPayment;
 
-  const handlePlaceOrder = () => {
-    // Mock order placement
-    const orderId = `ORD-${Date.now()}`;
-    clearCart();
-    router.push(`/order-confirmation?id=${orderId}`);
+  const handlePlaceOrder = async () => {
+    try {
+      const orderData = {
+        items: items.map(item => ({
+          productId: item.product.id,
+          quantity: item.quantity,
+          price: item.product.price
+        })),
+        shippingAddress: orderType === 'delivery' ? addresses.find(a => a.id === selectedAddress) : null,
+        paymentMethodId: selectedPayment,
+        orderType,
+        subtotal,
+        tax,
+        shipping,
+        total
+      };
+
+      const newOrder = await createOrder(orderData);
+      clearCart();
+      router.push(`/order-confirmation?id=${newOrder.id}`);
+    } catch (error) {
+      console.error('Failed to place order:', error);
+      // Handle error (show toast or alert)
+      alert('Failed to place order. Please try again.');
+    }
   };
 
   if (items.length === 0) {

@@ -4,17 +4,19 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, Package, Search, Edit2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
-const alerts = [
-  { id: 1, product: 'Intel Core i9-13900K', stock: 2, reorderLevel: 5, status: 'Critical' },
-  { id: 2, product: 'NVIDIA RTX 4090', stock: 1, reorderLevel: 3, status: 'Critical' },
-  { id: 3, product: 'Corsair RM1000x PSU', stock: 4, reorderLevel: 5, status: 'Warning' },
-];
+import { useAdminStore } from '@/lib/store/adminStore';
+import { useEffect } from 'react';
 
 export default function InventoryAlertsPage() {
+  const { lowStockItems, isLoading, fetchLowStockItems } = useAdminStore();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filtered = alerts.filter(a =>
-    a.product.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetchLowStockItems();
+  }, []);
+
+  const filtered = lowStockItems.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -54,18 +56,18 @@ export default function InventoryAlertsPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((alert) => (
-                <tr key={alert.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                  <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{alert.product}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{alert.stock} units</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{alert.reorderLevel} units</td>
+              {filtered.map((item) => (
+                <tr key={item.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                  <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{item.name}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{item.stockLevel} units</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">10 units</td> {/* Hardcoded reorder level for now */}
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit ${
-                      alert.status === 'Critical' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+                      item.stockLevel < 5 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
                       'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
                     }`}>
                       <AlertTriangle className="w-3 h-3" />
-                      {alert.status}
+                      {item.stockLevel < 5 ? 'Critical' : 'Warning'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center flex justify-center gap-2">

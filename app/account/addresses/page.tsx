@@ -1,11 +1,43 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Plus, Edit2, Trash2, Check } from 'lucide-react';
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function AddressesPage() {
-  const { addresses, addAddress, updateAddress, deleteAddress } = useUserStore();
+  const { addresses, fetchAddresses, addAddress, updateAddress, deleteAddress } = useUserStore();
+  const [isAdding, setIsAdding] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    name: '',
+    street: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: 'Sri Lanka',
+    phone: '',
+    isDefault: false
+  });
+
+  useEffect(() => {
+    fetchAddresses();
+  }, [fetchAddresses]);
+
+  const handleSaveAddress = async () => {
+    if (!newAddress.name || !newAddress.street || !newAddress.city) return;
+    await addAddress(newAddress);
+    setIsAdding(false);
+    setNewAddress({
+      name: '',
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: 'Sri Lanka',
+      phone: '',
+      isDefault: false
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -16,11 +48,83 @@ export default function AddressesPage() {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Saved Addresses</h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+          <button 
+            onClick={() => setIsAdding(!isAdding)}
+            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+          >
             <Plus className="w-5 h-5" />
-            Add New Address
+            {isAdding ? 'Cancel' : 'Add New Address'}
           </button>
         </div>
+
+        {isAdding && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-8 p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900/50"
+          >
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">New Address</h3>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <input
+                type="text"
+                placeholder="Address Name (e.g., Home)"
+                value={newAddress.name}
+                onChange={(e) => setNewAddress({...newAddress, name: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <input
+                type="text"
+                placeholder="Street Address"
+                value={newAddress.street}
+                onChange={(e) => setNewAddress({...newAddress, street: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                value={newAddress.city}
+                onChange={(e) => setNewAddress({...newAddress, city: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <input
+                type="text"
+                placeholder="State/Province"
+                value={newAddress.state}
+                onChange={(e) => setNewAddress({...newAddress, state: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <input
+                type="text"
+                placeholder="Zip Code"
+                value={newAddress.zipCode}
+                onChange={(e) => setNewAddress({...newAddress, zipCode: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <input
+                type="text"
+                placeholder="Phone"
+                value={newAddress.phone}
+                onChange={(e) => setNewAddress({...newAddress, phone: e.target.value})}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+            </div>
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                type="checkbox"
+                checked={newAddress.isDefault}
+                onChange={(e) => setNewAddress({...newAddress, isDefault: e.target.checked})}
+                className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+              />
+              <label className="text-gray-700 dark:text-gray-300">Set as default address</label>
+            </div>
+            <button 
+              onClick={handleSaveAddress}
+              className="px-6 py-2 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition"
+            >
+              Save Address
+            </button>
+          </motion.div>
+        )}
 
         {addresses.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-4">
@@ -60,7 +164,10 @@ export default function AddressesPage() {
                     <Edit2 className="w-4 h-4" />
                     Edit
                   </button>
-                  <button className="px-3 py-2 text-red-600 dark:text-red-500 border-2 border-red-500 rounded-lg text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 transition">
+                  <button 
+                    onClick={() => deleteAddress(address.id)}
+                    className="px-3 py-2 text-red-600 dark:text-red-500 border-2 border-red-500 rounded-lg text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+                  >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -72,7 +179,10 @@ export default function AddressesPage() {
             <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Saved Addresses</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">Add an address for faster checkout</p>
-            <button className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">
+            <button 
+              onClick={() => setIsAdding(true)}
+              className="px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            >
               Add Your First Address
             </button>
           </div>

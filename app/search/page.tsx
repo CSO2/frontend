@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useProductStore } from '@/lib/store/productStore';
 import { Search } from 'lucide-react';
@@ -10,8 +10,13 @@ import { useSearchParams } from 'next/navigation';
 function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
-  const searchProducts = useProductStore((state) => state.searchProducts);
-  const results = query ? searchProducts(query) : [];
+  const { products: results, searchProducts } = useProductStore();
+  
+  useEffect(() => {
+    if (query) {
+      searchProducts(query);
+    }
+  }, [query, searchProducts]);
 
   return (
     <>

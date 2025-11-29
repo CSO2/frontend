@@ -3,64 +3,37 @@
 import { motion } from 'framer-motion';
 import { Quote, Star, Building2 } from 'lucide-react';
 
-const testimonials = [
-  {
-    id: '1',
-    name: 'Alex Thompson',
-    role: 'Software Engineer',
-    company: 'Tech Corp',
-    rating: 5,
-    text: "CS02 helped me build the perfect workstation. The BuilderBot recommendations were spot-on, and the compatibility checker saved me from making costly mistakes. Best PC buying experience I've ever had!",
-    avatar: 'AT'
-  },
-  {
-    id: '2',
-    name: 'Maria Garcia',
-    role: 'Professional Gamer',
-    company: 'Esports Team',
-    rating: 5,
-    text: "As a competitive gamer, I need the best hardware. CS02's expert team helped me spec out a machine that gives me every advantage. The custom PC builder is incredibly intuitive!",
-    avatar: 'MG'
-  },
-  {
-    id: '3',
-    name: 'James Wilson',
-    role: 'Video Editor',
-    company: 'Creative Studio',
-    rating: 5,
-    text: "I purchased a workstation for 4K video editing. The performance is outstanding, and CS02's support team was incredibly helpful throughout the entire process. Highly recommend!",
-    avatar: 'JW'
-  },
-  {
-    id: '4',
-    name: 'Sarah Chen',
-    role: ' 3D Artist',
-    company: 'Animation Studio',
-    rating: 5,
-    text: "The pre-built workstations are powerful and reliable. My rendering times have been cut in half! CS02 truly understands what professionals need.",
-    avatar: 'SC'
-  },
-  {
-    id: '5',
-    name: 'Michael Brown',
-    role: 'Streamer',
-    company: 'Content Creator',
-    rating: 5,
-    text: "My streaming PC from CS02 handles everything I throw at it. Gaming at max settings while streaming? No problem. The RGB setup is gorgeous too!",
-    avatar: 'MB'
-  },
-  {
-    id: '6',
-    name: 'Emma Davis',
-    role: 'Student',
-    company: 'University',
-    rating: 5,
-    text: "Built my first gaming PC with CS02's help. The step-by-step builder made it easy, and I stayed within my budget. Couldn't be happier with the results!",
-    avatar: 'ED'
-  }
-];
+import { useState, useEffect } from 'react';
+import client from '@/lib/api/client';
+
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  rating: number;
+  text: string;
+  avatar: string;
+}
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await client.get('/api/content/testimonials');
+        setTestimonials(response.data);
+      } catch (error) {
+        console.error('Failed to fetch testimonials:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
   return (
     <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto w-full">

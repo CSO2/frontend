@@ -16,7 +16,7 @@ export default function LiveChatWidget() {
   ]);
   const [inputMessage, setInputMessage] = useState('');
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
@@ -30,27 +30,43 @@ export default function LiveChatWidget() {
     setMessages([...messages, userMessage]);
     setInputMessage('');
 
-    // Mock bot response
-    setTimeout(() => {
-      const botResponses = [
-        "Thanks for your message! I'm here to help with any questions about our products.",
-        "That's a great question! Let me connect you with a specialist who can help.",
-        "I'd be happy to help you with that. You can also check out our Help Center for quick answers.",
-        "Great choice! Would you like me to help you build a complete system?",
-      ];
-      const randomResponse =
-        botResponses[Math.floor(Math.random() * botResponses.length)];
-      
+    // Call AI Service
+    try {
+      const response = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: inputMessage }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await response.json();
+
       setMessages((prev) => [
         ...prev,
         {
           id: prev.length + 1,
           type: 'bot',
-          text: randomResponse,
+          text: data.response,
           timestamp: new Date(),
         },
       ]);
-    }, 1000);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          type: 'bot',
+          text: "I'm sorry, I'm having trouble connecting right now.",
+          timestamp: new Date(),
+        },
+      ]);
+    }
   };
 
   return (

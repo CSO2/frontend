@@ -1,39 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CartItem, Product } from './types';
-
-// Sample products for demo cart
-const demoProducts: Product[] = [
-  {
-    id: 'demo-cpu-1',
-    name: 'Intel Core i9-13900K',
-    brand: 'Intel',
-    price: 589,
-    category: 'CPUs',
-    stockLevel: 5,
-    description: 'Premium gaming and productivity CPU',
-    imageUrl: 'https://via.placeholder.com/200?text=Intel+i9',
-    specs: { cores: '24 cores', socket: 'LGA1700', tdp: '125W' },
-  },
-  {
-    id: 'demo-gpu-1',
-    name: 'NVIDIA GeForce RTX 4090',
-    brand: 'NVIDIA',
-    price: 1599,
-    category: 'GPUs',
-    stockLevel: 2,
-    description: 'Flagship gaming graphics card',
-    imageUrl: 'https://via.placeholder.com/200?text=RTX+4090',
-    specs: { vram: '24GB GDDR6X', cuda: '16384 cores', power: '450W' },
-  },
-];
+import client from '../api/client';
 
 interface CartStore {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
+  isLoading: boolean;
+  error: string | null;
+  fetchCart: () => Promise<void>;
+  addItem: (product: Product, quantity?: number) => Promise<void>;
+  removeItem: (productId: string) => Promise<void>;
+  updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  clearCart: () => Promise<void>;
   getTotalItems: () => number;
   getTotalPrice: () => number;
   canAddToCart: (product: Product, quantity: number) => boolean;
@@ -42,70 +20,80 @@ interface CartStore {
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
-      items: [
-        { product: demoProducts[0], quantity: 1 },
-        { product: demoProducts[1], quantity: 1 },
-      ],
-      addItem: (product, quantity = 1) =>
-        set((state) => {
-          // Check stock availability
-          if (product.stockLevel < quantity) {
-            return state; // Don't add if insufficient stock
-          }
+      items: [],
+      isLoading: false,
+      error: null,
 
-          const existingItem = state.items.find(
-            (item) => item.product.id === product.id
-          );
+      fetchCart: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await client.get('/api/cart');
+          set({ items: response.data.items || [], isLoading: false });
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+        }
+      },
 
-          if (existingItem) {
-            const newQuantity = existingItem.quantity + quantity;
-            // Check if new quantity exceeds stock
-            if (newQuantity > product.stockLevel) {
-              return state;
-            }
-            return {
-              items: state.items.map((item) =>
-                item.product.id === product.id
-                  ? { ...item, quantity: newQuantity }
-                  : item
-              ),
-            };
-          }
+      addItem: async (product, quantity = 1) => {
+        set({ isLoading: true, error: null });
+        try {
+          await client.post('/api/cart/items', { productId: product.id, quantity });
+          // Refresh cart after adding
+          const response = await client.get('/api/cart');
+          set({ items: response.data.items || [], isLoading: false });
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+        }
+      },
 
-          return {
-            items: [...state.items, { product, quantity }],
-          };
-        }),
-      removeItem: (productId) =>
-        set((state) => ({
-          items: state.items.filter((item) => item.product.id !== productId),
-        })),
-      updateQuantity: (productId, quantity) =>
-        set((state) => {
-          if (quantity <= 0) {
-            return {
-              items: state.items.filter((item) => item.product.id !== productId),
-            };
-          }
+      removeItem: async (productId) => {
+        set({ isLoading: true, error: null });
+        try {
+          await client.delete(`/api/cart/items/${productId}`);
+          // Optimistic update
+          set((state) => ({
+            items: state.items.filter((item) => item.product.id !== productId),
+            isLoading: false
+          }));
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+          // Revert or re-fetch on error if needed
+          get().fetchCart();
+        }
+      },
 
-          return {
-            items: state.items.map((item) => {
-              if (item.product.id === productId) {
-                // Check stock
-                if (quantity > item.product.stockLevel) {
-                  return item; // Keep old quantity
-                }
-                return { ...item, quantity };
-              }
-              return item;
-            }),
-          };
-        }),
-      clearCart: () => set({ items: [] }),
+      updateQuantity: async (productId, quantity) => {
+        set({ isLoading: true, error: null });
+        try {
+          await client.put(`/api/cart/items/${productId}`, { quantity });
+          // Optimistic update
+          set((state) => ({
+            items: state.items.map((item) =>
+              item.product.id === productId ? { ...item, quantity } : item
+            ),
+            isLoading: false
+          }));
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+          get().fetchCart();
+        }
+      },
+
+      clearCart: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          await client.delete('/api/cart/clear');
+          set({ items: [], isLoading: false });
+        } catch (error: any) {
+          set({ isLoading: false, error: error.message });
+        }
+      },
+
       getTotalItems: () => {
         const state = get();
         return state.items.reduce((total, item) => total + item.quantity, 0);
       },
+
       getTotalPrice: () => {
         const state = get();
         return state.items.reduce(
@@ -113,12 +101,18 @@ export const useCartStore = create<CartStore>()(
           0
         );
       },
+
       canAddToCart: (product, quantity) => {
-        return product.stockLevel >= quantity;
+        const state = get();
+        const existingItem = state.items.find((item) => item.product.id === product.id);
+        const currentQuantity = existingItem ? existingItem.quantity : 0;
+        return currentQuantity + quantity <= product.stockLevel;
       },
     }),
     {
       name: 'cart-storage',
+      partialize: (state) => ({ items: state.items }), // Only persist items
     }
   )
 );
+

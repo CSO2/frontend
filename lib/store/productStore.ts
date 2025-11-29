@@ -1,23 +1,43 @@
 import { create } from 'zustand';
 import { Product, Order, Review, SavedBuild, StoreLocation } from './types';
-import { mockProducts } from '../data/products';
-import { mockOrders, mockReviews, mockSavedBuilds, mockStoreLocations } from '../data/mockData';
+import client from '@/lib/api/client';
 
 interface ProductStore {
   products: Product[];
+  selectedProduct: Product | null;
   orders: Order[];
   reviews: Review[];
   savedBuilds: SavedBuild[];
+  
+  
+  featuredProducts: Product[];
+  relatedProducts: Product[];
+  currentProductReviews: Review[];
+  
   storeLocations: StoreLocation[];
+  isLoading: boolean;
+  error: string | null;
+  
+  fetchProducts: () => Promise<void>;
+  fetchProductById: (id: string) => Promise<Product | undefined>;
   getProductById: (id: string) => Product | undefined;
-  getProductsByCategory: (category: string, subcategory?: string) => Product[];
-  searchProducts: (query: string) => Product[];
+  fetchProductsByCategory: (category: string, subcategory?: string) => Promise<void>;
+  searchProducts: (query: string) => Promise<void>;
+  fetchRelatedProducts: (productId: string) => Promise<void>;
+  fetchReviewsByProductId: (productId: string) => Promise<void>;
+  
+  // Keep these as is for now or update later
+  fetchFeaturedProducts: () => Promise<void>;
+  fetchStoreLocations: () => Promise<void>;
+  fetchSavedBuilds: (userId: string) => Promise<void>;
+  
+  // Keep these as is for now or update later
   getRelatedProducts: (productId: string, limit?: number) => Product[];
   getReviewsByProductId: (productId: string) => Review[];
-  addReview: (review: Review) => void;
-  addSavedBuild: (build: SavedBuild) => void;
-  updateSavedBuild: (id: string, build: Partial<SavedBuild>) => void;
-  deleteSavedBuild: (id: string) => void;
+  addReview: (review: Review) => Promise<void>;
+  addSavedBuild: (build: Omit<SavedBuild, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
+  updateSavedBuild: (id: string, build: Partial<SavedBuild>) => Promise<void>;
+  deleteSavedBuild: (id: string) => Promise<void>;
   getSavedBuildsByUserId: (userId: string) => SavedBuild[];
   addOrder: (order: Order) => void;
   updateOrderStatus: (orderId: string, status: Order['status']) => void;
@@ -25,76 +45,189 @@ interface ProductStore {
 }
 
 export const useProductStore = create<ProductStore>((set, get) => ({
-  products: mockProducts,
-  orders: mockOrders,
-  reviews: mockReviews,
-  savedBuilds: mockSavedBuilds,
-  storeLocations: mockStoreLocations,
+  products: [],
+  selectedProduct: null,
+  orders: [],
+  reviews: [],
+  savedBuilds: [],
+  storeLocations: [],
+  isLoading: false,
+  error: null,
   
+  featuredProducts: [],
+  relatedProducts: [],
+  currentProductReviews: [],
+
+  fetchProducts: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.get('/api/products');
+      set({ products: response.data, isLoading: false });
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+    }
+  },
+
+  fetchProductById: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.get(`/api/products/${id}`);
+      set({ selectedProduct: response.data, isLoading: false });
+      return response.data;
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+      return undefined;
+    }
+  },
+
   getProductById: (id) => {
     const state = get();
-    return state.products.find((p) => p.id === id);
+    return state.products.find((p) => p.id === id) || (state.selectedProduct?.id === id ? state.selectedProduct : undefined);
   },
   
-  getProductsByCategory: (category, subcategory) => {
-    const state = get();
-    return state.products.filter((p) => {
+  fetchProductsByCategory: async (category, subcategory) => {
+    set({ isLoading: true, error: null });
+    try {
+      let url = `/api/products?category=${category}`;
       if (subcategory) {
-        return p.category === category && p.subcategory === subcategory;
+        url += `&subcategory=${subcategory}`;
       }
-      return p.category === category;
-    });
+      const response = await client.get(url);
+      set({ products: response.data, isLoading: false });
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+    }
   },
   
-  searchProducts: (query) => {
-    const state = get();
-    const lowerQuery = query.toLowerCase();
-    return state.products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(lowerQuery) ||
-        p.brand.toLowerCase().includes(lowerQuery) ||
-        p.description.toLowerCase().includes(lowerQuery) ||
-        p.category.toLowerCase().includes(lowerQuery) ||
-        p.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
-    );
+  searchProducts: async (query) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.get(`/api/products/search?q=${query}`);
+      set({ products: response.data, isLoading: false });
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+    }
   },
   
+  fetchRelatedProducts: async (productId) => {
+    // set({ isLoading: true, error: null }); // Don't set global loading for this
+    try {
+      const response = await client.get(`/api/products/${productId}/related`);
+      set({ relatedProducts: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch related products:', error);
+      // Fallback to local filtering if API fails or not implemented yet
+      const state = get();
+      const product = state.products.find(p => p.id === productId) || state.selectedProduct;
+      if (product) {
+        const related = state.products
+          .filter(p => p.category === product.category && p.id !== product.id)
+          .slice(0, 4);
+        set({ relatedProducts: related });
+      }
+    }
+  },
+  
+  fetchReviewsByProductId: async (productId) => {
+    try {
+      const response = await client.get(`/api/products/${productId}/reviews`);
+      set({ currentProductReviews: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch reviews:', error);
+      set({ currentProductReviews: [] });
+    }
+  },
+  
+  addReview: async (review) => {
+    try {
+      const response = await client.post(`/api/products/${review.productId}/reviews`, review);
+      set((state) => ({
+        currentProductReviews: [response.data, ...state.currentProductReviews],
+        reviews: [...state.reviews, response.data]
+      }));
+    } catch (error: any) {
+      console.error('Failed to add review:', error);
+      throw error;
+    }
+  },
+  
+  // Deprecated synchronous getters, kept for compatibility but should be replaced
   getRelatedProducts: (productId, limit = 4) => {
     const state = get();
-    const product = state.getProductById(productId);
-    if (!product) return [];
-    
-    return state.products
-      .filter((p) => p.id !== productId && p.subcategory === product.subcategory)
-      .slice(0, limit);
+    return state.relatedProducts.length > 0 ? state.relatedProducts : state.products.slice(0, limit); 
   },
   
   getReviewsByProductId: (productId) => {
     const state = get();
-    return state.reviews.filter((r) => r.productId === productId);
+    return state.currentProductReviews;
   },
   
-  addReview: (review) =>
-    set((state) => ({
-      reviews: [...state.reviews, review],
-    })),
+  fetchFeaturedProducts: async () => {
+    try {
+      const response = await client.get('/api/products/featured');
+      if (Array.isArray(response.data)) {
+         set({ featuredProducts: response.data });
+      }
+    } catch (error) {
+      console.error('Failed to fetch featured products:', error);
+    }
+  },
+
+  fetchStoreLocations: async () => {
+    try {
+      const response = await client.get('/api/support/stores');
+      set({ storeLocations: response.data });
+    } catch (error) {
+      console.error('Failed to fetch store locations:', error);
+    }
+  },
+
+  fetchSavedBuilds: async (userId: string) => {
+      try {
+          const response = await client.get(`/api/wishlist/builds/user/${userId}`);
+          set({ savedBuilds: response.data });
+      } catch (error) {
+          console.error('Failed to fetch saved builds:', error);
+      }
+  },
+
+  addSavedBuild: async (build) => {
+      try {
+          const response = await client.post('/api/wishlist/builds', build);
+          set((state) => ({
+              savedBuilds: [...state.savedBuilds, response.data],
+          }));
+      } catch (error) {
+          console.error('Failed to save build:', error);
+          throw error;
+      }
+  },
   
-  addSavedBuild: (build) =>
-    set((state) => ({
-      savedBuilds: [...state.savedBuilds, build],
-    })),
+  updateSavedBuild: async (id, buildData) => {
+      try {
+          const response = await client.put(`/api/wishlist/builds/${id}`, buildData);
+          set((state) => ({
+              savedBuilds: state.savedBuilds.map((build) =>
+                  build.id === id ? response.data : build
+              ),
+          }));
+      } catch (error) {
+          console.error('Failed to update build:', error);
+          throw error;
+      }
+  },
   
-  updateSavedBuild: (id, buildData) =>
-    set((state) => ({
-      savedBuilds: state.savedBuilds.map((build) =>
-        build.id === id ? { ...build, ...buildData, updatedAt: new Date().toISOString() } : build
-      ),
-    })),
-  
-  deleteSavedBuild: (id) =>
-    set((state) => ({
-      savedBuilds: state.savedBuilds.filter((build) => build.id !== id),
-    })),
+  deleteSavedBuild: async (id) => {
+      try {
+          await client.delete(`/api/wishlist/builds/${id}`);
+          set((state) => ({
+              savedBuilds: state.savedBuilds.filter((build) => build.id !== id),
+          }));
+      } catch (error) {
+          console.error('Failed to delete build:', error);
+          throw error;
+      }
+  },
   
   getSavedBuildsByUserId: (userId) => {
     const state = get();
@@ -118,3 +251,4 @@ export const useProductStore = create<ProductStore>((set, get) => ({
     return state.orders.filter((o) => o.userId === userId);
   },
 }));
+

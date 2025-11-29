@@ -41,85 +41,7 @@ export default function BuilderBotPage() {
     scrollToBottom();
   }, [messages]);
 
-  const generateBuildSuggestion = (query: string) => {
-    const lowerQuery = query.toLowerCase();
-    let budget = 2000;
-    let buildType = 'gaming';
-
-    // Extract budget
-    const budgetMatch = query.match(/\$?(\d{3,5})/);
-    if (budgetMatch) {
-      budget = parseInt(budgetMatch[1]);
-    }
-
-    // Determine build type
-    if (lowerQuery.includes('workstation') || lowerQuery.includes('video editing') || lowerQuery.includes('content creation')) {
-      buildType = 'workstation';
-    } else if (lowerQuery.includes('budget') || lowerQuery.includes('cheap') || lowerQuery.includes('affordable')) {
-      buildType = 'budget';
-    } else if (lowerQuery.includes('4k') || lowerQuery.includes('high-end') || lowerQuery.includes('premium')) {
-      buildType = 'high-end';
-    }
-
-    // Select components based on budget and type
-    const cpus = products.filter((p) => p.subcategory === 'CPU' && p.stockLevel > 0);
-    const gpus = products.filter((p) => p.subcategory === 'GPU' && p.stockLevel > 0);
-    const motherboards = products.filter((p) => p.subcategory === 'Motherboard' && p.stockLevel > 0);
-    const rams = products.filter((p) => p.subcategory === 'RAM' && p.stockLevel > 0);
-    const storage = products.filter((p) => p.subcategory === 'Storage' && p.stockLevel > 0);
-    const psus = products.filter((p) => p.subcategory === 'PSU' && p.stockLevel > 0);
-    const coolers = products.filter((p) => p.subcategory === 'Cooler' && p.stockLevel > 0);
-    const cases = products.filter((p) => p.subcategory === 'Case' && p.stockLevel > 0);
-
-    let selectedComponents: any[] = [];
-
-    if (buildType === 'high-end' || budget > 2000) {
-      // High-end build
-      selectedComponents = [
-        cpus.find((p) => p.price > 500) || cpus[0],
-        gpus.find((p) => p.price > 900) || gpus[0],
-        motherboards.find((p) => p.price > 300) || motherboards[0],
-        rams.find((p) => p.name.includes('32GB') && p.name.includes('DDR5')) || rams[0],
-        storage[0],
-        psus.find((p) => Number(p.specs.wattage) >= 850) || psus[0],
-        coolers[1] || coolers[0],
-        cases[0],
-      ];
-    } else if (buildType === 'workstation') {
-      // Workstation build
-      selectedComponents = [
-        cpus.find((p) => p.brand === 'AMD' && p.price > 400) || cpus[0],
-        gpus.find((p) => p.price > 700 && p.price < 1200) || gpus[1] || gpus[0],
-        motherboards.find((p) => p.price > 250) || motherboards[0],
-        rams.find((p) => p.name.includes('32GB')) || rams[0],
-        storage[2] || storage[0],
-        psus.find((p) => Number(p.specs.wattage) >= 750) || psus[1] || psus[0],
-        coolers[1] || coolers[0],
-        cases[1] || cases[0],
-      ];
-    } else {
-      // Budget/mid-range build
-      selectedComponents = [
-        cpus.find((p) => p.price > 250 && p.price < 400) || cpus[cpus.length - 1],
-        gpus.find((p) => p.price > 400 && p.price < 700) || gpus[gpus.length - 1],
-        motherboards.find((p) => p.price < 250) || motherboards[motherboards.length - 1],
-        rams.find((p) => p.name.includes('16GB') || p.name.includes('32GB')) || rams[0],
-        storage[1] || storage[0],
-        psus.find((p) => Number(p.specs.wattage) >= 650) || psus[psus.length - 1],
-        coolers[2] || coolers[0],
-        cases[cases.length - 1] || cases[0],
-      ];
-    }
-
-    const totalPrice = selectedComponents.reduce((sum, comp) => sum + (comp?.price || 0), 0);
-
-    return {
-      components: selectedComponents.filter((c) => c !== undefined),
-      totalPrice,
-    };
-  };
-
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
@@ -134,21 +56,42 @@ export default function BuilderBotPage() {
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate bot thinking and response
-    setTimeout(() => {
-      const buildSuggestion = generateBuildSuggestion(inputMessage);
-      
+    try {
+      const response = await fetch('/api/ai/builder-bot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: userMessage.text }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await response.json();
+
       const botMessage: Message = {
         id: messages.length + 2,
         type: 'bot',
-        text: `Understood! Based on your requirements, I've configured this build for you. The total cost is $${buildSuggestion.totalPrice.toFixed(2)}.`,
+        text: data.message,
         timestamp: new Date(),
-        buildSuggestion,
+        buildSuggestion: data.buildSuggestion,
       };
 
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error:', error);
+      const errorMessage: Message = {
+        id: messages.length + 2,
+        type: 'bot',
+        text: "Sorry, I'm having trouble connecting to my brain right now. Please try again later.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 2000);
+    }
   };
 
   const handleAddAllToCart = (components: any[]) => {

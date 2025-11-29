@@ -1,12 +1,17 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useProductStore } from '@/lib/store/productStore';
+import { useOrderStore } from '@/lib/store/orderStore';
 import { Package, Eye, Download, Truck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function OrdersPage() {
-  const { orders } = useProductStore();
+  const { orders, fetchOrders } = useOrderStore();
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   return (
     <div className="space-y-6">

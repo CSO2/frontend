@@ -4,78 +4,42 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, User, ArrowRight, Tag } from 'lucide-react';
 import Link from 'next/link';
 
-const blogPosts = [
-  {
-    id: '1',
-    title: 'AMD Ryzen 9 7950X3D Review: The Ultimate Gaming CPU',
-    excerpt: "AMD's new 3D V-Cache technology takes gaming performance to unprecedented heights. We put it through its paces.",
-    author: 'John Smith',
-    date: '2025-10-25',
-    readTime: '8 min read',
-    category: 'Reviews',
-    image: '/blog/ryzen.jpg',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'Building Your First PC: Complete Beginner Guide 2025',
-    excerpt: 'Step-by-step instructions for building a gaming PC from scratch, including tool recommendations and common mistakes to avoid.',
-    author: 'Sarah Johnson',
-    date: '2025-10-20',
-    readTime: '12 min read',
-    category: 'Guides',
-    image: '/blog/build-guide.jpg',
-    featured: true
-  },
-  {
-    id: '3',
-    title: 'NVIDIA RTX 5000 Series: Everything We Know So Far',
-    excerpt: 'Rumors, leaks, and confirmed information about NVIDIA\'s next-generation graphics cards expected in early 2026.',
-    author: 'Mike Chen',
-    date: '2025-10-18',
-    readTime: '6 min read',
-    category: 'News',
-    image: '/blog/nvidia.jpg',
-    featured: false
-  },
-  {
-    id: '4',
-    title: 'DDR5 vs DDR4: Is It Time to Upgrade Your RAM?',
-    excerpt: 'A detailed comparison of DDR5 and DDR4 memory, including performance benchmarks and value analysis.',
-    author: 'Emily Rodriguez',
-    date: '2025-10-15',
-    readTime: '10 min read',
-    category: 'Guides',
-    image: '/blog/ram.jpg',
-    featured: false
-  },
-  {
-    id: '5',
-    title: 'Best PC Cases of 2025: Airflow, Design, and Value',
-    excerpt: 'Our top picks for PC cases across all price ranges, with a focus on cooling performance and aesthetics.',
-    author: 'David Park',
-    date: '2025-10-10',
-    readTime: '15 min read',
-    category: 'Buying Guides',
-    image: '/blog/cases.jpg',
-    featured: false
-  },
-  {
-    id: '6',
-    title: 'How Much Power Supply Do You Really Need?',
-    excerpt: 'Calculate your PSU requirements accurately and learn about efficiency ratings, modular vs non-modular designs.',
-    author: 'Lisa Wong',
-    date: '2025-10-05',
-    readTime: '7 min read',
-    category: 'Guides',
-    image: '/blog/psu.jpg',
-    featured: false
-  }
-];
+import { useState, useEffect } from 'react';
+import client from '@/lib/api/client';
 
-const categories = ['All', 'Reviews', 'Guides', 'News', 'Buying Guides', 'Tutorials'];
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  author: string;
+  publishDate: string;
+  category: string;
+  image: string;
+  featured: boolean;
+  content: string;
+}
 
 export default function Blog() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await client.get('/api/content/blog');
+        setBlogPosts(response.data);
+      } catch (error) {
+        console.error('Failed to fetch blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
+
+  const categories = ['All', 'Reviews', 'Guides', 'News', 'Buying Guides', 'Tutorials'];
+
   return (
     <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -142,12 +106,12 @@ export default function Blog() {
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            {new Date(post.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </span>
                         </div>
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          {post.readTime}
+                          {'5 min read'}
                         </span>
                       </div>
                     </div>
@@ -188,7 +152,7 @@ export default function Blog() {
                       </p>
                       <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                         <span>{post.author}</span>
-                        <span>{post.readTime}</span>
+                        <span>{'5 min read'}</span>
                       </div>
                     </div>
                   </div>

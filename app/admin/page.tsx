@@ -3,55 +3,64 @@
 import { motion } from 'framer-motion';
 import { DollarSign, ShoppingCart, AlertCircle, Users, TrendingUp, TrendingDown, Package, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { useAdminStore } from '@/lib/store/adminStore';
+import { useEffect } from 'react';
 
 export default function AdminDashboard() {
+  const { 
+    metrics, 
+    recentOrders, 
+    lowStockItems, 
+    isLoading, 
+    fetchAllDashboardData 
+  } = useAdminStore();
+
+  useEffect(() => {
+    fetchAllDashboardData();
+  }, []);
+
   const kpiData = [
     {
       label: 'Total Revenue',
-      value: '$127,849',
-      change: '+12.5%',
-      trend: 'up',
+      value: metrics ? `$${metrics.totalRevenue.toLocaleString()}` : '$0',
+      change: metrics?.revenueChange || '0%',
+      trend: metrics?.revenueTrend || 'up',
       icon: DollarSign,
       color: 'green'
     },
     {
       label: 'New Orders',
-      value: '248',
-      change: '+8.2%',
-      trend: 'up',
+      value: metrics?.newOrders.toString() || '0',
+      change: metrics?.newOrdersChange || '0%',
+      trend: metrics?.newOrdersTrend || 'up',
       icon: ShoppingCart,
       color: 'blue'
     },
     {
       label: 'Pending RMAs',
-      value: '12',
-      change: '-3.1%',
-      trend: 'down',
+      value: metrics?.pendingRMAs.toString() || '0',
+      change: metrics?.pendingRMAsChange || '0%',
+      trend: metrics?.pendingRMAsTrend || 'down',
       icon: AlertCircle,
       color: 'orange'
     },
     {
       label: 'Active Customers',
-      value: '1,847',
-      change: '+15.8%',
-      trend: 'up',
+      value: metrics?.activeCustomers.toLocaleString() || '0',
+      change: metrics?.activeCustomersChange || '0%',
+      trend: metrics?.activeCustomersTrend || 'up',
       icon: Users,
       color: 'purple'
     }
   ];
 
-  const recentOrders = [
-    { id: 'ORD-1001', customer: 'John Doe', total: 2847, status: 'Processing', time: '5 min ago' },
-    { id: 'ORD-1002', customer: 'Jane Smith', total: 1249, status: 'Shipped', time: '12 min ago' },
-    { id: 'ORD-1003', customer: 'Bob Wilson', total: 3499, status: 'Processing', time: '1 hour ago' },
-    { id: 'ORD-1004', customer: 'Alice Brown', total: 899, status: 'Delivered', time: '2 hours ago' }
-  ];
-
-  const lowStockItems = [
-    { name: 'Intel Core i9-13900K', stock: 3, category: 'CPU' },
-    { name: 'NVIDIA RTX 4090', stock: 1, category: 'GPU' },
-    { name: 'Corsair RM1000x PSU', stock: 4, category: 'PSU' }
-  ];
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -121,36 +130,39 @@ export default function AdminDashboard() {
           </div>
 
           <div className="space-y-4">
-            {recentOrders.map((order) => (
-              <div
-                key={order.id}
-                className="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono font-semibold text-gray-900 dark:text-white">
-                      {order.id}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      order.status === 'Delivered' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
-                      order.status === 'Shipped' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
-                      'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
-                    }`}>
-                      {order.status}
-                    </span>
+            {recentOrders.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">No recent orders found.</p>
+            ) : (
+              recentOrders.map((order) => (
+                <div
+                  key={order.id}
+                  className="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-mono font-semibold text-gray-900 dark:text-white">
+                        {order.id.substring(0, 8)}...
+                      </span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        order.status === 'DELIVERED' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
+                        order.status === 'SHIPPED' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
+                        'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                      }`}>
+                        {order.status}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Total: ${order.total}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500">{new Date(order.date).toLocaleDateString()}</p>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{order.customer}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-500">{order.time}</p>
+                  <div className="text-right">
+                    <button className="text-sm text-orange-600 dark:text-orange-500 hover:underline flex items-center gap-1 mt-1">
+                      <Eye className="w-4 h-4" />
+                      View
+                    </button>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-gray-900 dark:text-white">${order.total}</p>
-                  <button className="text-sm text-orange-600 dark:text-orange-500 hover:underline flex items-center gap-1 mt-1">
-                    <Eye className="w-4 h-4" />
-                    View
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </motion.div>
 
@@ -171,24 +183,28 @@ export default function AdminDashboard() {
           </div>
 
           <div className="space-y-4">
-            {lowStockItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between p-4 rounded-xl border-2 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20"
-              >
-                <div className="flex items-center gap-3">
-                  <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-500" />
-                  <div>
-                    <p className="font-semibold text-gray-900 dark:text-white">{item.name}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{item.category}</p>
+            {lowStockItems.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">No low stock items.</p>
+            ) : (
+              lowStockItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-4 rounded-xl border-2 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20"
+                >
+                  <div className="flex items-center gap-3">
+                    <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-500" />
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">{item.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{item.category}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-red-600 dark:text-red-500">{item.stockLevel}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">in stock</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-red-600 dark:text-red-500">{item.stock}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">in stock</p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           <button className="w-full mt-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition">

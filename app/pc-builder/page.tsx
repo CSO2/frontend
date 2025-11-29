@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProductStore } from '@/lib/store/productStore';
 import { useCartStore } from '@/lib/store/cartStore';
+import { useUserStore } from '@/lib/store/userStore';
 import { Product } from '@/lib/store/types';
 import {
   Cpu,
@@ -43,8 +44,9 @@ const steps: { type: ComponentType; icon: any; required: boolean }[] = [
 ];
 
 export default function PCBuilderPage() {
-  const { products } = useProductStore();
+  const { products, addSavedBuild } = useProductStore();
   const { addItem } = useCartStore();
+  const { user } = useUserStore();
   
   const [build, setBuild] = useState<BuildComponent[]>(
     steps.map(s => ({ type: s.type, product: null }))
@@ -52,6 +54,57 @@ export default function PCBuilderPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [compatibilityIssues, setCompatibilityIssues] = useState<string[]>([]);
+
+  // ... (getAvailableProducts, selectComponent, checkCompatibility, calculateTotalWattage, getTotalPrice remain same)
+
+  const addBuildToCart = () => {
+    build.forEach(comp => {
+      if (comp.product) {
+        addItem(comp.product, 1);
+      }
+    });
+    alert('Build added to cart successfully!');
+  };
+
+  const saveBuild = async () => {
+    if (!user) {
+      alert('Please login to save your build');
+      return;
+    }
+    
+    const buildName = `My Custom PC - ${new Date().toLocaleDateString()}`;
+    
+    // Construct the build object matching the backend expectation
+    // Note: The backend expects a map for components, but frontend uses array.
+    // We need to adapt it.
+    const componentsMap: any = {};
+    build.forEach(comp => {
+        if (comp.product) {
+            componentsMap[comp.type] = {
+                productId: comp.product.id,
+                name: comp.product.name,
+                price: comp.product.price,
+                imageUrl: comp.product.imageUrl,
+                brand: comp.product.brand
+            };
+        }
+    });
+
+    const savedBuild = {
+      name: buildName,
+      userId: user.id,
+      components: componentsMap,
+      totalPrice: getTotalPrice()
+    };
+
+    try {
+      await addSavedBuild(savedBuild);
+      alert('Build saved successfully!');
+    } catch (error) {
+      console.error('Failed to save build:', error);
+      alert('Failed to save build. Please try again.');
+    }
+  };
 
   // Get available products for current step
   const getAvailableProducts = (type: ComponentType): Product[] => {
@@ -141,15 +194,6 @@ export default function PCBuilderPage() {
 
   const getTotalPrice = (): number => {
     return build.reduce((sum, comp) => sum + (comp.product?.price || 0), 0);
-  };
-
-  const addBuildToCart = () => {
-    build.forEach(comp => {
-      if (comp.product) {
-        addItem(comp.product, 1);
-      }
-    });
-    alert('Build added to cart successfully!');
   };
 
   const resetBuild = () => {

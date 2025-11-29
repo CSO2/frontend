@@ -4,8 +4,19 @@ import { motion } from 'framer-motion';
 import { useUserStore } from '@/lib/store/userStore';
 import { Edit2, Mail, User as UserIcon, Award } from 'lucide-react';
 
+import { useEffect } from 'react';
+import { useOrderStore } from '@/lib/store/orderStore';
+
 export default function AccountPage() {
   const { user } = useUserStore();
+  const { orders, fetchOrders } = useOrderStore();
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  const totalOrders = orders.length;
+  const totalSpent = orders.reduce((sum, order) => sum + order.total, 0);
 
   return (
     <div className="space-y-6">
@@ -28,7 +39,7 @@ export default function AccountPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-6">
               <div className="w-24 h-24 bg-linear-to-br from-orange-600 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-                {user.name.charAt(0).toUpperCase()}
+                {user.name?.charAt(0).toUpperCase() || 'U'}
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{user.name}</h3>
@@ -81,9 +92,9 @@ export default function AccountPage() {
       {/* Account Stats */}
       <div className="grid md:grid-cols-3 gap-6">
         {[
-          { label: 'Total Orders', value: '12', color: 'blue' },
-          { label: 'Total Spent', value: 'LKR 8,947', color: 'green' },
-          { label: 'Reviews Written', value: '5', color: 'orange' }
+          { label: 'Total Orders', value: totalOrders.toString(), color: 'blue' },
+          { label: 'Total Spent', value: `LKR ${totalSpent.toLocaleString()}`, color: 'green' },
+          { label: 'Reviews Written', value: '0', color: 'orange' } // Placeholder for reviews
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -118,6 +129,16 @@ export default function AccountPage() {
           <button className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition text-left">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Download Data</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Export your account information</p>
+          </button>
+          <button 
+            onClick={() => {
+              useUserStore.getState().logout();
+              window.location.href = '/login';
+            }}
+            className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition text-left"
+          >
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Log Out</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Sign out of your account</p>
           </button>
           <button className="p-4 border-2 border-red-500 dark:border-red-600 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition text-left">
             <h3 className="font-semibold text-red-600 dark:text-red-500 mb-1">Delete Account</h3>

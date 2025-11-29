@@ -3,20 +3,22 @@
 import { motion } from 'framer-motion';
 import ProductCard from '../ui/ProductCard';
 import { useProductStore } from '@/lib/store/productStore';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function FeaturedProductsSection() {
-  const products = useProductStore((state) => state.products);
+  const { featuredProducts, fetchFeaturedProducts, isLoading } = useProductStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // Get featured products (best sellers and high ratings)
-  const featuredProducts = products
-    .filter((p) => p.rating && p.rating >= 4.7)
-    .slice(0, 12);
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, [fetchFeaturedProducts]);
 
+  // Use featured products from store
+  const productsToDisplay = featuredProducts.length > 0 ? featuredProducts : [];
+  
   const itemsPerView = 4;
-  const maxIndex = Math.max(0, featuredProducts.length - itemsPerView);
+  const maxIndex = Math.max(0, productsToDisplay.length - itemsPerView);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => Math.max(0, prev - 1));
@@ -25,6 +27,14 @@ export default function FeaturedProductsSection() {
   const handleNext = () => {
     setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
   };
+
+  if (isLoading) {
+    return (
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800 flex justify-center items-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-wso2-orange" />
+      </section>
+    );
+  }
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
@@ -75,7 +85,7 @@ export default function FeaturedProductsSection() {
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            {featuredProducts.map((product, index) => (
+            {productsToDisplay.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -108,3 +118,4 @@ export default function FeaturedProductsSection() {
     </section>
   );
 }
+

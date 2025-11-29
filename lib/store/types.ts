@@ -31,6 +31,7 @@ export interface User {
   email: string;
   loyaltyPoints?: number;
   tier?: 'bronze' | 'silver' | 'gold' | 'platinum';
+  role?: string;
 }
 
 export interface Address {

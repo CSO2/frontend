@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import ProductCard from '@/app/components/ui/ProductCard';
 import { useProductStore } from '@/lib/store/productStore';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Filter } from 'lucide-react';
 
 export default function ComponentsCategoryPage({ params }: { params: { category: string } }) {
@@ -19,7 +19,14 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
   };
 
   const subcategory = categoryMap[params.category];
-  const allStoreProducts = useProductStore((state) => state.products);
+  const { products: allStoreProducts, fetchProducts } = useProductStore();
+
+  useEffect(() => {
+    if (allStoreProducts.length === 0) {
+      fetchProducts();
+    }
+  }, [allStoreProducts.length, fetchProducts]);
+
   const allProducts = useMemo(
     () => allStoreProducts.filter(p => p.category === 'Components' && p.subcategory === subcategory),
     [allStoreProducts, subcategory]

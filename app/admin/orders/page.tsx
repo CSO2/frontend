@@ -4,16 +4,21 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Eye, Download, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { useProductStore } from '@/lib/store/productStore';
+import { useAdminStore } from '@/lib/store/adminStore';
+import { useEffect } from 'react';
 
 export default function AdminOrders() {
-  const { orders } = useProductStore();
+  const { allOrders, isLoading, fetchAllOrders } = useAdminStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const filteredOrders = orders.filter(order => {
+  useEffect(() => {
+    fetchAllOrders();
+  }, []);
+
+  const filteredOrders = allOrders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.userId.toLowerCase().includes(searchTerm.toLowerCase());
+                         (order.userId && order.userId.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -96,7 +101,7 @@ export default function AdminOrders() {
                     {order.userId}
                   </td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {new Date(order.date).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${

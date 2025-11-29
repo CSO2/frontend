@@ -15,19 +15,29 @@ export default function ProductDetailsPage() {
   const paramValue = params?.id;
   const productId = Array.isArray(paramValue) ? paramValue[0] : paramValue;
 
-  const getProductById = useProductStore((state) => state.getProductById);
-  const getReviewsByProductId = useProductStore((state) => state.getReviewsByProductId);
-  const getRelatedProducts = useProductStore((state) => state.getRelatedProducts);
+  const { 
+    selectedProduct, 
+    fetchProductById, 
+    isLoading, 
+    fetchReviewsByProductId, 
+    fetchRelatedProducts,
+    currentProductReviews,
+    relatedProducts: storeRelatedProducts,
+    addReview
+  } = useProductStore();
+  
+  useEffect(() => {
+    if (productId) {
+      fetchProductById(productId);
+      fetchReviewsByProductId(productId);
+      fetchRelatedProducts(productId);
+    }
+  }, [productId, fetchProductById, fetchReviewsByProductId, fetchRelatedProducts]);
 
-  const product = productId ? getProductById(productId) : undefined;
-  const reviews = useMemo(
-    () => (productId ? getReviewsByProductId(productId) : []),
-    [getReviewsByProductId, productId]
-  );
-  const relatedProducts = useMemo(
-    () => (productId ? getRelatedProducts(productId) : []),
-    [getRelatedProducts, productId]
-  );
+  const product = selectedProduct;
+  
+  const reviews = currentProductReviews;
+  const relatedProducts = storeRelatedProducts;
   const addToCart = useCartStore((state) => state.addItem);
   const canAddToCart = useCartStore((state) => state.canAddToCart);
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
@@ -44,6 +54,14 @@ export default function ProductDetailsPage() {
       addToRecentlyViewed(product.id);
     }
   }, [product, addToRecentlyViewed]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-12 flex justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-wso2-orange"></div>
+      </div>
+    );
+  }
 
   if (!productId || !product) {
     return (
@@ -283,6 +301,67 @@ export default function ProductDetailsPage() {
               transition={{ duration: 0.5 }}
             >
               <div className="space-y-6">
+                {/* Write a Review Section */}
+                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700 mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Write a Review</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rating</label>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                            className={`text-2xl ${star <= reviewForm.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={reviewForm.title}
+                        onChange={(e) => setReviewForm({ ...reviewForm, title: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        placeholder="Summarize your experience"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Review</label>
+                      <textarea
+                        value={reviewForm.comment}
+                        onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white h-32"
+                        placeholder="Tell us what you liked or disliked"
+                      />
+                    </div>
+                    <button
+                      onClick={async () => {
+                        if (!reviewForm.title || !reviewForm.comment) return;
+                        await addReview({
+                          id: Date.now().toString(), // Temporary ID generation
+                          productId: product.id,
+                          userId: 'current-user-id', // Should get from userStore
+                          userName: 'Current User', // Should get from userStore
+                          rating: reviewForm.rating,
+                          title: reviewForm.title,
+                          comment: reviewForm.comment,
+                          createdAt: new Date().toISOString(),
+                          verified: true,
+                          helpful: 0
+                        });
+                        setReviewForm({ rating: 5, title: '', comment: '' });
+                      }}
+                      className="px-6 py-2 bg-wso2-orange text-white rounded-lg font-semibold hover:bg-wso2-orange-dark transition"
+                    >
+                      Submit Review
+                    </button>
+                  </div>
+                </div>
+
                 {reviews.map((review) => (
                   <div
                     key={review.id}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { useProductStore } from '@/lib/store/productStore';
@@ -9,12 +10,19 @@ import Link from 'next/link';
 import AnimatedButton from '../components/ui/AnimatedButton';
 
 export default function WishlistPage() {
-  const wishlistItems = useWishlistStore((state) => state.items);
+  const { items: wishlistItems, fetchWishlist } = useWishlistStore();
   const removeFromWishlist = useWishlistStore((state) => state.removeItem);
-  const getProductById = useProductStore((state) => state.getProductById);
+  const { getProductById, fetchProducts, products } = useProductStore();
   const addToCart = useCartStore((state) => state.addItem);
 
-  const products = wishlistItems.map((id) => getProductById(id)).filter((p) => p !== undefined);
+  useEffect(() => {
+    fetchWishlist();
+    if (products.length === 0) {
+      fetchProducts();
+    }
+  }, [fetchWishlist, fetchProducts, products.length]);
+
+  const productList = wishlistItems.map((id) => getProductById(id)).filter((p) => p !== undefined);
 
   const handleMoveToCart = (productId: string) => {
     const product = getProductById(productId);
@@ -24,7 +32,7 @@ export default function WishlistPage() {
     }
   };
 
-  if (products.length === 0) {
+  if (productList.length === 0) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,12 +64,12 @@ export default function WishlistPage() {
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
             My Wishlist
             <span className="text-gray-500 dark:text-gray-400 text-2xl ml-4">
-              ({products.length} items)
+              ({productList.length} items)
             </span>
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product, index) => (
+            {productList.map((product, index) => (
               <motion.div
                 key={product!.id}
                 initial={{ opacity: 0, y: 20 }}

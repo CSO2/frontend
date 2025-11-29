@@ -1,11 +1,16 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, Plus, Trash2, Check } from 'lucide-react';
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function PaymentMethodsPage() {
-  const { paymentMethods } = useUserStore();
+  const { paymentMethods, fetchPaymentMethods } = useUserStore();
+
+  useEffect(() => {
+    fetchPaymentMethods();
+  }, [fetchPaymentMethods]);
 
   return (
     <div className="space-y-6">
