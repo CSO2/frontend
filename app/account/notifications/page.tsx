@@ -1,75 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, BellOff, Package, Truck, Tag, AlertCircle, X } from 'lucide-react';
 import { useUserStore } from '@/lib/store/userStore';
 
-interface Notification {
-  id: string;
-  type: 'order' | 'shipping' | 'promo' | 'alert';
-  title: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-}
-
 export default function AccountNotifications() {
-  const { user } = useUserStore();
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: '1',
-      type: 'shipping',
-      title: 'Order Shipped!',
-      message: 'Your order #ORD-1001 has been shipped and is on its way.',
-      timestamp: '2024-01-15T10:30:00',
-      read: false
-    },
-    {
-      id: '2',
-      type: 'order',
-      title: 'Order Confirmation',
-      message: 'Your order #ORD-1002 has been confirmed and is being processed.',
-      timestamp: '2024-01-14T15:45:00',
-      read: false
-    },
-    {
-      id: '3',
-      type: 'promo',
-      title: 'Special Offer: 20% Off GPUs',
-      message: 'Limited time offer on all graphics cards. Shop now and save!',
-      timestamp: '2024-01-13T09:00:00',
-      read: true
-    },
-    {
-      id: '4',
-      type: 'alert',
-      title: 'Price Drop Alert',
-      message: 'Intel Core i9-13900K is now LKR 15,000 cheaper! Add it to your cart now.',
-      timestamp: '2024-01-12T14:20:00',
-      read: true
-    }
-  ]);
+  const { notifications, fetchNotifications, markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } = useUserStore();
+  
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
   const filteredNotifications = filter === 'unread' 
     ? notifications.filter(n => !n.read)
     : notifications;
-
-  const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
-  };
-
-  const deleteNotification = (id: string) => {
-    setNotifications(notifications.filter(n => n.id !== id));
-  };
-
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
-  };
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -105,7 +52,7 @@ export default function AccountNotifications() {
 
         {unreadCount > 0 && (
           <button
-            onClick={markAllAsRead}
+            onClick={() => markAllNotificationsAsRead()}
             className="px-4 py-2 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition"
           >
             Mark All as Read
@@ -150,7 +97,7 @@ export default function AccountNotifications() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                onClick={() => !notification.read && markAsRead(notification.id)}
+                onClick={() => !notification.read && markNotificationAsRead(notification.id)}
                 className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 p-6 cursor-pointer transition ${
                   notification.read
                     ? 'border-gray-200 dark:border-gray-700'
@@ -208,7 +155,7 @@ export default function AccountNotifications() {
             No Notifications
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            You're all caught up!
+            You&apos;re all caught up!
           </p>
         </div>
       )}

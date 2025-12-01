@@ -3,32 +3,21 @@
 import { motion } from 'framer-motion';
 import { Star, Edit2, Trash2, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
+import { useProductStore } from '@/lib/store/productStore';
+import { useUserStore } from '@/lib/store/userStore';
+import { useEffect } from 'react';
 
 export default function ReviewsPage() {
-  const myReviews = [
-    {
-      id: '1',
-      productId: 'prod-1',
-      productName: 'Intel Core i9-13900K',
-      rating: 5,
-      title: 'Absolute Beast of a CPU!',
-      comment: 'This processor handles everything I throw at it. Gaming at 4K, video editing, streaming - no problems at all. Highly recommended!',
-      date: '2025-01-15',
-      helpful: 12,
-      verified: true
-    },
-    {
-      id: '2',
-      productId: 'prod-2',
-      productName: 'NVIDIA GeForce RTX 4080',
-      rating: 4,
-      title: 'Great Performance, Runs Hot',
-      comment: 'Amazing graphics card for 4K gaming. Ray tracing is phenomenal. Only downside is it runs pretty hot under load, so good cooling is essential.',
-      date: '2024-12-20',
-      helpful: 8,
-      verified: true
+  const { userReviews, fetchReviewsByUserId } = useProductStore();
+  const { user } = useUserStore();
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchReviewsByUserId(user.id);
     }
-  ];
+  }, [fetchReviewsByUserId, user?.id]);
+
+  const myReviews = userReviews;
 
   return (
     <div className="space-y-6">
@@ -54,7 +43,11 @@ export default function ReviewsPage() {
                       href={`/product/${review.productId}`}
                       className="text-lg font-semibold text-orange-600 dark:text-orange-500 hover:underline"
                     >
-                      {review.productName}
+                      {/* ProductName is not in Review type, might need to fetch product or store it in review. 
+                          Assuming review object might have it extended or we just show Product ID for now if name is missing.
+                          Ideally Review type should be extended or we fetch product details.
+                          For now using a placeholder if missing or assuming API returns it. */}
+                      {(review as any).productName || 'Product Review'}
                     </Link>
                     <div className="flex items-center gap-2 mt-2">
                       <div className="flex">
@@ -91,7 +84,7 @@ export default function ReviewsPage() {
 
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600 dark:text-gray-400">
-                    Posted on {new Date(review.date).toLocaleDateString()}
+                    Posted on {new Date(review.createdAt).toLocaleDateString()}
                   </span>
                   <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                     <ThumbsUp className="w-4 h-4" />
@@ -105,7 +98,7 @@ export default function ReviewsPage() {
           <div className="text-center py-12">
             <Star className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Reviews Yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">Share your experience with products you've purchased</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">Share your experience with products you&apos;ve purchased</p>
             <Link
               href="/account/orders"
               className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"

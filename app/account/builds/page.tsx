@@ -3,41 +3,19 @@
 import { motion } from 'framer-motion';
 import { Wrench, Trash2, ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { useProductStore } from '@/lib/store/productStore';
+import { useUserStore } from '@/lib/store/userStore';
+import { useEffect } from 'react';
 
 export default function SavedBuildsPage() {
-  const savedBuilds = [
-    {
-      id: '1',
-      name: '4K Gaming Beast',
-      totalPrice: 2847,
-      components: {
-        cpu: 'Intel Core i9-13900K',
-        gpu: 'NVIDIA RTX 4080',
-        motherboard: 'ASUS ROG Maximus Z790',
-        ram: 'Corsair Vengeance 32GB DDR5',
-        storage: 'Samsung 990 Pro 2TB',
-        psu: 'Corsair RM1000x',
-        case: 'Lian Li O11 Dynamic'
-      },
-      createdAt: '2025-01-10',
-      updatedAt: '2025-01-15'
-    },
-    {
-      id: '2',
-      name: 'Budget Workstation',
-      totalPrice: 1249,
-      components: {
-        cpu: 'AMD Ryzen 7 7700X',
-        motherboard: 'MSI B650 Gaming Plus',
-        ram: 'G.Skill Ripjaws 32GB DDR5',
-        storage: 'WD Black SN850X 1TB',
-        psu: 'EVGA SuperNOVA 750W',
-        case: 'Fractal Design Meshify C'
-      },
-      createdAt: '2024-12-15',
-      updatedAt: '2024-12-20'
+  const { savedBuilds, fetchSavedBuilds, deleteSavedBuild } = useProductStore();
+  const { user } = useUserStore();
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchSavedBuilds(user.id);
     }
-  ];
+  }, [fetchSavedBuilds, user?.id]);
 
   return (
     <div className="space-y-6">
@@ -76,7 +54,10 @@ export default function SavedBuildsPage() {
                     <button className="p-2 text-orange-600 dark:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition">
                       <Eye className="w-5 h-5" />
                     </button>
-                    <button className="p-2 text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
+                    <button 
+                      onClick={() => deleteSavedBuild(build.id)}
+                      className="p-2 text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                    >
                       <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
@@ -86,7 +67,10 @@ export default function SavedBuildsPage() {
                   {Object.entries(build.components).map(([key, value]) => (
                     <div key={key} className="text-sm">
                       <span className="text-gray-600 dark:text-gray-400 capitalize">{key}: </span>
-                      <span className="text-gray-900 dark:text-white font-medium">{value}</span>
+                      <span className="text-gray-900 dark:text-white font-medium">
+                        {/* Handle product object or string if necessary, assuming product object has name */}
+                        {(value as any).name || value}
+                      </span>
                     </div>
                   ))}
                 </div>

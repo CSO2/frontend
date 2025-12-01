@@ -69,7 +69,9 @@ export default function AccountPage() {
               </div>
               <div>
                 <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Member Since</label>
-                <p className="font-semibold text-gray-900 dark:text-white">January 2024</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'January 2024'}
+                </p>
               </div>
               <div>
                 <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Loyalty Points</label>

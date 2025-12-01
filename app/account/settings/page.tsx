@@ -6,18 +6,21 @@ import { Settings as SettingsIcon, Save, Lock, Mail, Bell, Eye, EyeOff, Download
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function AccountSettings() {
-  const { user } = useUserStore();
+  const { user, updateUser } = useUserStore();
   const [saved, setSaved] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [emailPreferences, setEmailPreferences] = useState({
-    orderUpdates: true,
-    promotions: true,
-    newsletter: false,
-    productRecommendations: true
-  });
+  const [emailPreferences, setEmailPreferences] = useState(() =>
+    user?.preferences || {
+      orderUpdates: true,
+      promotions: true,
+      newsletter: false,
+      productRecommendations: true
+    }
+  );
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    await updateUser({ preferences: emailPreferences });
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };

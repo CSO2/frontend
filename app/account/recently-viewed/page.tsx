@@ -5,6 +5,7 @@ import { Eye, Clock } from 'lucide-react';
 import { useUserStore } from '@/lib/store/userStore';
 import { useProductStore } from '@/lib/store/productStore';
 import ProductCard from '@/app/components/ui/ProductCard';
+import Link from 'next/link';
 
 export default function AccountRecentlyViewed() {
   const { user, recentlyViewed } = useUserStore();
@@ -74,12 +75,12 @@ export default function AccountRecentlyViewed() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             Products you view will appear here for easy access
           </p>
-          <a
+          <Link
             href="/components"
             className="inline-block px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
           >
             Browse Products
-          </a>
+          </Link>
         </div>
       )}
 
@@ -91,8 +92,8 @@ export default function AccountRecentlyViewed() {
               <h3 className="font-bold text-gray-900 dark:text-white mb-2">
                 Your Browsing History
               </h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                We keep track of the last 10 products you've viewed to help you find what you're looking for faster. 
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                We keep track of the last 10 products you&apos;ve viewed to help you find what you&apos;re looking for faster. 
                 Your browsing history is private and only visible to you.
               </p>
             </div>
