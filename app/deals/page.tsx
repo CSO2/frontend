@@ -9,33 +9,12 @@ import { useProductStore } from '@/lib/store/productStore';
 import { useEffect } from 'react';
 
 export default function DealsPage() {
-  const { deals, fetchDeals } = useProductStore();
+  const { deals, bundles, fetchDeals, fetchBundles } = useProductStore();
 
   useEffect(() => {
     fetchDeals();
-  }, [fetchDeals]);
-
-  // Mock bundles for now as they are complex to model dynamically without a Bundle entity
-  const bundles = [
-    {
-      id: 'bundle-1',
-      name: 'Ultimate Gaming Bundle',
-      description: 'RTX 4080 + i9-13900K + 32GB RAM',
-      originalPrice: 2437,
-      bundlePrice: 2199,
-      savings: 238,
-      items: 3
-    },
-    {
-      id: 'bundle-2',
-      name: 'Streaming Starter Pack',
-      description: 'Capture Card + Mic + Webcam + Lights',
-      originalPrice: 799,
-      bundlePrice: 649,
-      savings: 150,
-      items: 4
-    }
-  ];
+    fetchBundles();
+  }, [fetchDeals, fetchBundles]);
 
   return (
     <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">

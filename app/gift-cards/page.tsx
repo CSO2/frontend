@@ -261,7 +261,7 @@ export default function GiftCardsPage() {
                     <div className="h-full flex flex-col justify-between p-6">
                       <div className="text-white">
                         <p className="text-sm font-bold mb-2">CS02 COMPUTER STORE</p>
-                        <p className="text-xs opacity-80">Sri Lanka's #1 PC Store</p>
+                        <p className="text-xs opacity-80">Sri Lanka&apos;s #1 PC Store</p>
                       </div>
                       <div className="text-white">
                         <p className="text-4xl font-bold mb-2">
@@ -283,7 +283,7 @@ export default function GiftCardsPage() {
                 {message && (
                   <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Message:</p>
-                    <p className="text-gray-900 dark:text-white italic">"{message}"</p>
+                    <p className="text-gray-900 dark:text-white italic">&quot;{message}&quot;</p>
                   </div>
                 )}
               </div>

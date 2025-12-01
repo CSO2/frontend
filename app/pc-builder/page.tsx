@@ -155,7 +155,7 @@ export default function PCBuilderPage() {
     // Check CPU-Motherboard compatibility
     if (cpu && motherboard) {
       if (cpu.specs.socketType !== motherboard.specs.socketType) {
-        issues.push(`CPU socket (${cpu.specs.socketType}) doesn't match Motherboard socket (${motherboard.specs.socketType})`);
+        issues.push(`CPU socket (${cpu.specs.socketType}) doesn&apos;t match Motherboard socket (${motherboard.specs.socketType})`);
       }
     }
     

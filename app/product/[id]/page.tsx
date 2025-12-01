@@ -8,6 +8,7 @@ import { useUserStore } from '@/lib/store/userStore';
 import { ShoppingCart, Heart, Star, Check, AlertCircle } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 
 export default function ProductDetailsPage() {
@@ -110,14 +111,14 @@ export default function ProductDetailsPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden">
-              <img
-                src={product.imageUrl}
+            <div className="relative aspect-square bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden">
+              <Image
+                src={product.imageUrl || '/placeholder-product.png'}
                 alt={product.name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = '/placeholder-product.png';
-                }}
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, 50vw"
+                unoptimized
               />
             </div>
           </motion.div>
@@ -418,6 +419,7 @@ export default function ProductDetailsPage() {
                     className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-200 dark:border-gray-700 overflow-hidden"
                   >
                     <div className="aspect-square bg-gray-100 dark:bg-gray-700">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={relatedProduct.imageUrl}
                         alt={relatedProduct.name}

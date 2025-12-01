@@ -146,7 +146,7 @@ export default function PrivacyPolicyPage() {
             viewport={{ once: true }}
             className="bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-gray-800 rounded-2xl p-8 border-2 border-orange-200 dark:border-orange-800"
           >
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Children's Privacy</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Children&apos;s Privacy</h2>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               Our services are not directed to individuals under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us immediately.
             </p>

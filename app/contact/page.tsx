@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from 'lucide-react';
+import client from '@/lib/api/client';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,15 +14,24 @@ export default function ContactPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submission
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setIsSubmitting(true);
+    try {
+      await client.post('/api/contact', formData);
+      setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    }, 3000);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      // Optionally handle error state here
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -48,7 +58,7 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">
-            Have questions? We're here to help. Reach out to our team and we'll get back to you shortly.
+            Have questions? We&apos;re here to help. Reach out to our team and we&apos;ll get back to you shortly.
           </p>
         </div>
       </motion.section>
@@ -101,7 +111,7 @@ export default function ContactPage() {
                   <Send className="w-12 h-12 text-green-600 dark:text-green-500" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Message Sent!</h3>
-                <p className="text-gray-600 dark:text-gray-400">We'll get back to you within 24 hours.</p>
+                <p className="text-gray-600 dark:text-gray-400">We&apos;ll get back to you within 24 hours.</p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -188,10 +198,15 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-orange-600 to-orange-500 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-linear-to-r from-orange-600 to-orange-500 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-5 h-5" />
-                  Send Message
+                  {isSubmitting ? 'Sending...' : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
             )}

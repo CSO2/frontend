@@ -1,16 +1,21 @@
-'use client';
+ 'use client';
+
+// Module-level fallback timestamp constant
+const DEFAULT_NOW = Date.now();
 
 import { useEffect, useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { CheckCircle, Download, Printer, Package, Truck, Clock, MapPin, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
+import { useOrderStore } from '@/lib/store/orderStore';
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderId = searchParams.get('id');
   const [countdown, setCountdown] = useState(5);
+  const { currentOrder, fetchOrderById } = useOrderStore();
 
   useEffect(() => {
     if (!orderId) {
@@ -23,35 +28,36 @@ function OrderConfirmationContent() {
       }
       
       return () => clearTimeout(timer);
+    } else {
+      fetchOrderById(orderId);
     }
-  }, [orderId, countdown, router]);
+  }, [orderId, countdown, router, fetchOrderById]);
 
-  if (!orderId) {
+  if (!orderId || (!currentOrder && countdown > 0)) {
     return (
       <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            No order found
+            {!orderId ? 'No order found' : 'Loading order...'}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Redirecting to homepage in {countdown}...
-          </p>
+          {!orderId && (
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Redirecting to homepage in {countdown}...
+            </p>
+          )}
         </div>
       </div>
     );
   }
 
-  // Mock order data
-  const orderDate = new Date().toLocaleDateString('en-US', { 
+  // Use real order data or fallbacks
+  const orderDate = currentOrder?.createdAt ? new Date(currentOrder.createdAt).toLocaleDateString('en-US', { 
     month: 'long', 
     day: 'numeric', 
     year: 'numeric' 
-  });
-  const estimatedDelivery = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  }) : new Date().toLocaleDateString();
+  
+  const estimatedDelivery = currentOrder?.estimatedDelivery || new Date(DEFAULT_NOW + 5 * 24 * 60 * 60 * 1000).toLocaleDateString();
 
   return (
     <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
@@ -107,7 +113,7 @@ function OrderConfirmationContent() {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Order Total</p>
                   <p className="font-semibold text-orange-600 dark:text-orange-500 text-xl">
-                    $2,847.99
+                    LKR {currentOrder?.total?.toLocaleString() || '0'}
                   </p>
                 </div>
               </div>
@@ -123,8 +129,12 @@ function OrderConfirmationContent() {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Shipping Address</p>
                   <p className="font-semibold text-gray-900 dark:text-white">
-                    123 Main Street<br />
-                    Silicon Valley, CA 94025
+                    {currentOrder?.shippingAddress ? (
+                      <>
+                        {currentOrder.shippingAddress.street}<br />
+                        {currentOrder.shippingAddress.city}, {currentOrder.shippingAddress.state} {currentOrder.shippingAddress.zipCode}
+                      </>
+                    ) : 'N/A'}
                   </p>
                 </div>
               </div>
@@ -142,7 +152,7 @@ function OrderConfirmationContent() {
               Print Receipt
             </button>
             <Link
-              href="/account/orders"
+              href={`/account/track?orderId=${orderId}`}
               className="flex items-center gap-2 px-6 py-3 border-2 border-orange-500 text-orange-600 dark:text-orange-500 rounded-lg font-semibold hover:bg-orange-50 dark:hover:bg-orange-900/20 transition"
             >
               <Package className="w-5 h-5" />
@@ -163,10 +173,10 @@ function OrderConfirmationContent() {
           <div className="space-y-6">
             {[
               { icon: CheckCircle, title: 'Order Placed', desc: 'Your order has been confirmed', time: 'Just now', active: true },
-              { icon: Clock, title: 'Processing', desc: 'We\'re preparing your items', time: 'Within 2 hours', active: false },
-              { icon: Package, title: 'Packed', desc: 'Your order is being packed', time: 'Within 24 hours', active: false },
-              { icon: Truck, title: 'Shipped', desc: 'On its way to you', time: '1-2 days', active: false },
-              { icon: MapPin, title: 'Delivered', desc: 'Enjoy your purchase!', time: '3-5 days', active: false }
+              { icon: Clock, title: 'Processing', desc: 'We\'re preparing your items', time: 'Within 2 hours', active: ['Processing', 'Shipped', 'Delivered'].includes(currentOrder?.status || '') },
+              { icon: Package, title: 'Packed', desc: 'Your order is being packed', time: 'Within 24 hours', active: ['Shipped', 'Delivered'].includes(currentOrder?.status || '') },
+              { icon: Truck, title: 'Shipped', desc: 'On its way to you', time: '1-2 days', active: ['Shipped', 'Delivered'].includes(currentOrder?.status || '') },
+              { icon: MapPin, title: 'Delivered', desc: 'Enjoy your purchase!', time: '3-5 days', active: currentOrder?.status === 'Delivered' }
             ].map((step, index) => {
               const Icon = step.icon;
               return (
@@ -206,7 +216,7 @@ function OrderConfirmationContent() {
         >
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Need Help?</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-6">
-            We're here to assist you with your order. Contact us anytime!
+            We&apos;re here to assist you with your order. Contact us anytime!
           </p>
           
           <div className="grid md:grid-cols-2 gap-4">
@@ -239,9 +249,9 @@ function OrderConfirmationContent() {
           transition={{ delay: 0.7 }}
           className="text-center"
         >
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">What's Next?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">What&apos;s Next?</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            We've sent you an email confirmation with your order details.
+            We&apos;ve sent you an email confirmation with your order details.
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">
