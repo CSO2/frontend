@@ -242,16 +242,14 @@ export default function LoginPage() {
                   )}
                 </motion.button>
 
-                {/* Demo Logins */}
+                {/* Demo Logins - credentials synced with backend DataSeeder */}
                 <div className="space-y-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400 text-center font-medium">Or try demo accounts:</p>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => {
-                        setFormData({ email: 'customer@demo.lk', password: 'demo', remember: true });
-                        // Pre-fill only, let user click submit to test real flow or auto-submit if desired.
-                        // For now, just pre-fill.
+                        setFormData({ email: 'user@cso2.com', password: 'user123', remember: true });
                       }}
                       className="px-3 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition border border-blue-200 dark:border-blue-800"
                     >
@@ -260,7 +258,7 @@ export default function LoginPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        setFormData({ email: 'admin@demo.lk', password: 'demo', remember: true });
+                        setFormData({ email: 'admin@cso2.com', password: 'admin123', remember: true });
                       }}
                       className="px-3 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg text-sm font-semibold hover:bg-purple-100 dark:hover:bg-purple-900/40 transition border border-purple-200 dark:border-purple-800"
                     >
