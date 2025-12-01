@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "🏗️  Running build check before push..."
+npm run build
+
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed. Please fix the build errors before pushing."
+    echo "💡 Run 'npm run build' to see the issues"
+    exit 1
+fi
+
+echo "✅ Build passed! Push is proceeding..."

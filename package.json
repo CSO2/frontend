@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.6",
@@ -25,6 +27,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "baseline-browser-mapping": "^2.8.32",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^16.0.6",
+    "husky": "^9.1.7",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
