@@ -435,7 +435,7 @@ export default function CheckoutPage() {
                     <CheckCircle className="w-12 h-12 text-green-500 mb-4" />
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Ready to Place Order</h3>
                     <p className="text-gray-700 dark:text-gray-300">
-                      Please review your order details and click "Place Order" to complete your purchase.
+                      Please review your order details and click &quot;Place Order&quot; to complete your purchase.
                     </p>
                   </div>
                 </motion.div>

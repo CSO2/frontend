@@ -7,6 +7,7 @@ import { useProductStore } from '@/lib/store/productStore';
 import { useCartStore } from '@/lib/store/cartStore';
 import client from '@/lib/api/client';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Message {
   id: number;
@@ -24,7 +25,7 @@ export default function BuilderBotPage() {
     {
       id: 1,
       type: 'bot',
-      text: "Hi! I'm BuilderBot, your AI PC building assistant. Tell me what you're looking for and I'll help you build the perfect PC! For example: 'I need a PC for 4K gaming with a $2500 budget' or 'Build me a workstation for video editing'",
+      text: "Hi! I&apos;m BuilderBot, your AI PC building assistant. Tell me what you&apos;re looking for and I&apos;ll help you build the perfect PC! For example: 'I need a PC for 4K gaming with a $2500 budget' or 'Build me a workstation for video editing'",
       timestamp: new Date(),
     },
   ]);
@@ -78,7 +79,7 @@ export default function BuilderBotPage() {
       const errorMessage: Message = {
         id: messages.length + 2,
         type: 'bot',
-        text: "Sorry, I'm having trouble connecting to my brain right now. Please try again later.",
+        text: "Sorry, I&apos;m having trouble connecting to my brain right now. Please try again later.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -159,14 +160,15 @@ export default function BuilderBotPage() {
                             href={`/product/${component.id}`}
                             className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                           >
-                            <img
-                              src={component.imageUrl}
-                              alt={component.name}
-                              className="w-12 h-12 object-cover rounded"
-                              onError={(e) => {
-                                e.currentTarget.src = '/placeholder-product.png';
-                              }}
-                            />
+                            <div className="relative w-12 h-12">
+                              <Image
+                                src={component.imageUrl || '/placeholder-product.png'}
+                                alt={component.name}
+                                fill
+                                className="object-cover rounded"
+                                unoptimized
+                              />
+                            </div>
                             <div className="flex-1">
                               <p className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {component.name}

@@ -100,7 +100,7 @@ export default function BuilderQuiz() {
             Find Your Perfect PC
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            Answer a few questions and we'll recommend the best build for you
+            Answer a few questions and we&apos;ll recommend the best build for you
           </p>
         </motion.div>
 
@@ -142,7 +142,7 @@ export default function BuilderQuiz() {
               <div className="flex items-center gap-3 mb-6">
                 <DollarSign className="w-8 h-8 text-orange-600 dark:text-orange-500" />
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  What's your budget?
+                  What&apos;s your budget?
                 </h2>
               </div>
 

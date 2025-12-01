@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { Trash2, Plus, Minus, ShoppingBag, Loader2 } from 'lucide-react';
 import AnimatedButton from '../components/ui/AnimatedButton';
@@ -80,13 +81,13 @@ export default function CartPage() {
                 >
                   <div className="flex gap-6">
                     <Link href={`/product/${item.product.id}`}>
-                      <img
-                        src={item.product.imageUrl}
+                      <Image
+                        src={item.product.imageUrl || '/placeholder-product.png'}
                         alt={item.product.name}
-                        className="w-24 h-24 object-cover rounded-lg"
-                        onError={(e) => {
-                          e.currentTarget.src = '/placeholder-product.png';
-                        }}
+                        width={96}
+                        height={96}
+                        className="object-cover rounded-lg"
+                        unoptimized
                       />
                     </Link>
 
