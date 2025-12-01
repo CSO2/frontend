@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, Address, PaymentMethod } from './types';
+import { User, Address, PaymentMethod, Notification } from './types';
 import client from '../api/client';
 
 interface UserStore {
   user: User | null;
   addresses: Address[];
   paymentMethods: PaymentMethod[];
+  notifications: Notification[];
   recentlyViewed: string[];
   isLoading: boolean;
   error: string | null;
@@ -21,15 +22,20 @@ interface UserStore {
   fetchPaymentMethods: () => Promise<void>;
   addPaymentMethod: (method: Omit<PaymentMethod, 'id'>) => Promise<void>;
   deletePaymentMethod: (id: string) => Promise<void>;
+  fetchNotifications: () => Promise<void>;
+  markNotificationAsRead: (id: string) => Promise<void>;
+  markAllNotificationsAsRead: () => Promise<void>;
+  deleteNotification: (id: string) => Promise<void>;
   addToRecentlyViewed: (productId: string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       addresses: [],
       paymentMethods: [],
+      notifications: [],
       recentlyViewed: [],
       isLoading: false,
       error: null,
@@ -78,7 +84,7 @@ export const useUserStore = create<UserStore>()(
         if (typeof window !== 'undefined') {
           localStorage.removeItem('token');
         }
-        set({ user: null, addresses: [], paymentMethods: [] });
+        set({ user: null, addresses: [], paymentMethods: [], notifications: [] });
       },
 
       updateUser: async (userData) => {
@@ -182,6 +188,50 @@ export const useUserStore = create<UserStore>()(
         }
       },
 
+      fetchNotifications: async () => {
+        try {
+          const response = await client.get('/api/users/me/notifications');
+          set({ notifications: response.data });
+        } catch (error: any) {
+          console.error('Failed to fetch notifications', error);
+        }
+      },
+
+      markNotificationAsRead: async (id) => {
+        try {
+          await client.put(`/api/users/me/notifications/${id}/read`);
+          set((state) => ({
+            notifications: state.notifications.map((n) => 
+              n.id === id ? { ...n, read: true } : n
+            )
+          }));
+        } catch (error: any) {
+          console.error('Failed to mark notification as read', error);
+        }
+      },
+
+      markAllNotificationsAsRead: async () => {
+        try {
+          await client.put('/api/users/me/notifications/read-all');
+          set((state) => ({
+            notifications: state.notifications.map((n) => ({ ...n, read: true }))
+          }));
+        } catch (error: any) {
+          console.error('Failed to mark all notifications as read', error);
+        }
+      },
+
+      deleteNotification: async (id) => {
+        try {
+          await client.delete(`/api/users/me/notifications/${id}`);
+          set((state) => ({
+            notifications: state.notifications.filter((n) => n.id !== id)
+          }));
+        } catch (error: any) {
+          console.error('Failed to delete notification', error);
+        }
+      },
+
       addToRecentlyViewed: (productId) =>
         set((state) => {
           const filtered = state.recentlyViewed.filter((id) => id !== productId);
@@ -194,12 +244,10 @@ export const useUserStore = create<UserStore>()(
       name: 'user-storage',
       partialize: (state) => ({ 
         user: state.user, 
-        // addresses and paymentMethods are now fetched from API, so maybe don't persist them?
-        // But keeping them for offline support/faster load is fine if we sync on mount.
-        // Let's keep them for now.
         addresses: state.addresses,
         paymentMethods: state.paymentMethods,
-        recentlyViewed: state.recentlyViewed 
+        recentlyViewed: state.recentlyViewed,
+        notifications: state.notifications
       }),
     }
   )

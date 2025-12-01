@@ -14,8 +14,10 @@ interface ProductStore {
   
   featuredProducts: Product[];
   deals: Product[];
+  bundles: any[];
   relatedProducts: Product[];
   currentProductReviews: Review[];
+  userReviews: Review[];
   
   storeLocations: StoreLocation[];
   isLoading: boolean;
@@ -29,10 +31,17 @@ interface ProductStore {
   searchProducts: (query: string) => Promise<void>;
   fetchRelatedProducts: (productId: string) => Promise<void>;
   fetchReviewsByProductId: (productId: string) => Promise<void>;
+  fetchReviewsByUserId: (userId: string) => Promise<void>;
   
+  addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
+  updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
+  updateStockLevel: (id: string, stockLevel: number) => Promise<void>;
+
   // Keep these as is for now or update later
   fetchFeaturedProducts: () => Promise<void>;
   fetchDeals: () => Promise<void>;
+  fetchBundles: () => Promise<void>;
   fetchStoreLocations: () => Promise<void>;
   fetchSavedBuilds: (userId: string) => Promise<void>;
   fetchPublicBuilds: () => Promise<void>;
@@ -64,8 +73,10 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   
   featuredProducts: [],
   deals: [],
+  bundles: [],
   relatedProducts: [],
   currentProductReviews: [],
+  userReviews: [],
 
   fetchProducts: async () => {
     set({ isLoading: true, error: null });
@@ -155,6 +166,74 @@ export const useProductStore = create<ProductStore>((set, get) => ({
       set({ currentProductReviews: [] });
     }
   },
+
+  fetchReviewsByUserId: async (userId) => {
+    try {
+      const response = await client.get(`/api/users/${userId}/reviews`);
+      set({ userReviews: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch user reviews:', error);
+      set({ userReviews: [] });
+    }
+  },
+
+  addProduct: async (productData) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.post('/api/products', productData);
+      set((state) => ({
+        products: [...state.products, response.data],
+        isLoading: false
+      }));
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+      throw error;
+    }
+  },
+
+  updateProduct: async (id, productData) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.put(`/api/products/${id}`, productData);
+      set((state) => ({
+        products: state.products.map((p) => (p.id === id ? response.data : p)),
+        selectedProduct: state.selectedProduct?.id === id ? response.data : state.selectedProduct,
+        isLoading: false
+      }));
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+      throw error;
+    }
+  },
+
+  deleteProduct: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await client.delete(`/api/products/${id}`);
+      set((state) => ({
+        products: state.products.filter((p) => p.id !== id),
+        selectedProduct: state.selectedProduct?.id === id ? null : state.selectedProduct,
+        isLoading: false
+      }));
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+      throw error;
+    }
+  },
+
+  updateStockLevel: async (id, stockLevel) => {
+    try {
+      const response = await client.patch(`/api/products/${id}/stock`, { stockLevel });
+      set((state) => ({
+        products: state.products.map((p) => 
+          p.id === id ? { ...p, stockLevel: response.data.stockLevel || stockLevel } : p
+        ),
+      }));
+    } catch (error: any) {
+      console.error('Failed to update stock level:', error);
+      throw error;
+    }
+  },
   
   addReview: async (review) => {
     try {
@@ -206,6 +285,15 @@ export const useProductStore = create<ProductStore>((set, get) => ({
       set({ deals: response.data });
     } catch (error) {
       console.error('Failed to fetch deals:', error);
+    }
+  },
+
+  fetchBundles: async () => {
+    try {
+      const response = await client.get('/api/products/bundles');
+      set({ bundles: response.data });
+    } catch (error) {
+      console.error('Failed to fetch bundles:', error);
     }
   },
 

@@ -21,6 +21,7 @@ export interface Product {
   salePrice?: number;
   discountPercentage?: number;
   saleEndDate?: string;
+  reorderLevel?: number;
 }
 
 export interface Category {
@@ -30,6 +31,7 @@ export interface Category {
   description?: string;
   iconName?: string;
   parentId?: string;
+  itemCount?: number;
 }
 
 export interface CartItem {
@@ -44,6 +46,13 @@ export interface User {
   loyaltyPoints?: number;
   tier?: 'bronze' | 'silver' | 'gold' | 'platinum';
   role?: string;
+  createdAt?: string;
+  preferences?: {
+    orderUpdates: boolean;
+    promotions: boolean;
+    newsletter: boolean;
+    productRecommendations: boolean;
+  };
 }
 
 export interface Address {
@@ -102,6 +111,15 @@ export interface Review {
   createdAt: string;
   helpful: number;
   verified: boolean;
+}
+
+export interface Notification {
+  id: string;
+  type: 'order' | 'shipping' | 'promo' | 'alert';
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
 }
 
 export interface SavedBuild {
