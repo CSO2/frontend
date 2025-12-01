@@ -2,20 +2,25 @@
 
 import { motion } from 'framer-motion';
 import { FileText, Download, Eye, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
-const invoices = [
-  { id: 'INV-001', orderNumber: 'ORD-1001', customer: 'John Doe', amount: 2847, date: '2024-01-15', status: 'Paid' },
-  { id: 'INV-002', orderNumber: 'ORD-1002', customer: 'Jane Smith', amount: 1249, date: '2024-01-14', status: 'Paid' },
-  { id: 'INV-003', orderNumber: 'ORD-1003', customer: 'Bob Wilson', amount: 3499, date: '2024-01-13', status: 'Pending' },
-];
 
 export default function InvoicesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const allOrders = useAdminStore((s) => s.allOrders);
+  const isLoading = useAdminStore((s) => s.isLoading);
+  const error = useAdminStore((s) => s.error);
+  const fetchAllOrders = useAdminStore((s) => s.fetchAllOrders);
 
-  const filtered = invoices.filter(inv =>
-    inv.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    inv.customer.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetchAllOrders();
+  }, [fetchAllOrders]);
+
+  const invoices = allOrders || [];
+  const filtered = invoices.filter((inv: any) =>
+    (inv.id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (inv.userId || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -57,13 +62,22 @@ export default function InvoicesPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((invoice) => (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={7} className="p-6 text-center">Loading...</td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={7} className="p-6 text-center text-red-600">{error}</td>
+                </tr>
+              ) : (
+                filtered.map((invoice: any) => (
                 <tr key={invoice.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
                   <td className="px-6 py-4 font-mono font-semibold text-gray-900 dark:text-white">{invoice.id}</td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{invoice.orderNumber}</td>
-                  <td className="px-6 py-4 text-gray-900 dark:text-white">{invoice.customer}</td>
-                  <td className="px-6 py-4 text-orange-600 dark:text-orange-500 font-bold">Rs. {invoice.amount.toLocaleString()}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(invoice.date).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-gray-900 dark:text-white">{invoice.userId || invoice.customer}</td>
+                  <td className="px-6 py-4 text-orange-600 dark:text-orange-500 font-bold">Rs. {(invoice.total || 0).toLocaleString()}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(invoice.date || invoice.createdAt || Date.now()).toLocaleDateString()}</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       invoice.status === 'Paid' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :

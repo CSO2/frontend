@@ -2,21 +2,27 @@
 
 import { motion } from 'framer-motion';
 import { Mail, Search, Edit2, Trash2, AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-
-const tickets = [
-  { id: 'TICKET-001', customer: 'John Doe', subject: 'Order Not Received', priority: 'High', status: 'Open', date: '2024-01-15' },
-  { id: 'TICKET-002', customer: 'Jane Smith', subject: 'Product Quality Issue', priority: 'Medium', status: 'In Progress', date: '2024-01-14' },
-  { id: 'TICKET-003', customer: 'Bob Wilson', subject: 'Shipping Inquiry', priority: 'Low', status: 'Resolved', date: '2024-01-13' },
-];
+import { useEffect, useState } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
 export default function SupportPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const tickets = useAdminStore((s) => s.supportTickets);
+  const isLoading = useAdminStore((s) => s.isLoading);
+  const error = useAdminStore((s) => s.error);
+  const fetchSupportTickets = useAdminStore((s) => s.fetchSupportTickets);
 
-  const filtered = tickets.filter(t =>
-    t.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    t.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    fetchSupportTickets();
+  }, [fetchSupportTickets]);
+
+export default function SupportPage() {
+  const filtered = tickets
+    ? tickets.filter((t: any) =>
+        (t.id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (t.subject || '').toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="space-y-8">
@@ -57,10 +63,19 @@ export default function SupportPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((ticket) => (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={7} className="p-6 text-center">Loading...</td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={7} className="p-6 text-center text-red-600">{error}</td>
+                </tr>
+              ) : (
+                filtered.map((ticket: any) => (
                 <tr key={ticket.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
                   <td className="px-6 py-4 font-mono font-semibold text-gray-900 dark:text-white">{ticket.id}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{ticket.customer}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{ticket.userId || ticket.customer}</td>
                   <td className="px-6 py-4 text-gray-900 dark:text-white">{ticket.subject}</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -80,7 +95,7 @@ export default function SupportPage() {
                       {ticket.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(ticket.date).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(ticket.createdAt || ticket.date || Date.now()).toLocaleDateString()}</td>
                   <td className="px-6 py-4 text-center flex justify-center gap-2">
                     <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition">
                       <Mail className="w-4 h-4 text-blue-600" />

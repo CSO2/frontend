@@ -83,26 +83,28 @@ export default function AdminAnalytics() {
         </div>
 
         <div className="h-80 flex items-end justify-between gap-4">
+          import { useEffect, useState } from 'react';
+          import { useAdminStore } from '@/lib/store/adminStore';
           {salesData.map((data, index) => (
             <motion.div
-              key={data.month}
-              initial={{ height: 0 }}
-              animate={{ height: `${(data.revenue / maxRevenue) * 100}%` }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="flex-1 bg-linear-to-t from-orange-600 to-orange-400 rounded-t-lg relative group"
-            >
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">
-                ${data.revenue.toLocaleString()}
-                <div className="text-xs text-gray-300 dark:text-gray-600">{data.orders} orders</div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+            const metrics = useAdminStore((s) => s.metrics);
+            const topProducts = useAdminStore((s) => s.topProducts);
+            const fetchTopProducts = useAdminStore((s) => s.fetchTopProducts);
+            const [salesData, setSalesData] = useState<any[]>([]);
 
-        <div className="flex justify-between mt-4">
-          {salesData.map(data => (
-            <div key={data.month} className="flex-1 text-center text-sm text-gray-600 dark:text-gray-400">
-              {data.month}
+            useEffect(() => {
+              // Fetch top products for this analytics page
+              fetchTopProducts(5);
+              // Sales data series not yet supported by API; keep placeholder or derive from metrics
+              setSalesData([{
+                month: 'Jan', revenue: metrics?.totalRevenue || 0, orders: metrics?.totalOrders || 0
+              }]);
+            }, [fetchTopProducts, metrics]);
+              initial={{ height: 0 }}
+            </motion.div>
+  
+            // Provide a default to avoid runtime errors
+            const productsList = topProducts || [];
             </div>
           ))}
         </div>

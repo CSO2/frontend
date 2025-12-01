@@ -2,35 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Plus, Edit2, Trash2, Phone, Clock } from 'lucide-react';
-
-const stores = [
-  { 
-    id: 1, 
-    name: 'CS02 Colombo', 
-    address: '123 Main Street, Colombo', 
-    phone: '+94 11 234 5678', 
-    hours: '9:00 AM - 9:00 PM',
-    manager: 'Kamal Silva'
-  },
-  { 
-    id: 2, 
-    name: 'CS02 Kandy', 
-    address: '456 Tech Park, Kandy', 
-    phone: '+94 81 222 3456', 
-    hours: '9:00 AM - 8:00 PM',
-    manager: 'Priya Perera'
-  },
-  { 
-    id: 3, 
-    name: 'CS02 Galle', 
-    address: '789 Fort Road, Galle', 
-    phone: '+94 91 888 9999', 
-    hours: '10:00 AM - 7:00 PM',
-    manager: 'Roshan De Silva'
-  },
-];
+import { useEffect } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
 export default function StoresPage() {
+  const stores = useAdminStore((s) => s.stores);
+  const fetchStores = useAdminStore((s) => s.fetchStores);
+
+  useEffect(() => {
+    fetchStores();
+  }, [fetchStores]);
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -45,7 +26,7 @@ export default function StoresPage() {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stores.map((store, idx) => (
+        {stores && stores.map((store: any, idx: number) => (
           <motion.div
             key={store.id}
             initial={{ opacity: 0, y: 20 }}

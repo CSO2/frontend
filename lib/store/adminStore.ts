@@ -21,6 +21,10 @@ interface AdminStore {
   metrics: DashboardMetrics | null;
   recentOrders: any[];
   allOrders: any[];
+  users: any[];
+  supportTickets: any[];
+  stores: any[];
+  topProducts: any[];
   lowStockItems: Product[];
   isLoading: boolean;
   error: string | null;
@@ -29,6 +33,10 @@ interface AdminStore {
   fetchRecentOrders: () => Promise<void>;
   fetchAllOrders: () => Promise<void>;
   fetchLowStockItems: () => Promise<void>;
+  fetchUsers: () => Promise<void>;
+  fetchSupportTickets: () => Promise<void>;
+  fetchStores: () => Promise<void>;
+  fetchTopProducts: (limit?: number) => Promise<void>;
   fetchAllDashboardData: () => Promise<void>;
 }
 
@@ -36,6 +44,10 @@ export const useAdminStore = create<AdminStore>((set) => ({
   metrics: null,
   recentOrders: [],
   allOrders: [],
+  users: [],
+  supportTickets: [],
+  stores: [],
+  topProducts: [],
   lowStockItems: [],
   isLoading: false,
   error: null,
@@ -76,6 +88,44 @@ export const useAdminStore = create<AdminStore>((set) => ({
       set({ lowStockItems: response.data });
     } catch (error: any) {
       console.error('Failed to fetch low stock items:', error);
+    }
+  },
+
+  fetchUsers: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await client.get('/api/users');
+      set({ users: response.data, isLoading: false });
+    } catch (error: any) {
+      console.error('Failed to fetch users:', error);
+      set({ isLoading: false, error: 'Failed to fetch users' });
+    }
+  },
+
+  fetchSupportTickets: async () => {
+    try {
+      const response = await client.get('/api/support/tickets/all');
+      set({ supportTickets: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch support tickets:', error);
+    }
+  },
+
+  fetchStores: async () => {
+    try {
+      const response = await client.get('/api/support/stores');
+      set({ stores: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch stores:', error);
+    }
+  },
+
+  fetchTopProducts: async (limit = 10) => {
+    try {
+      const response = await client.get(`/api/analytics/sales?limit=${limit}`);
+      set({ topProducts: response.data });
+    } catch (error: any) {
+      console.error('Failed to fetch top products:', error);
     }
   },
 

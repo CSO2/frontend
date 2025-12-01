@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, User, ArrowLeft, Share2, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import client from '@/lib/api/client';
 
 const blogPosts = [
   {
@@ -54,10 +56,45 @@ const blogPosts = [
     excerpt: 'Rumors, leaks, and confirmed information about NVIDIA\'s next-generation graphics cards expected in early 2026.',
     author: 'Mike Chen',
     date: '2025-10-18',
-    readTime: '6 min read',
-    category: 'News',
-    content: `
-      <p>NVIDIA is preparing to launch its next-generation RTX 5000 series graphics cards, and we've gathered all the information available so far.</p>
+// Blog post will be loaded via API
+export default function BlogPost() {
+  const params = useParams();
+  const postId = params.id as string;
+  const [post, setPost] = useState<any | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      setLoading(true);
+      try {
+        const response = await client.get(`/api/content/blog/${postId}`);
+        setPost(response.data);
+        // Also fetch related posts (all posts and filter out current)
+        try {
+          const allResp = await client.get('/api/content/blog');
+          setRelatedPosts(allResp.data.filter((p: any) => p.slug !== postId));
+        } catch (allErr) {
+          console.warn('Failed to fetch related posts', allErr);
+        }
+      } catch (err: any) {
+        console.error('Failed to fetch post', err);
+        setError('Unable to load blog post');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [postId]);
+  
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+  if (error || !post) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error || 'Post not found'}</div>;
+  }
       
       <h2>Expected Release Timeline</h2>
       <p>Based on NVIDIA's typical release schedule, we expect to see announcements in January 2026 with availability beginning in March of that year.</p>
@@ -81,7 +118,7 @@ export default function BlogPost() {
       <div className="max-w-4xl mx-auto">
         
         {/* Back Button */}
-        <motion.div
+            {post.category}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
@@ -95,7 +132,7 @@ export default function BlogPost() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+              <span>{new Date(post.date || post.publishedAt).toLocaleDateString('en-US', { 
         >
           <div className="inline-block px-4 py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 font-semibold text-sm mb-4">
             {post.category}
@@ -217,7 +254,7 @@ export default function BlogPost() {
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.filter(p => p.id !== postId).slice(0, 3).map((relatedPost) => (
+            {relatedPosts.slice(0, 3).map((relatedPost) => (
               <Link key={relatedPost.id} href={`/blog/${relatedPost.id}`}>
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 hover:border-orange-500 transition h-full">
                   <div className="text-sm font-semibold text-orange-600 dark:text-orange-500 mb-2">
