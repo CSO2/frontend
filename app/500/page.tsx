@@ -45,7 +45,7 @@ export default function Custom500Page() {
           transition={{ delay: 0.4 }}
           className="text-xl text-gray-600 dark:text-gray-400 mb-8"
         >
-          Oops! Something went wrong on our end. Our team has been notified and we're working on it.
+          Oops! Something went wrong on our end. Our team has been notified and we&apos;re working on it.
         </motion.p>
 
         <motion.div

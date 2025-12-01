@@ -18,7 +18,7 @@ export default function AboutPage() {
             About <span className="text-wso2-orange">CS02</span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed px-4">
-            We're passionate about empowering enthusiasts, gamers, and professionals to build their dream PCs with premium components and expert guidance.
+            We&apos;re passionate about empowering enthusiasts, gamers, and professionals to build their dream PCs with premium components and expert guidance.
           </p>
         </motion.div>
 
@@ -114,7 +114,7 @@ export default function AboutPage() {
               checking, and a vibrant community of builders sharing their creations.
             </p>
             <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
-              Today, we're proud to serve thousands of customers with premium components, expert guidance, 
+              Today, we&apos;re proud to serve thousands of customers with premium components, expert guidance, 
               and a commitment to excellence that sets us apart in the industry.
             </p>
           </div>
