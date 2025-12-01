@@ -2,17 +2,7 @@
 
 import { motion } from 'framer-motion';
 import AnimatedButton from '../ui/AnimatedButton';
-import { useEffect, useState } from 'react';
-
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <section className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Animated Background */}

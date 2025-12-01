@@ -16,7 +16,7 @@ import { useThemeStore } from '@/lib/store/themeStore';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { useUserStore } from '@/lib/store/userStore';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Navigation() {
   const { theme, toggleTheme } = useThemeStore();
@@ -25,11 +25,6 @@ export default function Navigation() {
   const user = useUserStore((state) => state.user);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +41,6 @@ export default function Navigation() {
     { href: '/deals', label: 'Deals' },
     { href: '/gallery', label: 'Build Gallery' },
   ];
-
-  if (!mounted) return null;
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-md">

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Product } from '@/lib/store/types';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
@@ -45,13 +46,12 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
     >
       <Link href={`/product/${product.id}`}>
         <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
-          <img
-            src={product.imageUrl}
+          <Image
+            src={product.imageUrl || '/placeholder-product.png'}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder-product.png';
-            }}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            unoptimized
           />
           {product.stockLevel === 0 && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">

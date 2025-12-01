@@ -11,7 +11,7 @@ export default function LiveChatWidget() {
     {
       id: 1,
       type: 'bot',
-      text: 'Hi! Welcome to CS02. How can I help you today?',
+          text: 'Hi! Welcome to CS02. How can I help you today?',
       timestamp: new Date(),
     },
   ]);
@@ -53,7 +53,7 @@ export default function LiveChatWidget() {
         {
           id: prev.length + 1,
           type: 'bot',
-          text: "I'm sorry, I'm having trouble connecting right now.",
+          text: "I&apos;m sorry, I&apos;m having trouble connecting right now.",
           timestamp: new Date(),
         },
       ]);
@@ -93,7 +93,7 @@ export default function LiveChatWidget() {
             <div className="bg-wso2-orange text-white p-4 flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-lg">CS02 Support</h3>
-                <p className="text-sm text-white/80">We're here to help!</p>
+                <p className="text-sm text-white/80">We&apos;re here to help!</p>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
