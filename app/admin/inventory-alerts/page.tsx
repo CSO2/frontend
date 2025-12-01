@@ -13,7 +13,7 @@ export default function InventoryAlertsPage() {
 
   useEffect(() => {
     fetchLowStockItems();
-  }, []);
+  }, [fetchLowStockItems]);
 
   const filtered = lowStockItems.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -60,7 +60,7 @@ export default function InventoryAlertsPage() {
                 <tr key={item.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
                   <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{item.name}</td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{item.stockLevel} units</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">10 units</td> {/* Hardcoded reorder level for now */}
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{item.reorderLevel || 10} units</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit ${
                       item.stockLevel < 5 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :

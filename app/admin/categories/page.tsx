@@ -2,23 +2,18 @@
 
 import { motion } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, Tag } from 'lucide-react';
-import { useState } from 'react';
-
-const categories = [
-  { id: 1, name: 'CPUs', slug: 'cpus', itemCount: 45, icon: '⚙️' },
-  { id: 2, name: 'Graphics Cards', slug: 'graphics-cards', itemCount: 32, icon: '🎮' },
-  { id: 3, name: 'Motherboards', slug: 'motherboards', itemCount: 28, icon: '🖥️' },
-  { id: 4, name: 'Memory (RAM)', slug: 'memory', itemCount: 56, icon: '💾' },
-  { id: 5, name: 'Storage', slug: 'storage', itemCount: 72, icon: '💿' },
-  { id: 6, name: 'Power Supplies', slug: 'psu', itemCount: 38, icon: '⚡' },
-];
+import { useEffect, useState } from 'react';
+import { useProductStore } from '@/lib/store/productStore';
 
 export default function CategoriesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { categories, fetchCategories } = useProductStore((s) => ({ categories: s.categories, fetchCategories: s.fetchCategories }));
 
-  const filtered = categories.filter(cat =>
-    cat.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    fetchCategories().catch((e) => console.error(e));
+  }, [fetchCategories]);
+
+  const filtered = categories.filter((cat: any) => (cat.name || '').toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="space-y-8">
@@ -59,7 +54,7 @@ export default function CategoriesPage() {
               className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="text-3xl">{category.icon}</div>
+                <div className="text-3xl">{category.iconName || '📦'}</div>
                 <div className="flex gap-2">
                   <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
                     <Edit2 className="w-4 h-4 text-blue-600" />
@@ -71,7 +66,9 @@ export default function CategoriesPage() {
               </div>
               <h3 className="font-bold text-gray-900 dark:text-white mb-1">{category.name}</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">/{category.slug}</p>
-              <p className="text-xs font-semibold text-orange-600 dark:text-orange-500">{category.itemCount} items</p>
+              <p className="text-xs font-semibold text-orange-600 dark:text-orange-500">
+                 {category.itemCount || 0} Items
+              </p>
             </motion.div>
           ))}
         </div>

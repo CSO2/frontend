@@ -17,7 +17,9 @@ import {
   Edit,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useProductStore } from '@/lib/store/productStore';
+import { useAdminStore } from '@/lib/store/adminStore';
+import type { OrderItem } from '@/lib/store/types';
+import { useEffect } from 'react';
 
 type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -31,11 +33,18 @@ const statusConfig: Record<OrderStatus, { label: string; color: string; icon: an
 
 export default function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { orders } = useProductStore();
-  const order = orders.find((o) => o.id === id);
+  const { allOrders, fetchAllOrders } = useAdminStore();
+  
+  useEffect(() => {
+    if (allOrders.length === 0) {
+      fetchAllOrders();
+    }
+  }, [fetchAllOrders, allOrders.length]);
+
+  const order = allOrders.find((o) => o.id === id);
 
   const [orderStatus, setOrderStatus] = useState<OrderStatus>(
-    order?.status as OrderStatus || 'pending'
+    (order?.status.toLowerCase() as OrderStatus) || 'pending'
   );
   const [notes, setNotes] = useState('');
   const [showRefundModal, setShowRefundModal] = useState(false);
@@ -186,7 +195,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             </h2>
 
             <div className="space-y-4">
-              {order.items.map((item, index) => (
+              {order.items.map((item: OrderItem, index: number) => (
                 <div
                   key={`${item.productId}-${index}`}
                   className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg"

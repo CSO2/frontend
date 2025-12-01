@@ -1,151 +1,118 @@
-'use client';
+ 'use client';
 
-import { motion } from 'framer-motion';
-import { BarChart3, TrendingUp, DollarSign, Users, Package, ShoppingCart } from 'lucide-react';
+ import { motion } from 'framer-motion';
+ import { BarChart3, TrendingUp, DollarSign, Users, Package, ShoppingCart } from 'lucide-react';
+ import { useEffect } from 'react';
+ import { useAdminStore } from '@/lib/store/adminStore';
 
-export default function AdminAnalytics() {
-  const salesData = [
-    { month: 'Jan', revenue: 45000, orders: 120 },
-    { month: 'Feb', revenue: 52000, orders: 145 },
-    { month: 'Mar', revenue: 48000, orders: 135 },
-    { month: 'Apr', revenue: 61000, orders: 178 },
-    { month: 'May', revenue: 58000, orders: 162 },
-    { month: 'Jun', revenue: 67000, orders: 195 }
-  ];
+ export default function AdminAnalytics() {
+   const metrics = useAdminStore((s) => s.metrics);
+   const topProducts = useAdminStore((s) => s.topProducts);
+   const salesSeries = useAdminStore((s) => s.salesSeries);
+   const fetchTopProducts = useAdminStore((s) => s.fetchTopProducts);
+   const fetchMetrics = useAdminStore((s) => s.fetchDashboardMetrics);
+   const fetchSalesSeries = useAdminStore((s) => s.fetchSalesSeries);
 
-  const topProducts = [
-    { name: 'Intel Core i9-13900K', sales: 87, revenue: 47826 },
-    { name: 'NVIDIA RTX 4090', sales: 45, revenue: 89955 },
-    { name: 'AMD Ryzen 9 7950X', sales: 62, revenue: 37820 },
-    { name: 'Corsair DDR5 32GB', sales: 134, revenue: 32164 },
-    { name: 'Samsung 980 Pro 2TB', sales: 98, revenue: 24598 }
-  ];
+   useEffect(() => {
+     fetchMetrics().catch((e) => console.error(e));
+     fetchTopProducts(5).catch((e) => console.error(e));
+     fetchSalesSeries().catch((e) => console.error(e));
+   }, [fetchTopProducts, fetchMetrics, fetchSalesSeries]);
 
-  const maxRevenue = Math.max(...salesData.map(d => d.revenue));
+   const kpis = [
+     { label: 'Total Revenue', value: metrics ? `$${metrics.totalRevenue.toLocaleString()}` : '$0', icon: DollarSign, color: 'green' },
+     { label: 'Total Orders', value: metrics ? `${metrics.newOrders}` : '0', icon: ShoppingCart, color: 'blue' },
+     { label: 'Customers', value: metrics ? `${metrics.activeCustomers}` : '0', icon: Users, color: 'purple' },
+     { label: 'Products Sold', value: metrics ? `${metrics.productsSold.toLocaleString()}` : '0', icon: Package, color: 'orange' }
+   ];
 
-  return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Analytics</h1>
-        <p className="text-gray-600 dark:text-gray-400">Track your store performance</p>
-      </div>
+   return (
+     <div className="space-y-8">
+       <div>
+         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Analytics</h1>
+         <p className="text-gray-600 dark:text-gray-400">Track your store performance</p>
+       </div>
 
-      {/* Key Metrics */}
-      <div className="grid md:grid-cols-4 gap-6">
-        {[
-          { label: 'Total Revenue', value: '$331,000', icon: DollarSign, color: 'green' },
-          { label: 'Total Orders', value: '935', icon: ShoppingCart, color: 'blue' },
-          { label: 'Customers', value: '1,847', icon: Users, color: 'purple' },
-          { label: 'Products Sold', value: '2,456', icon: Package, color: 'orange' }
-        ].map((metric, index) => {
-          const Icon = metric.icon;
-          return (
-            <motion.div
-              key={metric.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
-            >
-              <div className={`p-3 rounded-xl inline-flex mb-4 ${
-                metric.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' :
-                metric.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                metric.color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/30' :
-                'bg-orange-100 dark:bg-orange-900/30'
-              }`}>
-                <Icon className={`w-6 h-6 ${
-                  metric.color === 'green' ? 'text-green-600 dark:text-green-500' :
-                  metric.color === 'blue' ? 'text-blue-600 dark:text-blue-500' :
-                  metric.color === 'purple' ? 'text-purple-600 dark:text-purple-500' :
-                  'text-orange-600 dark:text-orange-500'
-                }`} />
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{metric.label}</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{metric.value}</p>
-            </motion.div>
-          );
-        })}
-      </div>
+       <div className="grid md:grid-cols-4 gap-6">
+         {kpis.map((metric, index) => {
+           const Icon = metric.icon;
+           const badgeClasses = `p-3 rounded-xl inline-flex mb-4 ${
+             metric.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' :
+             metric.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30' :
+             metric.color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/30' :
+             'bg-orange-100 dark:bg-orange-900/30'
+           }`;
+           const iconClasses = `w-6 h-6 ${
+             metric.color === 'green' ? 'text-green-600 dark:text-green-500' :
+             metric.color === 'blue' ? 'text-blue-600 dark:text-blue-500' :
+             metric.color === 'purple' ? 'text-purple-600 dark:text-purple-500' :
+             'text-orange-600 dark:text-orange-500'
+           }`;
+           return (
+             <motion.div
+               key={metric.label}
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: index * 0.1 }}
+               className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+             >
+               <div className={badgeClasses}>
+                 <Icon className={iconClasses} />
+               </div>
+               <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{metric.label}</p>
+               <p className="text-3xl font-bold text-gray-900 dark:text-white">{metric.value}</p>
+             </motion.div>
+           );
+         })}
+       </div>
 
-      {/* Sales Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue Overview</h2>
-          <select className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-            <option>Last 6 Months</option>
-            <option>Last 12 Months</option>
-            <option>This Year</option>
-          </select>
-        </div>
+       {/* Sales chart */}
+       <motion.div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+         <div className="flex items-center justify-between mb-6">
+           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue Overview</h2>
+         </div>
+         <div className="h-80 flex items-end justify-between gap-4">
+           {salesSeries && salesSeries.length > 0 ? (
+             salesSeries.map((d: any, i: number) => (
+               <div key={i} className="flex-1 flex items-end justify-center">
+                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-t-md" style={{ height: `${Math.min(100, (Number(d.totalRevenue || 0) / 1000))}%` }} />
+                 <p className="text-xs mt-2 text-gray-500 dark:text-gray-400">{d.date}</p>
+               </div>
+             ))
+           ) : (
+             <div className="text-gray-500">No sales data available</div>
+           )}
+         </div>
+       </motion.div>
 
-        <div className="h-80 flex items-end justify-between gap-4">
-          import { useEffect, useState } from 'react';
-          import { useAdminStore } from '@/lib/store/adminStore';
-          {salesData.map((data, index) => (
-            <motion.div
-            const metrics = useAdminStore((s) => s.metrics);
-            const topProducts = useAdminStore((s) => s.topProducts);
-            const fetchTopProducts = useAdminStore((s) => s.fetchTopProducts);
-            const [salesData, setSalesData] = useState<any[]>([]);
-
-            useEffect(() => {
-              // Fetch top products for this analytics page
-              fetchTopProducts(5);
-              // Sales data series not yet supported by API; keep placeholder or derive from metrics
-              setSalesData([{
-                month: 'Jan', revenue: metrics?.totalRevenue || 0, orders: metrics?.totalOrders || 0
-              }]);
-            }, [fetchTopProducts, metrics]);
-              initial={{ height: 0 }}
-            </motion.div>
-  
-            // Provide a default to avoid runtime errors
-            const productsList = topProducts || [];
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Top Products */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
-      >
-        <div className="flex items-center gap-3 mb-6">
-          <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-500" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Top Selling Products</h2>
-        </div>
-
-        <div className="space-y-4">
-          {topProducts.map((product, index) => (
-            <div
-              key={product.name}
-              className="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-linear-to-br from-orange-600 to-orange-500 text-white flex items-center justify-center font-bold">
-                  {index + 1}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-white">{product.name}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{product.sales} units sold</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-bold text-orange-600 dark:text-orange-500">
-                  ${product.revenue.toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">Revenue</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    </div>
+       {/* Top Products */}
+       <motion.div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+         <div className="flex items-center gap-3 mb-6">
+           <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-500" />
+           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Top Selling Products</h2>
+         </div>
+         <div className="space-y-4">
+           {topProducts && topProducts.length > 0 ? (
+             topProducts.map((product: any, index: number) => (
+               <div key={product.productId || product.name || index} className="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition">
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 rounded-lg bg-linear-to-br from-orange-600 to-orange-500 text-white flex items-center justify-center font-bold">{index + 1}</div>
+                   <div>
+                     <p className="font-semibold text-gray-900 dark:text-white">{product.name || product.productId}</p>
+                     <p className="text-sm text-gray-600 dark:text-gray-400">{product.sales || product.salesCount} units sold</p>
+                   </div>
+                 </div>
+                 <div className="text-right">
+                   <p className="font-bold text-orange-600 dark:text-orange-500">${product.revenue?.toLocaleString ? product.revenue.toLocaleString() : product.revenue}</p>
+                   <p className="text-xs text-gray-500 dark:text-gray-500">Revenue</p>
+                 </div>
+               </div>
+             ))
+           ) : (
+             <div className="text-gray-500">No top products found</div>
+           )}
+         </div>
+       </motion.div>
+     </div>
   );
 }

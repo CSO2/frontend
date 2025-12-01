@@ -6,8 +6,9 @@ import { Database, AlertTriangle, CheckCircle, Edit2 } from 'lucide-react';
 import { useProductStore } from '@/lib/store/productStore';
 
 export default function AdminStock() {
-  const { products } = useProductStore();
+  const { products, updateStockLevel } = useProductStore();
   const [stockFilter, setStockFilter] = useState('all');
+  const [stockUpdates, setStockUpdates] = useState<Record<string, number>>({});
 
   const filteredProducts = products.filter(product => {
     if (stockFilter === 'out') return product.stockLevel === 0;
@@ -19,6 +20,26 @@ export default function AdminStock() {
   const outOfStock = products.filter(p => p.stockLevel === 0).length;
   const lowStock = products.filter(p => p.stockLevel > 0 && p.stockLevel < 5).length;
   const inStock = products.filter(p => p.stockLevel >= 5).length;
+
+  const handleStockChange = (id: string, value: string) => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 0) {
+      setStockUpdates(prev => ({ ...prev, [id]: numValue }));
+    }
+  };
+
+  const handleUpdate = async (id: string) => {
+    const newStock = stockUpdates[id];
+    if (newStock !== undefined) {
+      await updateStockLevel(id, newStock);
+      // Optionally clear the update state or show success message
+      setStockUpdates(prev => {
+        const newState = { ...prev };
+        delete newState[id];
+        return newState;
+      });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -182,7 +203,8 @@ export default function AdminStock() {
                   <td className="px-6 py-4">
                     <input
                       type="number"
-                      defaultValue={product.stockLevel}
+                      value={stockUpdates[product.id] !== undefined ? stockUpdates[product.id] : product.stockLevel}
+                      onChange={(e) => handleStockChange(product.id, e.target.value)}
                       className="w-20 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-bold text-center focus:ring-2 focus:ring-orange-500"
                     />
                   </td>
@@ -198,7 +220,11 @@ export default function AdminStock() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="px-4 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition flex items-center gap-2">
+                    <button
+                      onClick={() => handleUpdate(product.id)}
+                      disabled={stockUpdates[product.id] === undefined || stockUpdates[product.id] === product.stockLevel}
+                      className="px-4 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                       <Database className="w-4 h-4" />
                       Update
                     </button>

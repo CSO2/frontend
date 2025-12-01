@@ -1,4 +1,7 @@
-'use client';
+ 'use client';
+
+// Capture a stable now value on module load so Date.now is not invoked in render
+const DEFAULT_NOW = Date.now();
 
 import { motion } from 'framer-motion';
 import { FileText, Download, Eye, Search } from 'lucide-react';
@@ -77,7 +80,7 @@ export default function InvoicesPage() {
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{invoice.orderNumber}</td>
                   <td className="px-6 py-4 text-gray-900 dark:text-white">{invoice.userId || invoice.customer}</td>
                   <td className="px-6 py-4 text-orange-600 dark:text-orange-500 font-bold">Rs. {(invoice.total || 0).toLocaleString()}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(invoice.date || invoice.createdAt || Date.now()).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{new Date(invoice.date || invoice.createdAt || DEFAULT_NOW).toLocaleDateString()}</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       invoice.status === 'Paid' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
@@ -95,7 +98,7 @@ export default function InvoicesPage() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))) }
             </tbody>
           </table>
         </div>

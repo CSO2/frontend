@@ -35,7 +35,7 @@ interface ProductFormData {
 export default function AdminProductEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const { products } = useProductStore();
+  const { products, addProduct, updateProduct, deleteProduct } = useProductStore();
   const product = products.find((p) => p.id === id);
 
   const [formData, setFormData] = useState<ProductFormData>({
@@ -81,19 +81,35 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log('Product saved:', formData);
-    setIsSaving(false);
-    router.push('/admin/products');
+    try {
+      const productData = {
+        ...formData,
+        price: parseFloat(formData.price),
+        specs: formData.specs.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {}),
+      };
+
+      if (id === 'new') {
+        await addProduct(productData as any);
+      } else {
+        await updateProduct(id, productData as any);
+      }
+      router.push('/admin/products');
+    } catch (error) {
+      console.error('Failed to save product:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleDelete = async () => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log('Product deleted:', id);
-    setShowDeleteModal(false);
-    router.push('/admin/products');
+    try {
+      await deleteProduct(id);
+      router.push('/admin/products');
+    } catch (error) {
+      console.error('Failed to delete product:', error);
+    } finally {
+      setShowDeleteModal(false);
+    }
   };
 
   const addTag = () => {
@@ -345,7 +361,7 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
 
               {formData.specs.length === 0 && (
                 <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-                  No specifications added yet. Click "Add Spec" to get started.
+                  No specifications added yet. Click &quot;Add Spec&quot; to get started.
                 </p>
               )}
             </div>
@@ -409,7 +425,8 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
           >
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Preview</h2>
             <div className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
-              {formData.imageUrl ? (
+                {formData.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={formData.imageUrl}
                   alt={formData.name}
@@ -483,7 +500,7 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Delete Product</h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Are you sure you want to delete "{formData.name}"? This action cannot be undone.
+              Are you sure you want to delete {formData.name || 'this product'}? This action cannot be undone.
             </p>
             <div className="flex gap-3">
               <button

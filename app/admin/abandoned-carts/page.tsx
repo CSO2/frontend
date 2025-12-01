@@ -2,21 +2,27 @@
 
 import { motion } from 'framer-motion';
 import { ShoppingCart, Search, Edit2, Mail } from 'lucide-react';
-import { useState } from 'react';
-
-const abandonedCarts = [
-  { id: 1, customer: 'John Doe', email: 'john@example.com', cartValue: 4500, items: 3, abandonedAt: '2024-01-15', lastReminder: 'Not sent' },
-  { id: 2, customer: 'Jane Smith', email: 'jane@example.com', cartValue: 2890, items: 2, abandonedAt: '2024-01-14', lastReminder: '1 day ago' },
-  { id: 3, customer: 'Bob Wilson', email: 'bob@example.com', cartValue: 8750, items: 5, abandonedAt: '2024-01-13', lastReminder: '2 days ago' },
-];
+import { useEffect, useState } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
 export default function AbandonedCartsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { abandonedCarts, isLoading, fetchAbandonedCarts } = useAdminStore((s) => ({
+    abandonedCarts: s.abandonedCarts,
+    isLoading: s.isLoading,
+    fetchAbandonedCarts: s.fetchAbandonedCarts,
+  }));
 
-  const filtered = abandonedCarts.filter(c =>
-    c.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.email.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetchAbandonedCarts().catch((e) => console.error(e));
+  }, [fetchAbandonedCarts]);
+
+  const filtered = abandonedCarts.filter((c: any) =>
+    (c.customer || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (c.email || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalValue = abandonedCarts.reduce((sum: number, cart: any) => sum + (cart.cartValue || 0), 0);
 
   return (
     <div className="space-y-8">
@@ -36,7 +42,7 @@ export default function AbandonedCartsPage() {
         >
           <p className="text-gray-600 dark:text-gray-400 mb-1">Total Abandoned</p>
           <p className="text-4xl font-bold text-gray-900 dark:text-white">{abandonedCarts.length}</p>
-          <p className="text-sm text-orange-600 dark:text-orange-500 mt-2">+12% from last week</p>
+          <p className="text-sm text-orange-600 dark:text-orange-500 mt-2">Active carts</p>
         </motion.div>
 
         <motion.div
@@ -46,7 +52,7 @@ export default function AbandonedCartsPage() {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
         >
           <p className="text-gray-600 dark:text-gray-400 mb-1">Total Value</p>
-          <p className="text-4xl font-bold text-gray-900 dark:text-white">Rs. 16,140</p>
+          <p className="text-4xl font-bold text-gray-900 dark:text-white">Rs. {totalValue.toLocaleString()}</p>
           <p className="text-sm text-green-600 dark:text-green-500 mt-2">Potential revenue</p>
         </motion.div>
 
@@ -57,8 +63,8 @@ export default function AbandonedCartsPage() {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
         >
           <p className="text-gray-600 dark:text-gray-400 mb-1">Recovery Rate</p>
-          <p className="text-4xl font-bold text-gray-900 dark:text-white">18.5%</p>
-          <p className="text-sm text-blue-600 dark:text-blue-500 mt-2">After reminders sent</p>
+          <p className="text-4xl font-bold text-gray-900 dark:text-white">0%</p>
+          <p className="text-sm text-blue-600 dark:text-blue-500 mt-2">Feature pending</p>
         </motion.div>
       </div>
 

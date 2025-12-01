@@ -86,7 +86,7 @@ export default function CustomersPage() {
                     </button>
                   </td>
                 </tr>
-              ))}
+                ))) }
             </tbody>
           </table>
         </div>

@@ -2,20 +2,20 @@
 
 import { motion } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, Percent } from 'lucide-react';
-import { useState } from 'react';
-
-const promotions = [
-  { id: 1, name: 'Summer Sale 2024', code: 'SUMMER20', discount: 20, type: 'Percentage', status: 'Active' },
-  { id: 2, name: 'First-Time Buyer', code: 'FIRST10', discount: 10, type: 'Percentage', status: 'Active' },
-  { id: 3, name: 'Clearance Sale', code: 'CLEAR50', discount: 50, type: 'Fixed', status: 'Scheduled' },
-];
+import { useEffect, useState } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
 export default function PromotionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { promotions, fetchPromotions } = useAdminStore((s) => ({ promotions: s.promotions, fetchPromotions: s.fetchPromotions }));
 
-  const filtered = promotions.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.code.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetchPromotions().catch((e) => console.error(e));
+  }, [fetchPromotions]);
+
+  const filtered = promotions.filter((p: any) =>
+    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.code || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

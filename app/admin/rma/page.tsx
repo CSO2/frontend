@@ -2,20 +2,24 @@
 
 import { motion } from 'framer-motion';
 import { AlertCircle, Search, Edit2, Trash2, CheckCircle } from 'lucide-react';
-import { useState } from 'react';
-
-const rmaRequests = [
-  { id: 'RMA-001', orderNumber: 'ORD-1001', customer: 'John Doe', reason: 'Defective', status: 'Pending', date: '2024-01-15' },
-  { id: 'RMA-002', orderNumber: 'ORD-1002', customer: 'Jane Smith', reason: 'Not as Described', status: 'Approved', date: '2024-01-14' },
-  { id: 'RMA-003', orderNumber: 'ORD-1003', customer: 'Bob Wilson', reason: 'Damaged in Shipping', status: 'Resolved', date: '2024-01-13' },
-];
+import { useEffect, useState } from 'react';
+import { useAdminStore } from '@/lib/store/adminStore';
 
 export default function RMAPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { rmaRequests, isLoading, fetchRMARequests } = useAdminStore((s) => ({
+    rmaRequests: s.rmaRequests,
+    isLoading: s.isLoading,
+    fetchRMARequests: s.fetchRMARequests,
+  }));
 
-  const filtered = rmaRequests.filter(r =>
-    r.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.customer.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    fetchRMARequests().catch((e) => console.error(e));
+  }, [fetchRMARequests]);
+
+  const filtered = rmaRequests.filter((r: any) =>
+    (r.id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (r.customer || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
