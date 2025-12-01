@@ -34,7 +34,7 @@ const getPasswordStrength = (password: string): { strength: number; label: strin
 
 export default function SignupPage() {
   const router = useRouter();
-  const login = useUserStore((state) => state.login);
+  const { register } = useUserStore();
   const [formData, setFormData] = useState<SignupForm>({
     fullName: '',
     email: '',
@@ -68,7 +68,7 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
 
@@ -89,19 +89,25 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
-      setSuccess(true);
-      login({
-        id: 'customer-' + Date.now(),
+    try {
+      await register({
         name: formData.fullName,
         email: formData.email,
-        loyaltyPoints: 500,
-        tier: 'bronze',
+        password: formData.password,
+        phone: formData.phone,
+        preferences: {
+          newsletter: formData.newsletter,
+          preferredStore: formData.preferredStore
+        }
       });
 
-      setLoading(false);
+      setSuccess(true);
       setTimeout(() => router.push('/account'), 1200);
-    }, 1500);
+    } catch (err: any) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

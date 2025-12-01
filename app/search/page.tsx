@@ -28,7 +28,7 @@ function SearchResults() {
           </h1>
           {query && (
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
-              Results for "<span className="text-wso2-orange">{query}</span>" ({results.length}{' '}
+              Results for &quot;<span className="text-wso2-orange">{query}</span>&quot; ({results.length}{' '}
               found)
             </p>
           )}

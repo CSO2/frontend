@@ -240,7 +240,7 @@ export default function ReturnsPage() {
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Return Policy (30 days)</h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                  For buyer's remorse, unopened products, or DOA items within 30 days of purchase.
+                  For buyer&apos;s remorse, unopened products, or DOA items within 30 days of purchase.
                 </p>
               </div>
               <div>

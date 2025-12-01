@@ -79,6 +79,7 @@ export default function WishlistPage() {
               >
                 <Link href={`/product/${product!.id}`}>
                   <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={product!.imageUrl}
                       alt={product!.name}

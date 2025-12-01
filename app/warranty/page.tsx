@@ -465,7 +465,7 @@ export default function WarrantyRegistrationPage() {
                     Need Help?
                   </h4>
                   <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
-                    Can't find your serial number or have questions about warranty registration?
+                    Can&apos;t find your serial number or have questions about warranty registration?
                   </p>
                   <button className="text-sm font-bold text-blue-600 dark:text-blue-400 hover:underline">
                     Contact Support →
@@ -490,11 +490,11 @@ export default function WarrantyRegistrationPage() {
                   <span className="font-bold text-gray-900 dark:text-white">
                     2 Years Coverage:
                   </span>{' '}
-                  All products include manufacturer's warranty
+                  All products include manufacturer&apos;s warranty
                 </p>
                 <p>
                   <span className="font-bold text-gray-900 dark:text-white">
-                    What's Covered:
+                    What&apos;s Covered:
                   </span>{' '}
                   Manufacturing defects, component failures
                 </p>

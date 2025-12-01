@@ -48,7 +48,7 @@ export default function TermsOfServicePage() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">1. Acceptance of Terms</h2>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  By accessing or using CS02's website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
+                  By accessing or using CS02&apos;s website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
                 </p>
               </div>
             </div>

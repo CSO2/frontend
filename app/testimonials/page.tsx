@@ -48,7 +48,7 @@ export default function Testimonials() {
             Customer Stories
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
-            Don't just take our word for it. Hear what our customers have to say about their CS02 experience.
+            Don&apos;t just take our word for it. Hear what our customers have to say about their CS02 experience.
           </p>
         </motion.div>
 
@@ -99,7 +99,7 @@ export default function Testimonials() {
 
               {/* Testimonial Text */}
               <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed line-clamp-6 grow wrap-break-word overflow-hidden">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
 
               {/* Author Info */}
@@ -134,7 +134,7 @@ export default function Testimonials() {
             Ready to Build Your Dream PC?
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Join thousands of satisfied customers who've built their perfect system with CS02. Start your journey today!
+            Join thousands of satisfied customers who&apos;ve built their perfect system with CS02. Start your journey today!
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
             <a

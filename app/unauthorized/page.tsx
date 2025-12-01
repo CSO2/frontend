@@ -45,7 +45,7 @@ export default function UnauthorizedPage() {
           transition={{ delay: 0.4 }}
           className="text-xl text-gray-600 dark:text-gray-400 mb-8"
         >
-          You don't have permission to access this page. Please sign in or contact an administrator.
+          You don&apos;t have permission to access this page. Please sign in or contact an administrator.
         </motion.p>
 
         <motion.div
