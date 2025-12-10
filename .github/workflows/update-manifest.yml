@@ -25,7 +25,7 @@ jobs:
       - name: Checkout k8s-config repo
         uses: actions/checkout@v4
         with:
-          repository: 'TechTorque-2025/Infrastructure'
+          repository: 'CSO2/Infrastructure'
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           ref: ${{ steps.info.outputs.branch }} 
           path: 'Infrastructure'
