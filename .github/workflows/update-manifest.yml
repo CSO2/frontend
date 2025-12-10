@@ -53,7 +53,11 @@ jobs:
           echo "🎯 Targeting overlay: ${OVERLAY}"
           cd cso2/k8s/overlays/${OVERLAY}
           
-          NEW_IMAGE="ghcr.io/${{ github.repository_owner }}/${SERVICE_NAME_GHCR}:${{ steps.info.outputs.branch }}-${{ steps.info.outputs.sha }}"
+          # Force lowercase repo owner for Docker compatibility
+          OWNER="${{ github.repository_owner }}"
+          OWNER="${OWNER,,}"
+          
+          NEW_IMAGE="ghcr.io/${OWNER}/${SERVICE_NAME_GHCR}:${{ steps.info.outputs.branch }}-${{ steps.info.outputs.sha }}"
           
           echo "🔄 Updating ${SERVICE_NAME_KUSTOMIZE} to use image: ${NEW_IMAGE}"
           
