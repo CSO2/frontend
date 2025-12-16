@@ -11,8 +11,8 @@ import {
   Sun,
   Menu,
   X,
-  Cpu,
 } from 'lucide-react';
+import Image from 'next/image';
 import { useThemeStore } from '@/lib/store/themeStore';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
@@ -69,13 +69,14 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 group">
-              <motion.div
-                whileHover={{ rotate: 180 }}
-                transition={{ duration: 0.5 }}
-                className="text-primary"
-              >
-                <Cpu size={28} strokeWidth={2.5} />
-              </motion.div>
+              <Image
+                src="/logo.png"
+                alt="CS02 Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8 object-contain"
+                priority
+              />
               <div className="flex flex-col">
                 <span className="text-xl font-heading font-bold tracking-tight leading-none group-hover:text-primary transition-colors">
                   CS02
