@@ -12,8 +12,28 @@ const config: Config = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "#FF7300",
+          foreground: "#FFFFFF",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
         "wso2-orange": "#FF7300",
         "wso2-orange-dark": "#E66800",
+      },
+      fontFamily: {
+        heading: ["var(--font-outfit)", "sans-serif"],
+        body: ["var(--font-inter)", "sans-serif"],
       },
     },
   },

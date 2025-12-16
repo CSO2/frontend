@@ -40,6 +40,12 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build production bundle
         run: npm run build
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   ShoppingCart,
@@ -11,12 +11,13 @@ import {
   Sun,
   Menu,
   X,
+  Cpu,
 } from 'lucide-react';
 import { useThemeStore } from '@/lib/store/themeStore';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { useUserStore } from '@/lib/store/userStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Navigation() {
   const { theme, toggleTheme } = useThemeStore();
@@ -25,6 +26,15 @@ export default function Navigation() {
   const user = useUserStore((state) => state.user);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,169 +49,168 @@ export default function Navigation() {
     { href: '/pc-builder', label: 'PC Builder' },
     { href: '/builderbot', label: 'BuilderBot' },
     { href: '/deals', label: 'Deals' },
-    { href: '/gallery', label: 'Build Gallery' },
+    { href: '/gallery', label: 'Gallery' },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-bold"
-            >
-              <span className="text-gray-900 dark:text-white">CS</span>
-              <span className="text-wso2-orange">02</span>
-            </motion.div>
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Search Bar */}
-          <form
-            onSubmit={handleSearch}
-            className="hidden md:flex flex-1 max-w-md mx-8"
-          >
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange"
-              />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            </div>
-          </form>
-
-          {/* Right Side Icons */}
-          <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? (
-                <Moon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-              ) : (
-                <Sun className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-              )}
-            </motion.button>
-
-            {/* Wishlist */}
-            <Link href="/wishlist">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                <Heart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                {wishlistItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-wso2-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                    {wishlistItems}
-                  </span>
-                )}
-              </motion.div>
-            </Link>
-
-            {/* Cart */}
-            <Link href="/cart">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                <ShoppingCart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                {cartItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-wso2-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                    {cartItems}
-                  </span>
-                )}
-              </motion.div>
-            </Link>
-
-            {/* User Account */}
-            <Link href={user ? '/account' : '/login'}>
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                <User className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-              </motion.div>
-            </Link>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
-              ) : (
-                <Menu className="h-6 w-6 text-gray-700 dark:text-gray-300" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Search */}
-        <div className="md:hidden py-3">
-          <form onSubmit={handleSearch}>
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wso2-orange"
-              />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="lg:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900"
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
+          ? 'py-4'
+          : 'py-6'
+          }`}
+      >
+        <div
+          className={`mx-auto px-6 transition-all duration-500 ${isScrolled
+            ? 'max-w-7xl bg-background/70 backdrop-blur-xl border border-white/10 shadow-lg rounded-2xl'
+            : 'max-w-[1440px] bg-background/10 backdrop-blur-md border-b border-white/5'
+            }`}
         >
-          <div className="px-4 py-6 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block text-gray-700 dark:text-gray-300 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-2 group">
+              <motion.div
+                whileHover={{ rotate: 180 }}
+                transition={{ duration: 0.5 }}
+                className="text-primary"
               >
-                {link.label}
+                <Cpu size={28} strokeWidth={2.5} />
+              </motion.div>
+              <div className="flex flex-col">
+                <span className="text-xl font-heading font-bold tracking-tight leading-none group-hover:text-primary transition-colors">
+                  CS02
+                </span>
+                <span className="text-[0.6rem] font-bold tracking-widest uppercase text-muted-foreground group-hover:text-primary/80 transition-colors">
+                  Systems
+                </span>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-all duration-200"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Search Bar (Desktop) */}
+            <div className="hidden md:flex flex-1 max-w-xs mx-6">
+              <form onSubmit={handleSearch} className="relative w-full group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search..."
+                  className="block w-full pl-10 pr-3 py-1.5 border border-input rounded-full leading-5 bg-secondary/50 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-background transition-all duration-200 sm:text-sm"
+                />
+              </form>
+            </div>
+
+            {/* Right Side Icons */}
+            <div className="flex items-center space-x-2">
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
+
+              {/* Wishlist */}
+              <Link href="/wishlist">
+                <div className="relative p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
+                  <Heart size={20} />
+                  {wishlistItems > 0 && (
+                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-primary-foreground transform translate-x-1/4 -translate-y-1/4 bg-primary rounded-full">
+                      {wishlistItems}
+                    </span>
+                  )}
+                </div>
               </Link>
-            ))}
+
+              {/* Cart */}
+              <Link href="/cart">
+                <div className="relative p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
+                  <ShoppingCart size={20} />
+                  {cartItems > 0 && (
+                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-primary-foreground transform translate-x-1/4 -translate-y-1/4 bg-primary rounded-full">
+                      {cartItems}
+                    </span>
+                  )}
+                </div>
+              </Link>
+
+              {/* User Account */}
+              <Link href={user ? '/account' : '/login'}>
+                <div className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
+                  <User size={20} />
+                </div>
+              </Link>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
-        </motion.div>
-      )}
-    </nav>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md overflow-hidden"
+            >
+              <div className="px-4 pt-4 pb-6 space-y-4">
+                {/* Mobile Search */}
+                <form onSubmit={handleSearch} className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search products..."
+                    className="w-full px-4 py-3 rounded-xl border border-input bg-secondary/50 text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  />
+                  <Search className="absolute right-3 top-3.5 h-5 w-5 text-muted-foreground" />
+                </form>
+
+                <div className="space-y-1">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block px-4 py-3 text-base font-medium text-foreground hover:bg-muted rounded-xl transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+      {/* Spacer to prevent content jump when nav becomes fixed/sticky relative to content flow if needed, 
+          but here we use fixed nav so we might need padding on body or main. 
+          The layout has 'pt-16' or similar usually, or we can add a div here. 
+      */}
+    </>
   );
 }

@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+import { Inter, Outfit } from 'next/font/google';
 import "./globals.css";
 import Navigation from "./components/ui/Navigation";
 import Footer from "./components/ui/Footer";
 import LiveChatWidget from "./components/ui/LiveChatWidget";
 import ThemeProvider from "./components/providers/ThemeProvider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "CS02 - Build Your Dream PC",
@@ -16,13 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${outfit.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -45,10 +54,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
         <ThemeProvider>
           <Navigation />
-          <main className="min-h-screen w-full">
+          <main className="flex-1 w-full pt-28">
             {children}
           </main>
           <Footer />

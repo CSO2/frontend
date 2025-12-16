@@ -13,7 +13,7 @@ export default function ComparePage() {
   const { items, removeItem, clearCompare } = useCompareStore();
   const { products } = useProductStore();
   const { addItem } = useCartStore();
-  
+
   // Get full product objects from IDs
   const compareList: Product[] = items
     .map(id => products.find(p => p.id === id))
@@ -21,24 +21,24 @@ export default function ComparePage() {
 
   if (compareList.length === 0) {
     return (
-      <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black flex items-center justify-center py-24">
+      <div className="min-h-screen bg-background flex items-center justify-center py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-32 h-32 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Minus className="w-16 h-16 text-orange-600 dark:text-orange-500" />
+          <div className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Minus className="w-16 h-16 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-3xl font-bold font-heading text-foreground mb-4">
             No Products to Compare
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-muted-foreground mb-8">
             Add products from product pages to compare their features
           </p>
           <Link
             href="/components"
-            className="inline-block px-8 py-3 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition"
+            className="inline-block px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 hover:shadow-lg transition"
           >
             Browse Components
           </Link>
@@ -55,41 +55,42 @@ export default function ComparePage() {
   );
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black py-24">
+    <div className="min-h-screen bg-background py-24">
       <div className="container mx-auto px-4">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold font-heading mb-4 bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
             Compare Products
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-xl text-muted-foreground mb-6">
             Side-by-side comparison of {compareList.length} product{compareList.length > 1 ? 's' : ''}
           </p>
           <button
             onClick={clearCompare}
-            className="px-6 py-2 text-red-600 dark:text-red-500 border-2 border-red-600 dark:border-red-500 rounded-lg font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+            className="px-6 py-2 text-destructive border-2 border-destructive rounded-lg font-semibold hover:bg-destructive/10 transition"
           >
             Clear All
           </button>
         </motion.div>
 
         {/* Comparison Table */}
+        {/* Comparison Table */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+          className="bg-card text-card-foreground rounded-2xl shadow-xl border border-border overflow-hidden"
         >
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="p-4 text-left sticky left-0 bg-white dark:bg-gray-800 z-10">
-                    <span className="text-gray-600 dark:text-gray-400 font-medium">
+                <tr className="border-b border-border">
+                  <th className="p-4 text-left sticky left-0 bg-card z-10">
+                    <span className="text-muted-foreground font-medium">
                       Specification
                     </span>
                   </th>
@@ -98,7 +99,7 @@ export default function ComparePage() {
                       <div className="relative">
                         <button
                           onClick={() => removeItem(product.id)}
-                          className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition z-20"
+                          className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90 transition z-20"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -109,18 +110,18 @@ export default function ComparePage() {
                           height={200}
                           className="w-full h-40 object-cover rounded-lg mb-3"
                         />
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-left mb-1">
+                        <h3 className="font-semibold text-foreground text-left mb-1">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 text-left mb-2">
+                        <p className="text-sm text-muted-foreground text-left mb-2">
                           {product.brand}
                         </p>
-                        <p className="text-2xl font-bold text-orange-600 dark:text-orange-500 text-left mb-3">
+                        <p className="text-2xl font-bold text-primary text-left mb-3">
                           ${product.price.toLocaleString()}
                         </p>
                         <button
                           onClick={() => addItem(product, 1)}
-                          className="w-full py-2 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+                          className="w-full py-2 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 hover:shadow-lg transition flex items-center justify-center gap-2"
                         >
                           <ShoppingCart className="w-4 h-4" />
                           Add to Cart
@@ -132,19 +133,19 @@ export default function ComparePage() {
               </thead>
               <tbody>
                 {/* Basic Info */}
-                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                  <td className="p-4 font-semibold text-gray-900 dark:text-white sticky left-0 bg-gray-50 dark:bg-gray-700/50">
+                <tr className="border-b border-border bg-muted/50">
+                  <td className="p-4 font-semibold text-foreground sticky left-0 bg-muted/50">
                     Category
                   </td>
                   {compareList.map((product) => (
-                    <td key={product.id} className="p-4 text-gray-600 dark:text-gray-400">
+                    <td key={product.id} className="p-4 text-muted-foreground">
                       {product.subcategory || product.category}
                     </td>
                   ))}
                 </tr>
 
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <td className="p-4 font-semibold text-gray-900 dark:text-white sticky left-0 bg-white dark:bg-gray-800">
+                <tr className="border-b border-border">
+                  <td className="p-4 font-semibold text-foreground sticky left-0 bg-card">
                     Stock
                   </td>
                   {compareList.map((product) => (
@@ -155,7 +156,7 @@ export default function ComparePage() {
                           In Stock
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm font-semibold">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-destructive/10 text-destructive rounded-full text-sm font-semibold">
                           <X className="w-4 h-4" />
                           Out of Stock
                         </span>
@@ -164,12 +165,12 @@ export default function ComparePage() {
                   ))}
                 </tr>
 
-                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                  <td className="p-4 font-semibold text-gray-900 dark:text-white sticky left-0 bg-gray-50 dark:bg-gray-700/50">
+                <tr className="border-b border-border bg-muted/50">
+                  <td className="p-4 font-semibold text-foreground sticky left-0 bg-muted/50">
                     Rating
                   </td>
                   {compareList.map((product) => (
-                    <td key={product.id} className="p-4 text-gray-600 dark:text-gray-400">
+                    <td key={product.id} className="p-4 text-muted-foreground">
                       {product.rating ? (
                         <div className="flex items-center gap-2">
                           <span className="font-semibold">{product.rating.toFixed(1)}</span>
@@ -177,7 +178,7 @@ export default function ComparePage() {
                           <span className="text-sm">({product.reviewCount || 0} reviews)</span>
                         </div>
                       ) : (
-                        <span className="text-gray-400">No ratings</span>
+                        <span className="text-muted-foreground/50">No ratings</span>
                       )}
                     </td>
                   ))}
@@ -187,21 +188,19 @@ export default function ComparePage() {
                 {allSpecKeys.map((specKey: string, index: number) => (
                   <tr
                     key={specKey}
-                    className={`border-b border-gray-200 dark:border-gray-700 ${
-                      index % 2 === 0 ? '' : 'bg-gray-50 dark:bg-gray-700/50'
-                    }`}
+                    className={`border-b border-border ${index % 2 === 0 ? '' : 'bg-muted/50'
+                      }`}
                   >
-                    <td className={`p-4 font-semibold text-gray-900 dark:text-white sticky left-0 ${
-                      index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700/50'
-                    }`}>
+                    <td className={`p-4 font-semibold text-foreground sticky left-0 ${index % 2 === 0 ? 'bg-card' : 'bg-muted/50'
+                      }`}>
                       {specKey.charAt(0).toUpperCase() + specKey.slice(1)}
                     </td>
                     {compareList.map((product: Product) => (
-                      <td key={product.id} className="p-4 text-gray-600 dark:text-gray-400">
+                      <td key={product.id} className="p-4 text-muted-foreground">
                         {product.specs[specKey] !== undefined ? (
                           <span>{product.specs[specKey]}</span>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-muted-foreground/50">-</span>
                         )}
                       </td>
                     ))}
@@ -209,12 +208,12 @@ export default function ComparePage() {
                 ))}
 
                 {/* Description */}
-                <tr className="bg-gray-50 dark:bg-gray-700/50">
-                  <td className="p-4 font-semibold text-gray-900 dark:text-white sticky left-0 bg-gray-50 dark:bg-gray-700/50">
+                <tr className="bg-muted/50">
+                  <td className="p-4 font-semibold text-foreground sticky left-0 bg-muted/50">
                     Description
                   </td>
                   {compareList.map((product) => (
-                    <td key={product.id} className="p-4 text-sm text-gray-600 dark:text-gray-400">
+                    <td key={product.id} className="p-4 text-sm text-muted-foreground">
                       {product.description}
                     </td>
                   ))}
@@ -230,12 +229,12 @@ export default function ComparePage() {
           animate={{ opacity: 1, y: 0 }}
           className="mt-8 text-center"
         >
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             You can compare up to 4 products at once
           </p>
           <Link
             href="/components"
-            className="inline-block px-8 py-3 border-2 border-orange-500 text-orange-600 dark:text-orange-500 rounded-lg font-semibold hover:bg-orange-50 dark:hover:bg-orange-900/20 transition"
+            className="inline-block px-8 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition"
           >
             Add More Products
           </Link>
