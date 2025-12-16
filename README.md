@@ -230,7 +230,14 @@ const nextConfig = {
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20.9.0+
+  - Recommend using [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager):
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    # Restart terminal or source ~/.bashrc
+    nvm install 20
+    nvm use 20
+    ```
 - npm or yarn
 - Backend services running (see [Backend README](../backend/README.md))
 

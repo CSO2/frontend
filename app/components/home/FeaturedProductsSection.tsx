@@ -9,14 +9,14 @@ import { useState, useEffect } from 'react';
 export default function FeaturedProductsSection() {
   const { featuredProducts, fetchFeaturedProducts, isLoading } = useProductStore();
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   useEffect(() => {
     fetchFeaturedProducts();
   }, [fetchFeaturedProducts]);
 
   // Use featured products from store
   const productsToDisplay = featuredProducts.length > 0 ? featuredProducts : [];
-  
+
   const itemsPerView = 4;
   const maxIndex = Math.max(0, productsToDisplay.length - itemsPerView);
 
@@ -30,14 +30,14 @@ export default function FeaturedProductsSection() {
 
   if (isLoading) {
     return (
-      <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800 flex justify-center items-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-wso2-orange" />
+      <section className="py-12 sm:py-16 md:py-20 bg-muted/20 flex justify-center items-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </section>
     );
   }
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-800">
+    <section className="py-12 sm:py-16 md:py-20 bg-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,10 +47,10 @@ export default function FeaturedProductsSection() {
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-10 md:mb-12 gap-4"
         >
           <div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-foreground mb-2">
               Featured Products
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-base sm:text-lg text-muted-foreground">
               Our most popular and highly-rated components
             </p>
           </div>
@@ -61,18 +61,18 @@ export default function FeaturedProductsSection() {
               whileTap={{ scale: 0.9 }}
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="p-2 rounded-lg bg-white dark:bg-gray-700 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-lg bg-card border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-900 dark:text-white" />
+              <ChevronLeft className="h-6 w-6 text-foreground" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleNext}
               disabled={currentIndex >= maxIndex}
-              className="p-2 rounded-lg bg-white dark:bg-gray-700 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-lg bg-card border border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <ChevronRight className="h-6 w-6 text-gray-900 dark:text-white" />
+              <ChevronRight className="h-6 w-6 text-foreground" />
             </motion.button>
           </div>
         </motion.div>
@@ -106,11 +106,10 @@ export default function FeaturedProductsSection() {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`h-2 w-2 rounded-full transition-all ${
-                currentIndex === index
-                  ? 'bg-wso2-orange w-8'
-                  : 'bg-gray-300 dark:bg-gray-600'
-              }`}
+              className={`h-2 w-2 rounded-full transition-all ${currentIndex === index
+                  ? 'bg-primary w-8'
+                  : 'bg-muted-foreground/30'
+                }`}
             />
           ))}
         </div>

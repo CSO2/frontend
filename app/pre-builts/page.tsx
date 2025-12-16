@@ -13,17 +13,17 @@ export default function PreBuiltsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-8 sm:py-10 md:py-12">
+    <div className="min-h-screen bg-background py-8 sm:py-10 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-foreground mb-3 sm:mb-4">
             Pre-Built Gaming PCs
           </h1>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">
             Ready to ship, expertly built systems for gaming and productivity
           </p>
         </motion.div>
@@ -43,7 +43,7 @@ export default function PreBuiltsPage() {
 
         {products.length === 0 && (
           <div className="text-center py-16 sm:py-20">
-            <p className="text-gray-500 dark:text-gray-400 text-base sm:text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg">
               No pre-built systems available at the moment
             </p>
           </div>

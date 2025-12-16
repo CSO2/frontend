@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Mail, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -58,21 +58,6 @@ export default function Footer() {
         { href: '/testimonials', label: 'Testimonials' },
       ],
     },
-    {
-      title: 'Services',
-      links: [
-        { href: '/price-match', label: 'Price Match' },
-        { href: '/financing', label: 'Financing' },
-        { href: '/trade-in', label: 'Trade-In' },
-        { href: '/bulk-orders', label: 'Bulk Orders' },
-      ],
-    },
-  ];
-
-  const legalLinks = [
-    { href: '/returns', label: 'Returns & Refunds' },
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms of Service' },
   ];
 
   const socialLinks = [
@@ -83,41 +68,42 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-      {/* Newsletter Section */}
-      <div className="bg-wso2-orange py-8 sm:py-10 md:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="text-center md:text-left">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                Stay Updated
+    <footer className="bg-muted/30 border-t border-border mt-auto">
+      {/* Newsletter Section - Cleaner Modern Look */}
+      <div className="border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div className="max-w-xl">
+              <h3 className="text-2xl font-heading font-bold text-foreground mb-3">
+                Join our community
               </h3>
-              <p className="text-sm sm:text-base text-white/90">
-                Subscribe to get special offers, tech news, and more.
+              <p className="text-muted-foreground">
+                Get the latest news on product drops, tech tips, and exclusive deals.
               </p>
             </div>
             <form
               onSubmit={handleNewsletterSubmit}
-              className="flex flex-col sm:flex-row gap-3 max-w-md w-full md:w-auto"
+              className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto min-w-[320px]"
             >
               <div className="relative flex-1">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-300" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wso2-orange focus:border-wso2-orange transition"
+                  className="w-full pl-4 pr-10 py-3 rounded-full border border-input bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
+                <Mail className="absolute right-3 top-3 h-5 w-5 text-muted-foreground pointer-events-none" />
               </div>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="px-6 py-3 bg-white text-wso2-orange font-semibold rounded-lg hover:bg-gray-100 transition-colors whitespace-nowrap"
+                className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center justify-center gap-2"
               >
-                {subscribed ? 'Subscribed!' : 'Subscribe'}
+                {subscribed ? 'Joined!' : 'Subscribe'}
+                {!subscribed && <ArrowRight size={18} />}
               </motion.button>
             </form>
           </div>
@@ -125,19 +111,19 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-16">
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h4 className="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-3 sm:mb-4">
+              <h4 className="font-bold text-foreground mb-6">
                 {section.title}
               </h4>
-              <ul className="space-y-1.5 sm:space-y-2">
+              <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors block"
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors block"
                     >
                       {link.label}
                     </Link>
@@ -148,45 +134,31 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Social Links */}
-        <div className="flex justify-center space-x-4 sm:space-x-6 mb-6 sm:mb-8">
-          {socialLinks.map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2.5 sm:p-3 bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-wso2-orange dark:hover:bg-wso2-orange hover:text-white transition-colors"
-              aria-label={social.label}
-            >
-              <social.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-            </motion.a>
-          ))}
-        </div>
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-border">
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-heading font-bold tracking-tight text-foreground">CS02</span>
+            <span className="text-sm text-muted-foreground">© 2025</span>
+          </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 sm:pt-8 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 gap-4">
-            <div className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm text-center md:text-left">
-              <p>© 2025 CS02. All rights reserved.</p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-xs sm:text-sm">
-              {legalLinks.map((link, index) => (
-                <span key={link.href} className="flex items-center">
-                  <Link
-                    href={link.href}
-                    className="text-gray-600 dark:text-gray-400 hover:text-wso2-orange dark:hover:text-wso2-orange transition-colors whitespace-nowrap"
-                  >
-                    {link.label}
-                  </Link>
-                  {index < legalLinks.length - 1 && (
-                    <span className="ml-3 sm:ml-4 text-gray-400">|</span>
-                  )}
-                </span>
-              ))}
-            </div>
+          <div className="flex gap-4">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
+                aria-label={social.label}
+              >
+                <social.icon size={20} />
+              </a>
+            ))}
+          </div>
+
+          <div className="flex gap-6 text-sm text-muted-foreground">
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
           </div>
         </div>
       </div>

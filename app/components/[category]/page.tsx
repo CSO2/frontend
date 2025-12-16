@@ -67,7 +67,7 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-background py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,10 +75,10 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-4xl font-bold font-heading text-foreground mb-2">
             {subcategory}s
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-muted-foreground">
             {filteredProducts.length} products found
           </p>
         </motion.div>
@@ -91,17 +91,17 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
             transition={{ duration: 0.6 }}
             className="lg:w-64 shrink-0"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700 sticky top-20">
+            <div className="bg-card border border-border rounded-xl p-6 shadow-md sticky top-20 text-card-foreground">
               <div className="flex items-center gap-2 mb-6">
-                <Filter className="h-5 w-5 text-wso2-orange" />
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                <Filter className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">
                   Filters
                 </h2>
               </div>
 
               {/* Price Range */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="font-semibold text-foreground mb-3">
                   Price Range
                 </h3>
                 <div className="space-y-2">
@@ -110,21 +110,21 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
                     value={minPrice}
                     onChange={(e) => setMinPrice(Number(e.target.value))}
                     placeholder="Min"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground"
                   />
                   <input
                     type="number"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(Number(e.target.value))}
                     placeholder="Max"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground"
                   />
                 </div>
               </div>
 
               {/* Brand Filter */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="font-semibold text-foreground mb-3">
                   Brand
                 </h3>
                 <div className="space-y-2">
@@ -134,9 +134,9 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
                         type="checkbox"
                         checked={selectedBrands.includes(brand)}
                         onChange={() => toggleBrand(brand)}
-                        className="mr-2 accent-wso2-orange"
+                        className="mr-2 accent-primary"
                       />
-                      <span className="text-gray-700 dark:text-gray-300">
+                      <span className="text-muted-foreground">
                         {brand}
                       </span>
                     </label>
@@ -151,9 +151,9 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
                     type="checkbox"
                     checked={inStockOnly}
                     onChange={(e) => setInStockOnly(e.target.checked)}
-                    className="mr-2 accent-wso2-orange"
+                    className="mr-2 accent-primary"
                   />
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-muted-foreground">
                     In Stock Only
                   </span>
                 </label>
@@ -168,7 +168,7 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="px-4 py-2 border border-input rounded-lg bg-background text-foreground"
               >
                 <option value="featured">Featured</option>
                 <option value="price-low">Price: Low to High</option>
@@ -193,7 +193,7 @@ export default function ComponentsCategoryPage({ params }: { params: { category:
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                <p className="text-muted-foreground text-lg">
                   No products found matching your filters
                 </p>
               </div>
