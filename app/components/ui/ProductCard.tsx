@@ -119,7 +119,7 @@ export default function ProductCard({ product, showCompare = false }: ProductCar
             </div>
 
             {/* Small rating if available */}
-            {product.rating > 0 && (
+            {(product.rating ?? 0) > 0 && (
               <div className="flex items-center gap-1 text-xs font-medium bg-secondary/50 px-2 py-1 rounded-md">
                 <span className="text-orange-400">★</span> {product.rating}
               </div>
