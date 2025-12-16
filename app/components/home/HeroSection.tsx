@@ -90,28 +90,26 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Bottom Right: Components */}
             <motion.div
               variants={itemVariants}
               className="relative group rounded-3xl overflow-hidden min-h-[250px] lg:min-h-0 bg-[#F0F4F8] dark:bg-muted"
             >
-              <div className="absolute top-0 right-0 max-w-[60%] p-6 z-10 text-right">
+              <div className="absolute top-6 right-6 z-10 text-right max-w-[180px]">
                 <h3 className="text-xl font-bold text-foreground mb-1">Components</h3>
-                <p className="text-muted-foreground text-sm">Power your dream</p>
+                <p className="text-muted-foreground text-sm font-medium">Power your dream</p>
                 <Link
                   href="/components"
-                  className="mt-4 inline-flex items-center text-sm font-bold text-primary hover:underline"
+                  className="mt-4 inline-flex items-center text-sm font-bold text-primary hover:text-primary/80 transition-colors"
                 >
                   Upgrade Now
                 </Link>
               </div>
-              <div className="absolute bottom-0 left-0 p-4">
+              <div className="absolute bottom-0 left-0 w-[65%] h-[90%] pointer-events-none">
                 <Image
                   src="/images/hero/hero-gpu.png"
                   alt="High End GPU"
-                  width={280}
-                  height={200}
-                  className="object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-2"
+                  fill
+                  className="object-contain object-left-bottom drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             </motion.div>
